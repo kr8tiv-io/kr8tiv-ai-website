@@ -1,21 +1,17 @@
-import { MeshReflectorMaterial } from '@react-three/drei'
-
+/**
+ * Ground — nearly invisible void floor.
+ * Ultra-dark with barely-there reflection. No visible pattern.
+ * The ground should feel like you're floating over a dark abyss.
+ */
 export default function Ground() {
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
-      <planeGeometry args={[50, 50]} />
-      <MeshReflectorMaterial
-        mirror={0.4}
-        blur={[300, 100]}
-        resolution={1024}
-        mixBlur={1}
-        mixStrength={0.8}
-        roughness={1}
-        depthScale={1.2}
-        minDepthThreshold={0.4}
-        maxDepthThreshold={1.4}
-        color="#050510"
-        metalness={0.5}
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.6, 0]}>
+      <planeGeometry args={[80, 80]} />
+      <meshStandardMaterial
+        color="#010104"
+        metalness={0.9}
+        roughness={0.15}
+        envMapIntensity={0.05}
       />
     </mesh>
   )

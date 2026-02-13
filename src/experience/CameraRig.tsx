@@ -7,10 +7,10 @@ import { sections } from '../config/sections'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Starting position: dramatic hero angle looking at the product
+// Starting position: pulled back, dramatic hero angle
 const HERO_ANGLE = -Math.PI / 6
 const HERO_PHI = Math.PI / 2.3
-const HERO_RADIUS = 6.5
+const HERO_RADIUS = 9
 const HERO_TARGET_Y = 0.3
 
 export default function CameraRig() {

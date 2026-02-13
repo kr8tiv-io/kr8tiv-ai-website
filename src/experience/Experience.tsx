@@ -13,34 +13,38 @@ interface ExperienceProps {
 export default function Experience({ tier }: ExperienceProps) {
   return (
     <>
-      {/* Studio HDR lighting — the most important element for photorealism */}
-      <Environment preset="studio" environmentIntensity={1.0} />
+      {/* Dark studio HDR — low intensity so reflections are subtle, not bright */}
+      <Environment preset="studio" environmentIntensity={0.35} />
 
-      {/* Fill lights */}
-      <ambientLight intensity={0.15} />
-      <directionalLight position={[5, 8, 3]} intensity={0.4} castShadow />
+      {/* Scene fog — deep, heavy, objects dissolve into darkness */}
+      <fog attach="fog" args={['#030308', 5, 22]} />
+
+      {/* Minimal fill — just enough to read the object */}
+      <ambientLight intensity={0.06} />
+      <directionalLight position={[5, 8, 3]} intensity={0.3} castShadow />
       <spotLight
-        position={[-3, 5, -3]}
-        angle={0.4}
-        penumbra={0.8}
-        intensity={0.6}
+        position={[-3, 6, -3]}
+        angle={0.35}
+        penumbra={0.9}
+        intensity={0.4}
         color="#ffd4a0"
       />
 
-      {/* Accent rim lights for HUD glow */}
-      <pointLight position={[3, 1, 0]} intensity={0.3} color="#00e5ff" distance={8} />
-      <pointLight position={[-3, 1, 0]} intensity={0.2} color="#a855f7" distance={8} />
+      {/* Subtle colored accent lights — feel, not illuminate */}
+      <pointLight position={[5, 2, 3]} intensity={0.15} color="#00e5ff" distance={12} />
+      <pointLight position={[-5, 2, -3]} intensity={0.1} color="#a855f7" distance={12} />
+      <pointLight position={[0, -1, 5]} intensity={0.08} color="#d4a853" distance={10} />
 
       {/* Scroll-driven camera */}
       <CameraRig />
 
-      {/* The product */}
+      {/* The product — JARVIS box wrapped in 3D net */}
       <ProductModel />
 
-      {/* 3D HUD ring around product */}
+      {/* Atmospheric field — volumetric fog and mist */}
       <HudRing />
 
-      {/* Reflective ground */}
+      {/* Dark ground plane */}
       <Ground />
 
       {/* Post-processing */}
