@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(firebase *)",
+      "Bash(gltf-transform *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(cat *)",
+      "Bash(ls *)",
+      "Bash(echo *)",
+      "Bash(git *)",
+      "Bash(ffmpeg *)",
+      "Write(*)",
+      "Read(*)"
+    ],
+    "deny": []
+  }
+}

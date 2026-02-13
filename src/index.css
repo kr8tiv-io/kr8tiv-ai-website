@@ -1,0 +1,82 @@
+@import 'lenis/dist/lenis.css';
+@import 'tailwindcss';
+
+:root {
+  --color-bg: #050510;
+  --color-accent: #d4a853;
+  --color-accent-bright: #f0c75e;
+  --color-hud: #00e5ff;
+  --color-hud-dim: rgba(0, 229, 255, 0.15);
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: white;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.h-screen {
+  height: 100dvh;
+}
+
+::selection {
+  background: rgba(212, 168, 83, 0.3);
+  color: white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 83, 0.3);
+  border-radius: 2px;
+}
+
+/* HUD glow utility */
+.hud-glow {
+  box-shadow:
+    0 0 15px rgba(0, 229, 255, 0.15),
+    0 0 30px rgba(0, 229, 255, 0.05),
+    inset 0 0 15px rgba(0, 229, 255, 0.05);
+}
+
+.hud-border {
+  border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+/* Scanline animation */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes data-stream {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+@keyframes hud-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.97; }
+  75% { opacity: 1; }
+  90% { opacity: 0.95; }
+}
