@@ -32,6 +32,7 @@ function createGlowTexture(): THREE.Texture {
 export default function MouseTracers() {
   const ref = useRef<THREE.Points>(null)
   const mouseWorld = useRef(new THREE.Vector3(0, 1, 4))
+  const _targetMouse = useRef(new THREE.Vector3())
 
   const texture = useMemo(() => createGlowTexture(), [])
 
@@ -62,13 +63,13 @@ export default function MouseTracers() {
     const { pointer, viewport } = state
     const t = state.clock.elapsedTime
 
-    // Smooth mouse tracking
-    const targetMouse = new THREE.Vector3(
+    // Smooth mouse tracking (reuse ref to avoid per-frame allocation)
+    _targetMouse.current.set(
       (pointer.x * viewport.width) / 2,
       (pointer.y * viewport.height) / 2 + 1,
       3.5
     )
-    mouseWorld.current.lerp(targetMouse, 0.04)
+    mouseWorld.current.lerp(_targetMouse.current, 0.04)
 
     const posAttr = ref.current.geometry.attributes.position as THREE.BufferAttribute
 

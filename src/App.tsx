@@ -51,22 +51,31 @@ export default function App() {
       </div>
 
       {/* Layer 2: Scrollable HTML overlay */}
-      <ReactLenis
-        root
-        options={{
-          lerp: 0.06,
-          duration: 1.4,
-          smoothWheel: true,
-          syncTouch: false,
-          wheelMultiplier: 0.9,
-        }}
-      >
-        <LenisWrapper>
+      {tier === 'low' ? (
+        /* Skip Lenis on low-tier devices — native scroll is lighter */
+        <div>
           <NavigationBar />
           <HeroOverlay />
           <ScrollSections />
-        </LenisWrapper>
-      </ReactLenis>
+        </div>
+      ) : (
+        <ReactLenis
+          root
+          options={{
+            lerp: 0.08,
+            duration: 1.0,
+            smoothWheel: true,
+            syncTouch: false,
+            wheelMultiplier: 0.9,
+          }}
+        >
+          <LenisWrapper>
+            <NavigationBar />
+            <HeroOverlay />
+            <ScrollSections />
+          </LenisWrapper>
+        </ReactLenis>
+      )}
 
       {/* Vibes music toggle */}
       <VibesButton />

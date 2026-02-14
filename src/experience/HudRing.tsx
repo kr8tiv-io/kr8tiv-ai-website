@@ -259,7 +259,7 @@ function GoldenEnergy() {
 
       // Slow orbit + vertical undulation
       const orbitAngle = baseAngle + t * 0.03 * speed
-      const radius = 1.5 + Math.sin(t * 0.1 + phase) * 0.5 + Math.random() * 0.01
+      const radius = 1.5 + Math.sin(t * 0.1 + phase) * 0.5 + Math.sin(t * 0.7 + phase * 12.9898) * 0.01
       const yOffset = Math.sin(t * 0.2 * speed + phase) * 0.3
 
       posAttr.setXYZ(

@@ -46,15 +46,17 @@ export default function ProductModel() {
     innerOriginal.current = new Float32Array(innerPos.array)
   }, [outerGeo, innerGeo])
 
+  // Hoisted plane + target to avoid per-frame allocations
+  const _rayPlane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), [])
+  const _rayTarget = useMemo(() => new THREE.Vector3(), [])
+
   const onPointerMove = useCallback(() => {
     raycaster.setFromCamera(pointer, camera)
-    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0)
-    const target = new THREE.Vector3()
-    raycaster.ray.intersectPlane(plane, target)
-    if (target) {
-      mouseWorldPos.current.copy(target)
+    raycaster.ray.intersectPlane(_rayPlane, _rayTarget)
+    if (_rayTarget) {
+      mouseWorldPos.current.copy(_rayTarget)
     }
-  }, [raycaster, pointer, camera])
+  }, [raycaster, pointer, camera, _rayPlane, _rayTarget])
 
   // Temp vectors to avoid GC
   const _vertPos = useMemo(() => new THREE.Vector3(), [])
@@ -63,7 +65,7 @@ export default function ProductModel() {
   useFrame((state) => {
     const t = state.clock.elapsedTime
 
-    onPointerMove()
+    if (hovered) onPointerMove()
 
     // Barely perceptible float
     if (groupRef.current) {
@@ -242,8 +244,8 @@ export default function ProductModel() {
           )}
         </mesh>
 
-        {/* Amber edge strip — front */}
-        <mesh ref={glowRef} position={[0, 0, 0.81]}>
+        {/* Amber edge strip — front (nudged out to prevent z-fighting) */}
+        <mesh ref={glowRef} position={[0, 0, 0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
             color="#d4a853"
@@ -253,8 +255,8 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Amber edge strip — back */}
-        <mesh position={[0, 0, -0.81]}>
+        {/* Amber edge strip — back (nudged out to prevent z-fighting) */}
+        <mesh position={[0, 0, -0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
             color="#d4a853"
@@ -264,8 +266,8 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* White side accent lights */}
-        <mesh position={[1.21, 0, 0]}>
+        {/* White side accent lights (nudged out to prevent z-fighting) */}
+        <mesh position={[1.212, 0, 0]}>
           <boxGeometry args={[0.02, 0.04, 1.4]} />
           <meshStandardMaterial
             color="#ffffff"
@@ -274,7 +276,7 @@ export default function ProductModel() {
             toneMapped={false}
           />
         </mesh>
-        <mesh position={[-1.21, 0, 0]}>
+        <mesh position={[-1.212, 0, 0]}>
           <boxGeometry args={[0.02, 0.04, 1.4]} />
           <meshStandardMaterial
             color="#ffffff"
@@ -284,8 +286,8 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Top indicator dot — tamed on mobile (no bloom/tone mapping to soften) */}
-        <mesh position={[0, 0.28, 0]}>
+        {/* Top indicator dot — raised above glass to avoid z-fighting flicker */}
+        <mesh position={[0, 0.305, 0]}>
           <sphereGeometry args={[0.03, 16, 16]} />
           <meshStandardMaterial
             color="#ffffff"

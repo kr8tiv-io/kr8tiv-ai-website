@@ -30,17 +30,11 @@ export default function ScrollSections() {
         scrollTrigger: {
           trigger: el,
           start: 'top top',
-          end: '+=2000',
+          end: '+=1600',
           pin: true,
           pinSpacing: true,
-          scrub: 1.5,
-          anticipatePin: 0,
-          snap: {
-            snapTo: [0, 0.15, 0.5, 0.85, 1],
-            duration: { min: 0.3, max: 0.8 },
-            delay: 0.1,
-            ease: 'power2.inOut',
-          },
+          scrub: 1.2,
+          anticipatePin: 1,
         },
       })
 
