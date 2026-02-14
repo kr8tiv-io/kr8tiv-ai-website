@@ -2,6 +2,9 @@ import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
+// Mobile has no post-processing (bloom/tone mapping) — bright emissives flash harshly
+const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768
+
 /**
  * kr8tiv Device with white/grey neural net that distorts around the mouse.
  * The wireframe shells are off-white and warp where the cursor is closest.
@@ -67,10 +70,10 @@ export default function ProductModel() {
       groupRef.current.position.y = Math.sin(t * 0.3) * 0.015
     }
 
-    // Amber glow pulse
+    // Amber glow pulse (steady on mobile — no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      mat.emissiveIntensity = 1.8 + Math.sin(t * 1.5) * 0.3
+      mat.emissiveIntensity = IS_MOBILE ? 0.8 : 1.5 + Math.sin(t * 1.5) * 0.15
     }
 
     // Neural net rotation + distortion
@@ -184,9 +187,9 @@ export default function ProductModel() {
       mouseLight.current.intensity *= 0.95
     }
 
-    // Energy core pulses
+    // Energy core (steady on mobile — pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      energyCoreRef.current.intensity = 0.6 + Math.sin(t * 1.2) * 0.2
+      energyCoreRef.current.intensity = IS_MOBILE ? 0.15 : 0.35 + Math.sin(t * 1.2) * 0.08
     }
   })
 
@@ -207,25 +210,36 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Glass top surface */}
+        {/* Glass top surface — simple glossy on mobile (transmission flickers without post-processing) */}
         <mesh position={[0, 0.26, 0]}>
           <boxGeometry args={[2.3, 0.02, 1.5]} />
-          <meshPhysicalMaterial
-            color="#060810"
-            metalness={0.05}
-            roughness={0.01}
-            transmission={0.75}
-            thickness={1}
-            ior={2.0}
-            clearcoat={1}
-            clearcoatRoughness={0}
-            envMapIntensity={4}
-            iridescence={0.8}
-            iridescenceIOR={1.6}
-            iridescenceThicknessRange={[100, 500]}
-            attenuationColor={new THREE.Color('#ffffff')}
-            attenuationDistance={1}
-          />
+          {IS_MOBILE ? (
+            <meshPhysicalMaterial
+              color="#080a14"
+              metalness={0.9}
+              roughness={0.05}
+              clearcoat={1}
+              clearcoatRoughness={0.1}
+              envMapIntensity={0.6}
+            />
+          ) : (
+            <meshPhysicalMaterial
+              color="#060810"
+              metalness={0.05}
+              roughness={0.01}
+              transmission={0.75}
+              thickness={1}
+              ior={2.0}
+              clearcoat={1}
+              clearcoatRoughness={0}
+              envMapIntensity={2.5}
+              iridescence={0.8}
+              iridescenceIOR={1.6}
+              iridescenceThicknessRange={[100, 500]}
+              attenuationColor={new THREE.Color('#ffffff')}
+              attenuationDistance={1}
+            />
+          )}
         </mesh>
 
         {/* Amber edge strip — front */}
@@ -270,13 +284,13 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Top indicator dot */}
+        {/* Top indicator dot — tamed on mobile (no bloom/tone mapping to soften) */}
         <mesh position={[0, 0.28, 0]}>
           <sphereGeometry args={[0.03, 16, 16]} />
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={4}
+            emissiveIntensity={IS_MOBILE ? 0.3 : 1.5}
             toneMapped={false}
           />
         </mesh>

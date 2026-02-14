@@ -22,16 +22,11 @@ export default function NavigationBar() {
       }`}
     >
       <div className="flex items-center gap-3">
-        <div className="w-2 h-2 rounded-full bg-[#d4a853] animate-pulse" />
-        <span
-          className="text-sm tracking-[0.25em] uppercase text-white/70"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          kr8tiv
-        </span>
-        <span className="text-[10px] tracking-[0.15em] uppercase text-white/30 hidden sm:inline">
-          AI
-        </span>
+        <img
+          src="/images/kr8tiv-logo.svg"
+          alt="kr8tiv"
+          className="h-6 sm:h-7 w-auto"
+        />
       </div>
 
       <div className="flex items-center gap-4">

@@ -4,15 +4,15 @@ import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Raymarched Volumetric Smoke
+   Raymarched Volumetric Smoke — Wave Edition
 
-   Physically-based volumetric fog rendered via fragment-shader
-   raymarching through a bounding box. Uses 3D simplex noise
-   with FBM for organic density, Beer-Lambert absorption,
-   Henyey-Greenstein phase function, and volumetric self-shadowing.
+   Physically-based volumetric fog with directional wave system.
+   Uses 3D simplex noise FBM, sweeping sine wave modulation,
+   Beer-Lambert absorption, Henyey-Greenstein phase function,
+   and volumetric self-shadowing.
    ──────────────────────────────────────────────────────────── */
 
-const NUM_STEPS = 32
+const NUM_STEPS = 40
 const SHADOW_STEPS = 3
 
 // ── Vertex Shader ───────────────────────────────────────────
@@ -118,7 +118,7 @@ float snoise(vec3 v) {
   return 105.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
 }
 
-/* ── FBM with per-octave wind (small details drift faster) ─ */
+/* ── FBM with per-octave wind (4 octaves for enhanced detail) */
 
 float fbm(vec3 p) {
   float value = 0.0;
@@ -126,7 +126,7 @@ float fbm(vec3 p) {
   float frequency = 1.0;
   vec3 wind = uWindDirection * uTime * uWindSpeed;
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 4; i++) {
     vec3 offset = wind * (0.4 + float(i) * 0.35);
     value += amplitude * snoise((p + offset) * frequency);
     amplitude *= 0.5;
@@ -162,7 +162,7 @@ float henyeyGreenstein(float cosTheta, float g) {
   return (1.0 - g2) / (4.0 * PI * pow(denom, 1.5));
 }
 
-/* ── Density sampling ────────────────────────────────────── */
+/* ── Density sampling with sweeping wave system ──────────── */
 
 float sampleDensity(vec3 worldPos) {
   vec3 samplePos = worldPos * uNoiseScale;
@@ -171,21 +171,46 @@ float sampleDensity(vec3 worldPos) {
   float density = fbm(samplePos);
 
   // Remap: threshold + smooth falloff
-  density = smoothstep(uDensityThreshold, uDensityThreshold + 0.35, density * 0.5 + 0.5);
+  density = smoothstep(uDensityThreshold, uDensityThreshold + 0.3, density * 0.5 + 0.5);
 
-  // Edge fade — aggressive falloff at volume boundaries (prevents blotch from far camera)
+  // ── Sweeping wave system ──
+  // Primary wave — slow, majestic, defines the main flow
+  float wavePhase1 = worldPos.x * 1.0 + worldPos.z * 0.3 + uTime * 0.3;
+  float wave1 = sin(wavePhase1) * 0.5 + 0.5;
+  wave1 = pow(wave1, 0.7); // Sharpen crests
+
+  // Secondary wave — different angle and speed
+  float wavePhase2 = worldPos.x * 2.2 - worldPos.z * 0.8 + uTime * 0.45;
+  float wave2 = sin(wavePhase2) * 0.3 + 0.7;
+
+  // Cross-wave — perpendicular for organic interference
+  float wavePhase3 = worldPos.z * 1.5 + worldPos.x * 0.4 + uTime * 0.2;
+  float wave3 = sin(wavePhase3) * 0.2 + 0.8;
+
+  // Combine: flowing rivers of density
+  float waveMask = wave1 * wave2 * wave3;
+
+  // Gentle pulsation — breathing rhythm
+  float pulse = sin(uTime * 0.6) * 0.08 + 0.92;
+  waveMask *= pulse;
+
+  density *= waveMask;
+
+  // ── Boundary fades ──
   vec3 center = (uBoxMin + uBoxMax) * 0.5;
   vec3 halfSize = (uBoxMax - uBoxMin) * 0.5;
   vec3 d = abs(worldPos - center) / halfSize;
-  float edgeFade = 1.0 - smoothstep(0.2, 0.7, max(max(d.x, d.y), d.z));
 
-  // Height gradient — denser near device level, tight band
+  // Edge fade — tight to prevent blotch at far camera
+  float edgeFade = 1.0 - smoothstep(0.25, 0.78, max(max(d.x, d.y), d.z));
+
+  // Height gradient — wider band for taller volume
   float normalizedY = (worldPos.y - uBoxMin.y) / (uBoxMax.y - uBoxMin.y);
-  float heightFade = smoothstep(0.0, 0.35, normalizedY) * smoothstep(1.0, 0.45, normalizedY);
+  float heightFade = smoothstep(0.0, 0.2, normalizedY) * smoothstep(1.0, 0.35, normalizedY);
 
-  // Distance from center fade — stronger falloff radially
+  // Radial fade — generous spread
   float radialDist = length(worldPos.xz - center.xz) / halfSize.x;
-  float radialFade = 1.0 - smoothstep(0.3, 0.85, radialDist);
+  float radialFade = 1.0 - smoothstep(0.35, 0.92, radialDist);
 
   return density * edgeFade * heightFade * radialFade * uDensityMultiplier;
 }
@@ -251,9 +276,11 @@ void main() {
     }
   }
 
-  // Ambient contribution — clean white fill so fog reads as light, not gloomy
+  // Ambient contribution — warm-cool gradient for cinematic depth
   float ambientDensity = 1.0 - transmittance;
-  scattered += vec3(0.06, 0.06, 0.065) * ambientDensity * 0.5;
+  vec3 warmAmb = vec3(0.08, 0.07, 0.06);
+  vec3 coolAmb = vec3(0.06, 0.07, 0.10);
+  scattered += mix(warmAmb, coolAmb, 0.5) * ambientDensity * 0.7;
 
   gl_FragColor = vec4(scattered, 1.0 - transmittance);
 }
@@ -264,15 +291,15 @@ void main() {
 const VolumetricSmokeMaterialImpl = shaderMaterial(
   {
     uTime: 0,
-    uBoxMin: new THREE.Vector3(-3, -0.5, -3),
-    uBoxMax: new THREE.Vector3(3, 1.5, 3),
+    uBoxMin: new THREE.Vector3(-4, -0.75, -4),
+    uBoxMax: new THREE.Vector3(4, 2.75, 4),
     uWindDirection: new THREE.Vector3(1, 0.08, 0.25).normalize(),
-    uWindSpeed: 0.18,
-    uDensityMultiplier: 0.13,
-    uAbsorption: 0.45,
+    uWindSpeed: 0.22,
+    uDensityMultiplier: 0.28,
+    uAbsorption: 0.38,
     uLightDir: new THREE.Vector3(5, 8, 3).normalize(),
     uLightColor: new THREE.Vector3(1.0, 0.97, 0.92),
-    uLightIntensity: 1.5,
+    uLightIntensity: 1.8,
     uPhaseG: 0.25,
     uNoiseScale: 2.0,
     uDensityThreshold: 0.35,
@@ -294,8 +321,8 @@ declare global {
 
 // ── Volume dimensions ───────────────────────────────────────
 
-const VOL_POS: [number, number, number] = [0, 0.5, 0]
-const VOL_SCALE: [number, number, number] = [6, 2, 6]
+const VOL_POS: [number, number, number] = [0, 1.0, 0]
+const VOL_SCALE: [number, number, number] = [8, 3.5, 8]
 
 // ── Component ───────────────────────────────────────────────
 
