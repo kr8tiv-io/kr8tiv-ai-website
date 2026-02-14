@@ -12,7 +12,7 @@ import * as THREE from 'three'
  */
 
 const FOG_COUNT = 400
-const MIST_COUNT = 150
+const MIST_COUNT = 80
 
 /** Create a soft radial gradient circle texture via Canvas2D */
 function createSoftCircleTexture(
@@ -203,9 +203,9 @@ function InnerMist() {
       <pointsMaterial
         map={texture}
         color="#ffffff"
-        size={0.25}
+        size={0.15}
         transparent
-        opacity={0.05}
+        opacity={0.03}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation

@@ -14,9 +14,9 @@ export default function Effects() {
   return (
     <EffectComposer multisampling={4}>
       <Bloom
-        luminanceThreshold={0.3}
-        luminanceSmoothing={0.9}
-        intensity={1.4}
+        luminanceThreshold={0.5}
+        luminanceSmoothing={0.8}
+        intensity={1.0}
         mipmapBlur
       />
       <N8AO

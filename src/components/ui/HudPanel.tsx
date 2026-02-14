@@ -66,9 +66,15 @@ export default function HudPanel({ section, index }: HudPanelProps) {
         ['--hud-color' as string]: section.hudColor,
       }}
     >
+      {/* Tracer animation — glowing star orbiting the border */}
+      <div className="hud-tracer-container">
+        <div className="hud-tracer" />
+        <div className="hud-tracer hud-tracer-2" />
+      </div>
+
       {/* Panel frame */}
       <div
-        className="relative p-5 backdrop-blur-md rounded-sm overflow-hidden"
+        className="relative p-5 backdrop-blur-md rounded-sm"
         style={{
           background: `linear-gradient(135deg, ${section.hudColor}08 0%, ${section.hudColor}03 100%)`,
           border: `1px solid ${section.hudColor}20`,
