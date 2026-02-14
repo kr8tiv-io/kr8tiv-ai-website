@@ -19,6 +19,10 @@ const INTRO_PHI = Math.PI / 3.5
 const INTRO_RADIUS = 28
 const INTRO_TARGET_Y = 1.5
 
+// Mobile devices need the camera pulled back so the full object is visible
+const MOBILE_RADIUS_SCALE =
+  typeof window !== 'undefined' && window.innerWidth < 768 ? 1.45 : 1
+
 export default function CameraRig() {
   const { camera } = useThree()
 
@@ -35,7 +39,7 @@ export default function CameraRig() {
       gsap.to(anim.current, {
         theta: HERO_ANGLE,
         phi: HERO_PHI,
-        radius: HERO_RADIUS,
+        radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
         targetY: HERO_TARGET_Y,
         duration: 3,
         ease: 'power3.inOut',
@@ -73,18 +77,49 @@ export default function CameraRig() {
 
     sections.forEach((section, i) => {
       const progress = (i + 1) * segmentDuration
-      tl.to(
-        anim.current,
-        {
-          theta: section.angle,
-          phi: section.phi,
-          radius: section.radius,
-          targetY: section.targetY,
-          duration: segmentDuration,
-          ease: 'none',
-        },
-        progress - segmentDuration
-      )
+
+      // Between section 3→4: subtle push away then pull back
+      if (i === 3) {
+        const prevSection = sections[i - 1]
+        // First 40% — push OUT
+        tl.to(
+          anim.current,
+          {
+            theta: (section.angle + prevSection.angle) / 2,
+            phi: section.phi,
+            radius: (section.radius + 3) * MOBILE_RADIUS_SCALE,
+            targetY: section.targetY + 0.2,
+            duration: segmentDuration * 0.4,
+            ease: 'power2.out',
+          },
+          progress - segmentDuration
+        )
+        // Remaining 60% — pull back IN to target
+        tl.to(
+          anim.current,
+          {
+            theta: section.angle,
+            phi: section.phi,
+            radius: section.radius * MOBILE_RADIUS_SCALE,
+            targetY: section.targetY,
+            duration: segmentDuration * 0.6,
+            ease: 'power2.inOut',
+          }
+        )
+      } else {
+        tl.to(
+          anim.current,
+          {
+            theta: section.angle,
+            phi: section.phi,
+            radius: section.radius * MOBILE_RADIUS_SCALE,
+            targetY: section.targetY,
+            duration: segmentDuration,
+            ease: 'none',
+          },
+          progress - segmentDuration
+        )
+      }
     })
   }, [])
 

@@ -117,9 +117,9 @@ function VolumetricFog() {
       <pointsMaterial
         map={texture}
         color="#667799"
-        size={0.6}
+        size={0.4}
         transparent
-        opacity={0.06}
+        opacity={0.035}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation
@@ -287,9 +287,9 @@ function GoldenEnergy() {
       <pointsMaterial
         map={texture}
         color="#d4a853"
-        size={0.35}
+        size={0.2}
         transparent
-        opacity={0.08}
+        opacity={0.04}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation

@@ -78,9 +78,9 @@ export const sections: Section[] = [
     hudColor: '#ffffff',
     alignment: 'left',
     ctas: [
-      { text: 'JARVIS Dashboard \u2192', href: 'https://jarvis.kr8tiv.ai' },
-      { text: 'GitHub Repo \u2192', href: 'https://github.com/kr8tiv-io' },
-      { text: '@kr8tivAI on X \u2192', href: 'https://x.com/kr8tiv_ai' },
+      { text: 'JARVIS Dashboard \u2192', href: 'https://jarvislife.io/' },
+      { text: 'GitHub Repo \u2192', href: 'https://github.com/Matt-Aurora-Ventures/Jarvis' },
+      { text: '@kr8tivAI on X \u2192', href: 'https://x.com/kr8tivai' },
     ],
   },
   {
@@ -103,7 +103,7 @@ export const sections: Section[] = [
   {
     angle: 2 * Math.PI,
     phi: Math.PI / 3.5,
-    radius: 14,
+    radius: 10,
     targetY: 0,
     label: 'The Human Part',
     title: "We\u2019re just people who think\nthis should be fun.",

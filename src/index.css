@@ -141,6 +141,40 @@ a, button, [role="button"] { cursor: pointer; }
   }
 }
 
+/* Title hover glow — pulsing shader-like glow on mouseover */
+.title-glow {
+  transition: text-shadow 0.4s ease, color 0.4s ease;
+  cursor: default;
+}
+
+.title-glow:hover {
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 40px rgba(255, 255, 255, 0.15),
+    0 0 80px rgba(212, 168, 83, 0.1);
+  color: #ffffff;
+}
+
+/* Pulse animation variant for title glow on hover */
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 20px rgba(255, 255, 255, 0.3),
+      0 0 40px rgba(255, 255, 255, 0.15),
+      0 0 80px rgba(212, 168, 83, 0.1);
+  }
+  50% {
+    text-shadow:
+      0 0 30px rgba(255, 255, 255, 0.45),
+      0 0 60px rgba(255, 255, 255, 0.2),
+      0 0 100px rgba(212, 168, 83, 0.15);
+  }
+}
+
+.title-glow:hover {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
 /* Tracer tail/trail effect */
 .hud-tracer::after {
   content: '';

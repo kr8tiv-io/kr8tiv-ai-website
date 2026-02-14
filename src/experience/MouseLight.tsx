@@ -21,9 +21,9 @@ export default function MouseLight() {
   return (
     <pointLight
       ref={lightRef}
-      intensity={0.15}
+      intensity={0.08}
       color="#ffffff"
-      distance={8}
+      distance={6}
       decay={2}
     />
   )

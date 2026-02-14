@@ -8,6 +8,7 @@ import HeroOverlay from './components/HeroOverlay'
 import NavigationBar from './components/NavigationBar'
 import IntroSequence from './components/IntroSequence'
 import TransitionFlash from './components/TransitionFlash'
+import VibesButton from './components/VibesButton'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
 
@@ -66,6 +67,9 @@ export default function App() {
           <ScrollSections />
         </LenisWrapper>
       </ReactLenis>
+
+      {/* Vibes music toggle */}
+      <VibesButton />
 
       {/* Transition effects */}
       <TransitionFlash />

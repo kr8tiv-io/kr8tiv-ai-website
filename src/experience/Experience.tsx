@@ -1,10 +1,12 @@
 import { Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
 import ProductModel from './ProductModel'
+import VolumetricSmoke from './VolumetricSmoke'
 import Ground from './Ground'
 import Effects from './Effects'
 import HudRing from './HudRing'
 import MouseLight from './MouseLight'
+import MouseTracers from './MouseTracers'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
 
 interface ExperienceProps {
@@ -27,7 +29,7 @@ export default function Experience({ tier }: ExperienceProps) {
         position={[-3, 6, -3]}
         angle={0.35}
         penumbra={0.9}
-        intensity={0.4}
+        intensity={0.25}
         color="#ffd4a0"
       />
 
@@ -42,16 +44,19 @@ export default function Experience({ tier }: ExperienceProps) {
       {/* The product — kr8tiv device wrapped in 3D net */}
       <ProductModel />
 
-      {/* Atmospheric field — volumetric fog and mist */}
+      {/* Raymarched volumetric smoke — flows through the device */}
+      {tier !== 'low' && <VolumetricSmoke />}
+
+      {/* Atmospheric field — particle fog and mist */}
       <HudRing />
 
       {/* Golden sparkles — ethereal energy */}
       <Sparkles
-        count={80}
+        count={60}
         speed={0.2}
-        opacity={0.4}
+        opacity={0.2}
         color="#d4a853"
-        size={1.2}
+        size={0.8}
         scale={[3.5, 1.5, 3.5]}
         position={[0, 0.5, 0]}
         noise={[0.5, 0.3, 0.5]}
@@ -59,6 +64,9 @@ export default function Experience({ tier }: ExperienceProps) {
 
       {/* Mouse-following light */}
       <MouseLight />
+
+      {/* Mouse-following tracers from the box */}
+      <MouseTracers />
 
       {/* Dark ground plane */}
       <Ground />
