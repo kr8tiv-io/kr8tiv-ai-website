@@ -113,7 +113,7 @@ export default function ScrollSections() {
       {sections.map((section, i) => (
         <section
           key={i}
-          className="content-section h-screen flex items-center pointer-events-none relative"
+          className="content-section h-screen flex items-center pointer-events-none relative pt-20"
         >
           {/* Text content side */}
           <div

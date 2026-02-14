@@ -310,15 +310,6 @@ const VolumetricSmokeMaterialImpl = shaderMaterial(
 
 extend({ VolumetricSmokeMaterial: VolumetricSmokeMaterialImpl })
 
-// TypeScript declaration for JSX
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      volumetricSmokeMaterial: any
-    }
-  }
-}
-
 // ── Volume dimensions ───────────────────────────────────────
 
 const VOL_POS: [number, number, number] = [0, 1.0, 0]
