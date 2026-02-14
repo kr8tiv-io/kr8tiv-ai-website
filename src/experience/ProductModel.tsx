@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
 /**
- * JARVIS Device with white/grey neural net that distorts around the mouse.
+ * kr8tiv Device with white/grey neural net that distorts around the mouse.
  * The wireframe shells are off-white and warp where the cursor is closest.
  */
 export default function ProductModel() {
@@ -223,7 +223,7 @@ export default function ProductModel() {
             iridescence={0.8}
             iridescenceIOR={1.6}
             iridescenceThicknessRange={[100, 500]}
-            attenuationColor={new THREE.Color('#00e5ff')}
+            attenuationColor={new THREE.Color('#ffffff')}
             attenuationDistance={1}
           />
         </mesh>
@@ -250,22 +250,22 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Cyan side accent lights */}
+        {/* White side accent lights */}
         <mesh position={[1.21, 0, 0]}>
           <boxGeometry args={[0.02, 0.04, 1.4]} />
           <meshStandardMaterial
-            color="#00e5ff"
-            emissive="#00e5ff"
-            emissiveIntensity={1}
+            color="#ffffff"
+            emissive="#ffffff"
+            emissiveIntensity={0.5}
             toneMapped={false}
           />
         </mesh>
         <mesh position={[-1.21, 0, 0]}>
           <boxGeometry args={[0.02, 0.04, 1.4]} />
           <meshStandardMaterial
-            color="#00e5ff"
-            emissive="#00e5ff"
-            emissiveIntensity={1}
+            color="#ffffff"
+            emissive="#ffffff"
+            emissiveIntensity={0.5}
             toneMapped={false}
           />
         </mesh>
@@ -274,8 +274,8 @@ export default function ProductModel() {
         <mesh position={[0, 0.28, 0]}>
           <sphereGeometry args={[0.03, 16, 16]} />
           <meshStandardMaterial
-            color="#00e5ff"
-            emissive="#00e5ff"
+            color="#ffffff"
+            emissive="#ffffff"
             emissiveIntensity={4}
             toneMapped={false}
           />
@@ -334,7 +334,7 @@ export default function ProductModel() {
       <pointLight
         ref={energyCoreRef}
         position={[0, 0.3, 0]}
-        color="#00e5ff"
+        color="#d4a853"
         intensity={0.6}
         distance={4}
         decay={2}

@@ -135,7 +135,7 @@ function VolumetricFog() {
 function InnerMist() {
   const ref = useRef<THREE.Points>(null)
 
-  const texture = useMemo(() => createSoftCircleTexture(64, 'rgba(0,229,255,0.2)', 2), [])
+  const texture = useMemo(() => createSoftCircleTexture(64, 'rgba(255,255,255,0.15)', 2), [])
 
   const { positions, seeds } = useMemo(() => {
     const pos = new Float32Array(MIST_COUNT * 3)
@@ -202,10 +202,94 @@ function InnerMist() {
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
         map={texture}
-        color="#00e5ff"
+        color="#ffffff"
         size={0.25}
         transparent
         opacity={0.05}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        sizeAttenuation
+      />
+    </points>
+  )
+}
+
+const GOLD_COUNT = 200
+
+function GoldenEnergy() {
+  const ref = useRef<THREE.Points>(null)
+
+  const texture = useMemo(() => createSoftCircleTexture(64, 'rgba(212,168,83,0.25)', 2), [])
+
+  const { positions, seeds } = useMemo(() => {
+    const pos = new Float32Array(GOLD_COUNT * 3)
+    const sd = new Float32Array(GOLD_COUNT * 3)
+
+    for (let i = 0; i < GOLD_COUNT; i++) {
+      const angle = Math.random() * Math.PI * 2
+      const radius = 1.5 + Math.random() * 1.5
+      const height = (Math.random() - 0.5) * 1.2
+
+      pos[i * 3] = Math.cos(angle) * radius
+      pos[i * 3 + 1] = height + 0.3
+      pos[i * 3 + 2] = Math.sin(angle) * radius
+
+      sd[i * 3] = Math.random() * 100
+      sd[i * 3 + 1] = 0.3 + Math.random() * 0.7
+      sd[i * 3 + 2] = angle
+    }
+    return { positions: pos, seeds: sd }
+  }, [])
+
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    return geo
+  }, [positions])
+
+  useFrame((state) => {
+    if (!ref.current) return
+    const t = state.clock.elapsedTime
+    const posAttr = ref.current.geometry.attributes.position as THREE.BufferAttribute
+
+    for (let i = 0; i < GOLD_COUNT; i++) {
+      const phase = seeds[i * 3]
+      const speed = seeds[i * 3 + 1]
+      const baseAngle = seeds[i * 3 + 2]
+
+      // Slow orbit + vertical undulation
+      const orbitAngle = baseAngle + t * 0.03 * speed
+      const radius = 1.5 + Math.sin(t * 0.1 + phase) * 0.5 + Math.random() * 0.01
+      const yOffset = Math.sin(t * 0.2 * speed + phase) * 0.3
+
+      posAttr.setXYZ(
+        i,
+        Math.cos(orbitAngle) * radius,
+        0.3 + yOffset,
+        Math.sin(orbitAngle) * radius
+      )
+
+      // Recycle if too far
+      const dist = Math.sqrt(
+        posAttr.getX(i) ** 2 + posAttr.getZ(i) ** 2
+      )
+      if (dist > 3.5) {
+        const newAngle = Math.random() * Math.PI * 2
+        const newRadius = 1.5 + Math.random() * 0.5
+        posAttr.setXYZ(i, Math.cos(newAngle) * newRadius, 0.3, Math.sin(newAngle) * newRadius)
+      }
+    }
+    posAttr.needsUpdate = true
+  })
+
+  return (
+    <points ref={ref} geometry={geometry}>
+      <pointsMaterial
+        map={texture}
+        color="#d4a853"
+        size={0.35}
+        transparent
+        opacity={0.08}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation
@@ -219,6 +303,7 @@ export default function HudRing() {
     <group>
       <VolumetricFog />
       <InnerMist />
+      <GoldenEnergy />
     </group>
   )
 }

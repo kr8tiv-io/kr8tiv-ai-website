@@ -126,7 +126,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
             </span>
           </div>
           <span className="text-[8px] font-mono text-white/20">
-            SYS.{['SIG', 'RSK', 'INT', 'AUT'][index]}
+            SYS.{['WHO', 'TKN', 'JRV', 'IND', 'HMN'][index]}
           </span>
         </div>
 

@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useProgress } from '@react-three/drei'
 
-export default function LoadingScreen() {
+interface LoadingScreenProps {
+  onDone?: () => void
+}
+
+export default function LoadingScreen({ onDone }: LoadingScreenProps) {
   const { progress, active } = useProgress()
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
@@ -9,10 +13,13 @@ export default function LoadingScreen() {
   useEffect(() => {
     if (!active && progress === 100) {
       setFadeOut(true)
-      const timer = setTimeout(() => setVisible(false), 1200)
+      const timer = setTimeout(() => {
+        setVisible(false)
+        onDone?.()
+      }, 1200)
       return () => clearTimeout(timer)
     }
-  }, [active, progress])
+  }, [active, progress, onDone])
 
   if (!visible) return null
 
@@ -23,15 +30,15 @@ export default function LoadingScreen() {
       }`}
     >
       <div className="text-center">
-        {/* JARVIS branding */}
+        {/* kr8tiv branding */}
         <h2
           className="text-2xl tracking-[0.2em] text-white/80 mb-2"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          JARVIS
+          kr8tiv
         </h2>
         <div className="text-[9px] tracking-[0.4em] uppercase text-white/20 font-mono mb-10">
-          Initializing System
+          Initializing
         </div>
 
         {/* Progress bar */}
@@ -52,7 +59,7 @@ export default function LoadingScreen() {
           {progress > 10 && <div>Loading 3D environment...</div>}
           {progress > 40 && <div>Compiling shaders...</div>}
           {progress > 70 && <div>Initializing HUD systems...</div>}
-          {progress > 90 && <div className="text-[#00e5ff]/30">System ready.</div>}
+          {progress > 90 && <div className="text-white/40">System ready.</div>}
         </div>
       </div>
     </div>

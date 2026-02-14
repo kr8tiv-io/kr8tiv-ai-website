@@ -7,7 +7,6 @@ import { sections } from '../config/sections'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Starting position: pulled back, dramatic hero angle
 const HERO_ANGLE = -Math.PI / 6
 const HERO_PHI = Math.PI / 2.3
 const HERO_RADIUS = 9
@@ -16,7 +15,6 @@ const HERO_TARGET_Y = 0.3
 export default function CameraRig() {
   const { camera } = useThree()
 
-  // GSAP proxy object — GSAP writes, useFrame reads
   const anim = useRef({
     theta: HERO_ANGLE,
     phi: HERO_PHI,
@@ -25,8 +23,8 @@ export default function CameraRig() {
   })
 
   useGSAP(() => {
-    // Total scroll sections = hero (1) + content sections (4) = 5 pages
-    const totalSections = sections.length + 1 // +1 for hero
+    const totalSections = sections.length + 1
+    const segmentDuration = 1 / (totalSections - 1)
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -36,15 +34,12 @@ export default function CameraRig() {
         scrub: 1.5,
         snap: {
           snapTo: Array.from({ length: totalSections }, (_, i) => i / (totalSections - 1)),
-          duration: { min: 0.3, max: 0.8 },
+          duration: { min: 0.2, max: 0.8 },
           delay: 0.1,
           ease: 'power2.inOut',
         },
       },
     })
-
-    // Hero → first content section
-    const segmentDuration = 1 / (totalSections - 1)
 
     sections.forEach((section, i) => {
       const progress = (i + 1) * segmentDuration
@@ -63,7 +58,6 @@ export default function CameraRig() {
     })
   }, [])
 
-  // Every frame: spherical → cartesian, position camera
   useFrame(() => {
     const { theta, phi, radius, targetY } = anim.current
 

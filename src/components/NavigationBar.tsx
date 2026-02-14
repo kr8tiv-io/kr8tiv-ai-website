@@ -27,15 +27,15 @@ export default function NavigationBar() {
           className="text-sm tracking-[0.25em] uppercase text-white/70"
           style={{ fontFamily: 'var(--font-display)' }}
         >
-          JARVIS
+          kr8tiv
         </span>
         <span className="text-[10px] tracking-[0.15em] uppercase text-white/30 hidden sm:inline">
-          by kr8tiv AI
+          AI
         </span>
       </div>
 
       <div className="flex items-center gap-6">
-        <span className="text-[10px] tracking-[0.2em] uppercase text-[#00e5ff]/60 font-mono hidden md:inline">
+        <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-mono hidden md:inline">
           SYS.ONLINE
         </span>
         <a

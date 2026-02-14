@@ -5,8 +5,8 @@
   --color-bg: #050510;
   --color-accent: #d4a853;
   --color-accent-bright: #f0c75e;
-  --color-hud: #00e5ff;
-  --color-hud-dim: rgba(0, 229, 255, 0.15);
+  --color-hud: #ffffff;
+  --color-hud-dim: rgba(255, 255, 255, 0.12);
   --font-display: 'Syne', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -22,6 +22,9 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+body { cursor: crosshair; }
+a, button, [role="button"] { cursor: pointer; }
 
 .h-screen {
   height: 100dvh;
@@ -49,13 +52,13 @@ html, body {
 /* HUD glow utility */
 .hud-glow {
   box-shadow:
-    0 0 15px rgba(0, 229, 255, 0.15),
-    0 0 30px rgba(0, 229, 255, 0.05),
-    inset 0 0 15px rgba(0, 229, 255, 0.05);
+    0 0 15px rgba(255, 255, 255, 0.15),
+    0 0 30px rgba(255, 255, 255, 0.05),
+    inset 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
 .hud-border {
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Scanline animation */

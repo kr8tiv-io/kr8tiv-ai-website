@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useState, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import { ReactLenis } from 'lenis/react'
@@ -6,6 +6,8 @@ import ScrollSections from './components/ScrollSections'
 import LoadingScreen from './components/LoadingScreen'
 import HeroOverlay from './components/HeroOverlay'
 import NavigationBar from './components/NavigationBar'
+import IntroSequence from './components/IntroSequence'
+import TransitionFlash from './components/TransitionFlash'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
 
@@ -18,6 +20,13 @@ function LenisWrapper({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const tier = useDeviceCapability()
+  const [loadingDone, setLoadingDone] = useState(false)
+  const [introComplete, setIntroComplete] = useState(false)
+
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true)
+    document.body.style.overflow = ''
+  }, [])
 
   return (
     <>
@@ -44,10 +53,11 @@ export default function App() {
       <ReactLenis
         root
         options={{
-          lerp: 0.07,
-          duration: 1.2,
+          lerp: 0.06,
+          duration: 1.4,
           smoothWheel: true,
           syncTouch: false,
+          wheelMultiplier: 0.9,
         }}
       >
         <LenisWrapper>
@@ -57,8 +67,19 @@ export default function App() {
         </LenisWrapper>
       </ReactLenis>
 
+      {/* Transition effects */}
+      <TransitionFlash />
+
+      {/* Intro sequence — plays after loading */}
+      {loadingDone && !introComplete && (
+        <IntroSequence onComplete={handleIntroComplete} />
+      )}
+
       {/* Loading overlay */}
-      <LoadingScreen />
+      <LoadingScreen onDone={() => {
+        document.body.style.overflow = 'hidden'
+        setTimeout(() => setLoadingDone(true), 300)
+      }} />
     </>
   )
 }
