@@ -25,7 +25,7 @@ export default function NavigationBar() {
         <img
           src="/images/kr8tiv-logo.svg"
           alt="kr8tiv"
-          className="h-8 sm:h-9 w-auto invert"
+          className="h-8 sm:h-9 w-auto invert hidden sm:block"
         />
       </div>
 
