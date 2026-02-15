@@ -175,6 +175,7 @@ const StreamLayerMaterialImpl = shaderMaterial(
 
 extend({ StreamLayerMaterial: StreamLayerMaterialImpl })
 
+
 // ── Configuration ───────────────────────────────────────────
 
 const LAYER_COUNT = 18         // Stacked planes to create volume
