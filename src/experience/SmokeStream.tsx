@@ -127,9 +127,9 @@ uniform float uOpacity;
 uniform float uLayerOffset;
 
 void main() {
-  // ── Soft vertical gaussian — wide, dreamy falloff ──
+  // ── Soft vertical gaussian — aggressive falloff at edges ──
   float distFromCenter = abs(vUv.y - 0.5) * 2.0;
-  float gauss = exp(-distFromCenter * distFromCenter * 2.5);
+  float gauss = exp(-distFromCenter * distFromCenter * 4.0);
 
   // ── Internal fiber texture — subtle contour lines ──
   float fiber = sin(vUv.y * 40.0 + uLayerOffset * 8.0 + uTime * 0.5) * 0.5 + 0.5;
@@ -142,9 +142,15 @@ void main() {
 
   float intensity = gauss * fiberEffect * lengthVar;
 
-  // ── Horizontal edge fade ──
-  float edgeFade = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
+  // ── Horizontal edge fade — wide so plane ends are invisible ──
+  float edgeFade = smoothstep(0.0, 0.35, vUv.x) * smoothstep(1.0, 0.65, vUv.x);
+  edgeFade = edgeFade * edgeFade; // Exponential for feathered edges
   intensity *= edgeFade;
+
+  // ── World-space distance fade — dissolve at far extents ──
+  float worldDist = length(vWorldPos.xz);
+  float worldFade = 1.0 - smoothstep(6.0, 14.0, worldDist);
+  intensity *= worldFade;
 
   // ── Center protection zone — wide fade so product + text stay clear ──
   float centerDist = length(vWorldPos.xz);

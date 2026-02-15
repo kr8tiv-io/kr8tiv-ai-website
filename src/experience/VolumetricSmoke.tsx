@@ -196,21 +196,24 @@ float sampleDensity(vec3 worldPos) {
 
   density *= waveMask;
 
-  // ── Boundary fades ──
+  // ── Boundary fades (soft ellipsoidal) ──
   vec3 center = (uBoxMin + uBoxMax) * 0.5;
   vec3 halfSize = (uBoxMax - uBoxMin) * 0.5;
   vec3 d = abs(worldPos - center) / halfSize;
 
-  // Edge fade — tight to prevent blotch at far camera
-  float edgeFade = 1.0 - smoothstep(0.1, 0.55, max(max(d.x, d.y), d.z));
+  // Ellipsoidal fade — smooth in all directions, no box corners
+  float ellipsoid = length(d);
+  float edgeFade = 1.0 - smoothstep(0.15, 0.85, ellipsoid);
+  edgeFade = edgeFade * edgeFade; // Exponential falloff for ultra-soft boundary
 
-  // Height gradient — wider band for taller volume
+  // Height gradient — very wide bands so top/bottom never show a hard line
   float normalizedY = (worldPos.y - uBoxMin.y) / (uBoxMax.y - uBoxMin.y);
-  float heightFade = smoothstep(0.0, 0.3, normalizedY) * smoothstep(1.0, 0.4, normalizedY);
+  float heightFade = smoothstep(-0.1, 0.45, normalizedY) * smoothstep(1.1, 0.55, normalizedY);
 
-  // Radial fade — generous spread
+  // Radial fade — wide, gentle falloff from center outward
   float radialDist = length(worldPos.xz - center.xz) / halfSize.x;
-  float radialFade = 1.0 - smoothstep(0.2, 0.7, radialDist);
+  float radialFade = 1.0 - smoothstep(0.1, 0.85, radialDist);
+  radialFade = radialFade * radialFade; // Exponential for feathered edges
 
   return density * edgeFade * heightFade * radialFade * uDensityMultiplier;
 }
@@ -295,8 +298,8 @@ const VolumetricSmokeMaterialImpl = shaderMaterial(
     uBoxMax: new THREE.Vector3(5, 3.25, 5),
     uWindDirection: new THREE.Vector3(1, 0.08, 0.25).normalize(),
     uWindSpeed: 0.22,
-    uDensityMultiplier: 0.22,
-    uAbsorption: 0.38,
+    uDensityMultiplier: 0.18,
+    uAbsorption: 0.32,
     uLightDir: new THREE.Vector3(5, 8, 3).normalize(),
     uLightColor: new THREE.Vector3(1.0, 0.97, 0.92),
     uLightIntensity: 1.4,
@@ -313,7 +316,7 @@ extend({ VolumetricSmokeMaterial: VolumetricSmokeMaterialImpl })
 // ── Volume dimensions ───────────────────────────────────────
 
 const VOL_POS: [number, number, number] = [0, 1.0, 0]
-const VOL_SCALE: [number, number, number] = [10, 4.5, 10]
+const VOL_SCALE: [number, number, number] = [14, 6, 14]
 
 // ── Component ───────────────────────────────────────────────
 
