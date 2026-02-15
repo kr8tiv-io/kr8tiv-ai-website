@@ -2,9 +2,11 @@ import { Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
 import ProductModel from './ProductModel'
 import VolumetricSmoke from './VolumetricSmoke'
+import SmokeStream from './SmokeStream'
 import Ground from './Ground'
 import Effects from './Effects'
 import HudRing from './HudRing'
+import Kr8tivLogo from './Kr8tivLogo'
 import MouseLight from './MouseLight'
 import MouseTracers from './MouseTracers'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
@@ -43,6 +45,12 @@ export default function Experience({ tier }: ExperienceProps) {
 
       {/* The product — kr8tiv device wrapped in 3D net */}
       <ProductModel />
+
+      {/* Logo — floating above the device */}
+      <Kr8tivLogo />
+
+      {/* Sweeping smoke stream — long volumetric flow */}
+      {tier !== 'low' && <SmokeStream />}
 
       {/* Raymarched volumetric smoke — flows through the device */}
       {tier !== 'low' && <VolumetricSmoke />}
