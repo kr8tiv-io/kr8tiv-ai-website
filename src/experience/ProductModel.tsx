@@ -75,7 +75,7 @@ export default function ProductModel() {
     // Amber glow pulse (steady on mobile — no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      mat.emissiveIntensity = IS_MOBILE ? 0.8 : 1.5 + Math.sin(t * 1.5) * 0.15
+      mat.emissiveIntensity = IS_MOBILE ? 0.8 : 0.8 + Math.sin(t * 1.5) * 0.1
     }
 
     // Neural net rotation + distortion
@@ -184,14 +184,14 @@ export default function ProductModel() {
     // Mouse-following light
     if (mouseLight.current && hovered) {
       mouseLight.current.position.lerp(mouseWorldPos.current, 0.1)
-      mouseLight.current.intensity = 0.4 + Math.sin(t * 3) * 0.08
+      mouseLight.current.intensity = 0.25 + Math.sin(t * 3) * 0.05
     } else if (mouseLight.current) {
       mouseLight.current.intensity *= 0.95
     }
 
     // Energy core (steady on mobile — pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      energyCoreRef.current.intensity = IS_MOBILE ? 0.15 : 0.35 + Math.sin(t * 1.2) * 0.08
+      energyCoreRef.current.intensity = IS_MOBILE ? 0.15 : 0.2 + Math.sin(t * 1.2) * 0.05
     }
   })
 
@@ -250,7 +250,7 @@ export default function ProductModel() {
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={1.8}
+            emissiveIntensity={1.0}
             toneMapped={false}
           />
         </mesh>
@@ -261,7 +261,7 @@ export default function ProductModel() {
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={1.4}
+            emissiveIntensity={0.8}
             toneMapped={false}
           />
         </mesh>
@@ -292,7 +292,7 @@ export default function ProductModel() {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={IS_MOBILE ? 0.3 : 1.5}
+            emissiveIntensity={IS_MOBILE ? 0.3 : 0.6}
             toneMapped={false}
           />
         </mesh>
@@ -351,7 +351,7 @@ export default function ProductModel() {
         ref={energyCoreRef}
         position={[0, 0.3, 0]}
         color="#d4a853"
-        intensity={0.6}
+        intensity={0.3}
         distance={4}
         decay={2}
       />

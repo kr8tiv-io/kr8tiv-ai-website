@@ -19,14 +19,14 @@ export default function Experience({ tier }: ExperienceProps) {
   return (
     <>
       {/* Dark studio HDR — low intensity so reflections are subtle, not bright */}
-      <Environment preset="studio" environmentIntensity={0.35} />
+      <Environment preset="studio" environmentIntensity={0.3} />
 
       {/* Scene fog — deep, heavy, objects dissolve into darkness */}
       <fog attach="fog" args={['#030308', 5, 22]} />
 
       {/* Minimal fill — just enough to read the object */}
-      <ambientLight intensity={0.06} />
-      <directionalLight position={[5, 8, 3]} intensity={0.3} castShadow />
+      <ambientLight intensity={0.05} />
+      <directionalLight position={[5, 8, 3]} intensity={0.25} castShadow />
       <spotLight
         position={[-3, 6, -3]}
         angle={0.35}
@@ -36,8 +36,8 @@ export default function Experience({ tier }: ExperienceProps) {
       />
 
       {/* Subtle accent lights — feel, not illuminate */}
-      <pointLight position={[5, 2, 3]} intensity={0.08} color="#ffffff" distance={12} />
-      <pointLight position={[-5, 2, -3]} intensity={0.05} color="#ffffff" distance={12} />
+      <pointLight position={[5, 2, 3]} intensity={0.06} color="#ffffff" distance={12} />
+      <pointLight position={[-5, 2, -3]} intensity={0.04} color="#ffffff" distance={12} />
 
       {/* Scroll-driven camera */}
       <CameraRig />
@@ -52,7 +52,7 @@ export default function Experience({ tier }: ExperienceProps) {
       {tier !== 'low' && <SmokeStream />}
 
       {/* Raymarched volumetric smoke — flows through the device */}
-      {tier !== 'low' && <VolumetricSmoke />}
+      {tier === 'high' && <VolumetricSmoke />}
 
       {/* Atmospheric field — particle fog and mist */}
       <HudRing />
@@ -61,9 +61,9 @@ export default function Experience({ tier }: ExperienceProps) {
       <Sparkles
         count={60}
         speed={0.2}
-        opacity={0.2}
+        opacity={0.15}
         color="#d4a853"
-        size={0.8}
+        size={0.6}
         scale={[3.5, 1.5, 3.5]}
         position={[0, 0.5, 0]}
         noise={[0.5, 0.3, 0.5]}

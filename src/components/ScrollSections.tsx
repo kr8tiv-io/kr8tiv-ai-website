@@ -7,6 +7,10 @@ import HudPanel from './ui/HudPanel'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Shared text shadow for readability over 3D background
+const textShadow = '0 0 20px rgba(5,5,16,0.95), 0 0 50px rgba(5,5,16,0.8), 0 2px 30px rgba(5,5,16,0.9)'
+const titleShadow = '0 0 30px rgba(5,5,16,0.95), 0 0 60px rgba(5,5,16,0.8), 0 2px 40px rgba(5,5,16,0.9)'
+
 export default function ScrollSections() {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -109,9 +113,19 @@ export default function ScrollSections() {
           key={i}
           className="content-section h-screen flex items-center pointer-events-none relative pt-20"
         >
+          {/* Dark backdrop for text readability */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: section.alignment === 'left'
+                ? 'linear-gradient(to right, rgba(5,5,16,0.75) 0%, rgba(5,5,16,0.4) 40%, transparent 65%)'
+                : 'linear-gradient(to left, rgba(5,5,16,0.75) 0%, rgba(5,5,16,0.4) 40%, transparent 65%)',
+            }}
+          />
+
           {/* Text content side */}
           <div
-            className={`section-inner opacity-0 flex flex-col lg:flex-row items-start gap-8 w-full px-6 sm:px-8 ${
+            className={`section-inner opacity-0 flex flex-col lg:flex-row items-start gap-8 w-full px-6 sm:px-8 relative z-10 ${
               section.alignment === 'left'
                 ? 'lg:ml-[6vw] lg:mr-auto lg:max-w-[85vw]'
                 : 'lg:ml-auto lg:mr-[6vw] lg:max-w-[85vw] lg:flex-row-reverse'
@@ -121,17 +135,20 @@ export default function ScrollSections() {
             <div className="flex-shrink-0 max-w-md">
               <span
                 className="text-[10px] uppercase tracking-[0.4em] font-medium mb-4 block font-mono"
-                style={{ color: `${section.hudColor}cc` }}
+                style={{ color: `${section.hudColor}cc`, textShadow }}
               >
                 {section.label}
               </span>
               <h2
                 className="title-glow text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-5 leading-[1.1] whitespace-pre-line pointer-events-auto"
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
               >
                 {section.title}
               </h2>
-              <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-sm">
+              <p
+                className="text-sm sm:text-base text-white/80 leading-relaxed max-w-sm"
+                style={{ textShadow }}
+              >
                 {section.copy}
               </p>
 
@@ -172,16 +189,20 @@ export default function ScrollSections() {
                 </a>
               )}
 
-              {/* Multiple CTAs */}
+              {/* Multiple CTAs — uniform width grid */}
               {section.ctas && (
-                <div className="flex flex-wrap gap-3 mt-8 pointer-events-auto">
+                <div className="grid grid-cols-2 gap-3 mt-8 pointer-events-auto max-w-[380px]">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
                       href={cta.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block min-w-[180px] text-center px-6 py-2.5 border text-white text-[11px] tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300"
+                      className={`flex items-center justify-center px-4 py-2.5 border text-white text-[11px] tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300 ${
+                        section.ctas && j === section.ctas.length - 1 && section.ctas.length % 2 !== 0
+                          ? 'col-span-2'
+                          : ''
+                      }`}
                       style={{ borderColor: `${section.hudColor}40` }}
                     >
                       {cta.text}
@@ -206,15 +227,27 @@ export default function ScrollSections() {
       ))}
 
       {/* Footer / CTA — The future is open */}
-      <section className="content-section h-screen flex items-center justify-center">
-        <div className="section-inner opacity-0 text-center max-w-2xl px-6">
+      <section className="content-section h-screen flex items-center justify-center relative">
+        {/* Full dark backdrop — this is the final section, text must be perfectly readable */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 80% 70% at 50% 50%, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.6) 50%, rgba(5,5,16,0.3) 80%)',
+          }}
+        />
+
+        <div className="section-inner opacity-0 text-center max-w-2xl px-6 relative z-10">
           <h2
             className="title-glow text-4xl sm:text-5xl md:text-6xl font-light text-white mb-4 leading-[1.1] pointer-events-auto"
-            style={{ fontFamily: 'var(--font-display)' }}
+            style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
           >
             The future is open.<br />Come build it.
           </h2>
-          <p className="text-sm text-white/70 mb-12 leading-relaxed max-w-lg mx-auto">
+          <p
+            className="text-sm text-white/70 mb-12 leading-relaxed max-w-lg mx-auto"
+            style={{ textShadow }}
+          >
             kr8tiv AI is an open-source, tokenized, collaborative AI company building autonomous
             systems that the world actually needs. We&apos;re proud to be in this race to the bottom &mdash;
             proud to be ushering in a new age of technology where the best products are free, the
@@ -228,7 +261,7 @@ export default function ScrollSections() {
               href="https://kr8tiv.web.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-black border border-[#d4a853]/30 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853]/60 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 border border-[#d4a853]/30 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853]/60 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
               Enter the Ecosystem &rarr;
             </a>
@@ -236,13 +269,13 @@ export default function ScrollSections() {
               href="https://jarvislife.io/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-black border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
               Explore JARVIS &rarr;
             </a>
             <a
               href="mailto:hello@kr8tiv.ai"
-              className="px-8 py-3 bg-black border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300 pointer-events-auto"
+              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 pointer-events-auto backdrop-blur-sm"
             >
               Custom Solutions &rarr;
             </a>
@@ -292,11 +325,11 @@ export default function ScrollSections() {
           </div>
 
           {/* Tagline */}
-          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4">
+          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4" style={{ textShadow }}>
             Anarcho-capitalist liberation tech. You&apos;re welcome.
           </div>
 
-          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase">
+          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase" style={{ textShadow }}>
             &copy; 2026 kr8tiv AI &mdash; All systems nominal
           </div>
         </div>
