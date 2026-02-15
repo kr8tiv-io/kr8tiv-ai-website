@@ -9,12 +9,17 @@ export default function TransitionFlash() {
   const scannerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    const isMobile = window.innerWidth < 768
+    if (reduceMotion || isMobile) return
+
     const sectionEls = document.querySelectorAll('.content-section')
+    const triggers: any[] = []
 
     sectionEls.forEach((el, i) => {
       if (i === 0) return
 
-      ScrollTrigger.create({
+      const t = ScrollTrigger.create({
         trigger: el,
         start: 'top top',
         onEnter: () => {
@@ -30,16 +35,18 @@ export default function TransitionFlash() {
           if (scannerRef.current) {
             gsap.fromTo(
               scannerRef.current,
-              { top: '-1px', opacity: 1 },
-              { top: '100vh', opacity: 0, duration: 0.8, ease: 'power1.in' }
+              { y: -1, opacity: 1 },
+              { y: '100vh', opacity: 0, duration: 0.8, ease: 'power1.in' }
             )
           }
         },
       })
+
+      triggers.push(t)
     })
 
     return () => {
-      ScrollTrigger.getAll().forEach(st => st.kill())
+      triggers.forEach(t => t.kill())
     }
   }, [])
 
@@ -51,7 +58,7 @@ export default function TransitionFlash() {
       />
       <div
         ref={scannerRef}
-        className="fixed left-0 right-0 h-px pointer-events-none z-[15] opacity-0"
+        className="fixed top-0 left-0 right-0 h-px pointer-events-none z-[15] opacity-0"
         style={{
           background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent 100%)',
         }}

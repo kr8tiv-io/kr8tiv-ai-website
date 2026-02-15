@@ -11,11 +11,13 @@ import TransitionFlash from './components/TransitionFlash'
 import VibesButton from './components/VibesButton'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
+import { useScrollVelocity } from './hooks/useScrollVelocity'
 
 const Experience = lazy(() => import('./experience/Experience'))
 
 function LenisWrapper({ children }: { children: React.ReactNode }) {
   useGSAPSync()
+  useScrollVelocity() // Feeds scroll speed to 3D scene for reactive effects
   return <>{children}</>
 }
 
@@ -40,7 +42,7 @@ export default function App() {
             powerPreference: 'high-performance',
             alpha: false,
           }}
-          dpr={tier === 'low' ? [1, 1] : [1, 2]}
+          dpr={tier === 'low' ? [1, 1.5] : [1.5, 2]}
         >
           <color attach="background" args={['#050510']} />
           <Suspense fallback={null}>
@@ -52,7 +54,6 @@ export default function App() {
 
       {/* Layer 2: Scrollable HTML overlay */}
       {tier === 'low' ? (
-        /* Skip Lenis on low-tier devices — native scroll is lighter */
         <div>
           <NavigationBar />
           <HeroOverlay />

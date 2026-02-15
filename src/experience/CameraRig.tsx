@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { sections } from '../config/sections'
@@ -33,36 +32,12 @@ export default function CameraRig() {
     targetY: INTRO_TARGET_Y,
   })
 
-  // Cinematic zoom-in on load — listens for 'intro-complete' event
-  useEffect(() => {
-    const onIntroComplete = () => {
-      gsap.to(anim.current, {
-        theta: HERO_ANGLE,
-        phi: HERO_PHI,
-        radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
-        targetY: HERO_TARGET_Y,
-        duration: 3,
-        ease: 'power3.inOut',
-      })
-    }
+  const scrollTlRef = useRef<gsap.core.Timeline | null>(null)
+  const zoomStartedRef = useRef(false)
 
-    // If intro already finished before mount, zoom immediately
-    window.addEventListener('intro-complete', onIntroComplete)
+  const buildScrollTimeline = () => {
+    if (scrollTlRef.current) return
 
-    // Also auto-zoom after a short delay in case intro is skipped
-    const fallback = setTimeout(() => {
-      if (anim.current.radius > HERO_RADIUS + 1) {
-        onIntroComplete()
-      }
-    }, 5000)
-
-    return () => {
-      window.removeEventListener('intro-complete', onIntroComplete)
-      clearTimeout(fallback)
-    }
-  }, [])
-
-  useGSAP(() => {
     const totalSections = sections.length + 1
     const segmentDuration = 1 / (totalSections - 1)
 
@@ -71,7 +46,9 @@ export default function CameraRig() {
         trigger: '.scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1.5,
+        scrub: 1.2,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
       },
     })
 
@@ -95,17 +72,14 @@ export default function CameraRig() {
           progress - segmentDuration
         )
         // Remaining 60% — pull back IN to target
-        tl.to(
-          anim.current,
-          {
-            theta: section.angle,
-            phi: section.phi,
-            radius: section.radius * MOBILE_RADIUS_SCALE,
-            targetY: section.targetY,
-            duration: segmentDuration * 0.6,
-            ease: 'power2.inOut',
-          }
-        )
+        tl.to(anim.current, {
+          theta: section.angle,
+          phi: section.phi,
+          radius: section.radius * MOBILE_RADIUS_SCALE,
+          targetY: section.targetY,
+          duration: segmentDuration * 0.6,
+          ease: 'power2.inOut',
+        })
       } else {
         tl.to(
           anim.current,
@@ -121,6 +95,50 @@ export default function CameraRig() {
         )
       }
     })
+
+    scrollTlRef.current = tl
+    ScrollTrigger.refresh()
+  }
+
+  // Cinematic zoom-in on load — listens for 'intro-complete' event
+  useEffect(() => {
+    const onIntroComplete = () => {
+      if (zoomStartedRef.current) return
+      zoomStartedRef.current = true
+
+      gsap.to(anim.current, {
+        theta: HERO_ANGLE,
+        phi: HERO_PHI,
+        radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
+        targetY: HERO_TARGET_Y,
+        duration: 3,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          buildScrollTimeline()
+          // Used by App to unlock scroll; also helps avoid missing the event.
+          ;(window as any).__kr8tiv_intro_zoom_complete = true
+          window.dispatchEvent(new CustomEvent('intro-zoom-complete'))
+        },
+      })
+    }
+
+    // If intro already finished before mount, zoom immediately
+    window.addEventListener('intro-complete', onIntroComplete)
+
+    // Also auto-zoom after a short delay in case intro is skipped
+    const fallback = setTimeout(() => {
+      if (anim.current.radius > HERO_RADIUS + 1) {
+        onIntroComplete()
+      }
+    }, 5000)
+
+    return () => {
+      window.removeEventListener('intro-complete', onIntroComplete)
+      clearTimeout(fallback)
+      scrollTlRef.current?.scrollTrigger?.kill()
+      scrollTlRef.current?.kill()
+      scrollTlRef.current = null
+    }
   }, [])
 
   useFrame(() => {

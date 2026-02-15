@@ -10,6 +10,7 @@ export default function VibesButton() {
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current.src = ''
+        audioRef.current = null
       }
     }
   }, [])
@@ -20,14 +21,22 @@ export default function VibesButton() {
       const audio = new Audio('/vibes.mp3')
       audio.loop = true
       audio.volume = 0.35
+      audio.preload = 'none'
       audioRef.current = audio
     }
+
+    const audio = audioRef.current
+    if (!audio) return
+
     if (playing) {
-      audioRef.current.pause()
-    } else {
-      audioRef.current.play()
+      audio.pause()
+      setPlaying(false)
+      return
     }
-    setPlaying(!playing)
+
+    const p = audio.play()
+    if (p) p.catch(() => {}) // ignore autoplay-policy failures
+    setPlaying(true)
   }
 
   return (
@@ -45,11 +54,15 @@ export default function VibesButton() {
       `}</style>
       <button
         onClick={toggle}
-        className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-1.5 group cursor-pointer"
+        className="fixed z-50 flex flex-col items-center gap-1.5 group cursor-pointer"
+        style={{
+          bottom: 'calc(var(--vibes-bottom, 1.5rem) + var(--safe-bottom, 0px))',
+          right: 'calc(1.5rem + var(--safe-right, 0px))',
+        }}
         title={playing ? 'Pause vibes' : 'Play vibes'}
       >
         <div
-          className={`w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-500 backdrop-blur-md ${
+          className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border flex items-center justify-center transition-all duration-500 backdrop-blur-md ${
             playing
               ? 'border-[#d4a853]/50 bg-[#d4a853]/15'
               : 'border-white/20 bg-white/8 hover:border-white/35 hover:bg-white/15'
