@@ -31,7 +31,7 @@ export const sections: Section[] = [
     radius: 7.5,
     targetY: 0.2,
     label: 'Who We Are',
-    title: 'The\nliberation\ncompany.',
+    title: 'Anarcho\ncAIpitalist\nopen source',
     copy: "We\u2019re here because the singularity doesn\u2019t need another corporation extracting value from the people it\u2019s supposed to serve. kr8tiv AI builds autonomous systems across every industry we can get our hands on \u2014 trading, architecture, manufacturing, natural resources, marketing, robotics \u2014 and we give it all away. Open source. Tokenized. Built so that the people who use the product own the product. Because if AI is trained on your data, you should benefit from what it builds.",
     hudData: [
       { label: 'PHILOSOPHY', value: 'OPEN', unit: 'SOURCE' },
