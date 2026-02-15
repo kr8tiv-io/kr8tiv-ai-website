@@ -4,12 +4,11 @@ import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Kr8tiv Logo — Floating SVG Logo Above Device
+   Kr8tiv Logo — Floating Brand Mark Above Device
 
-   Loads the kr8tiv brand mark as a grayscale-to-alpha texture
-   on a glowing plane. Warm golden emissive glow pulses gently.
-   Designed to emerge from the volumetric smoke like an ethereal
-   brand hologram.
+   Renders the kr8tiv logo as a sprite (always faces camera).
+   Uses meshBasicMaterial with fog disabled so the logo is
+   immune to scene lighting, fog, and ambient occlusion.
    ──────────────────────────────────────────────────────────── */
 
 // Logo positioning — centered above the device
@@ -23,22 +22,18 @@ const LOGO_HEIGHT = LOGO_WIDTH / 2.67
 
 export default function Kr8tivLogo() {
   const groupRef = useRef<THREE.Group>(null)
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null)
+  const matRef = useRef<THREE.SpriteMaterial>(null)
 
-  // Load the grayscale PNG — used as alphaMap (light = visible, dark = transparent)
   const logoTexture = useTexture('/images/kr8tiv-logo.png')
 
-  // Configure texture — use the PNG's actual alpha channel
+  // Configure texture once
   useMemo(() => {
     logoTexture.minFilter = THREE.LinearFilter
     logoTexture.magFilter = THREE.LinearFilter
     logoTexture.generateMipmaps = false
-    logoTexture.premultiplyAlpha = false
     logoTexture.colorSpace = THREE.SRGBColorSpace
+    logoTexture.needsUpdate = true
   }, [logoTexture])
-
-  // Pure white glow
-  const emissiveColor = useMemo(() => new THREE.Color('#ffffff'), [])
 
   useFrame((state) => {
     const t = state.clock.elapsedTime
@@ -46,33 +41,27 @@ export default function Kr8tivLogo() {
     // Gentle floating bob
     if (groupRef.current) {
       groupRef.current.position.y = LOGO_Y + Math.sin(t * FLOAT_SPEED) * FLOAT_AMPLITUDE
-      // Extremely subtle rotation breathing
-      groupRef.current.rotation.y = Math.sin(t * 0.15) * 0.02
     }
 
-    // Solid white with subtle brightness pulse
-    if (materialRef.current) {
-      materialRef.current.emissiveIntensity = 2.0 + Math.sin(t * 0.8) * 0.15
+    // Subtle brightness pulse
+    if (matRef.current) {
+      matRef.current.opacity = 0.9 + Math.sin(t * 0.8) * 0.1
     }
   })
 
   return (
     <group ref={groupRef} position={[0, LOGO_Y, 0]}>
-      <mesh>
-        <planeGeometry args={[LOGO_WIDTH, LOGO_HEIGHT]} />
-        <meshStandardMaterial
-          ref={materialRef}
-          color="#ffffff"
-          emissive={emissiveColor}
-          emissiveIntensity={2.0}
+      <sprite scale={[LOGO_WIDTH, LOGO_HEIGHT, 1]} renderOrder={10}>
+        <spriteMaterial
+          ref={matRef}
           map={logoTexture}
-          alphaTest={0.05}
           transparent
+          alphaTest={0.02}
           depthWrite={false}
-          side={THREE.DoubleSide}
           toneMapped={false}
+          fog={false}
         />
-      </mesh>
+      </sprite>
     </group>
   )
 }
