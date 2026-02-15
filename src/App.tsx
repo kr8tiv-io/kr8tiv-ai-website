@@ -83,15 +83,16 @@ export default function App() {
       {/* Transition effects */}
       <TransitionFlash />
 
-      {/* Intro sequence — plays after loading */}
-      {loadingDone && !introComplete && (
-        <IntroSequence onComplete={handleIntroComplete} />
+      {/* Intro sequence — always mounted so its bg covers the canvas;
+           animation starts only after loading finishes */}
+      {!introComplete && (
+        <IntroSequence onComplete={handleIntroComplete} startAnimation={loadingDone} />
       )}
 
       {/* Loading overlay */}
       <LoadingScreen onDone={() => {
         document.body.style.overflow = 'hidden'
-        setTimeout(() => setLoadingDone(true), 300)
+        setLoadingDone(true)
       }} />
     </>
   )

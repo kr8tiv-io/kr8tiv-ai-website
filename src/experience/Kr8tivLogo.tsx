@@ -28,11 +28,13 @@ export default function Kr8tivLogo() {
   // Load the grayscale PNG — used as alphaMap (light = visible, dark = transparent)
   const logoTexture = useTexture('/images/kr8tiv-logo.png')
 
-  // Configure texture for alpha mapping
+  // Configure texture — use the PNG's actual alpha channel
   useMemo(() => {
     logoTexture.minFilter = THREE.LinearFilter
     logoTexture.magFilter = THREE.LinearFilter
     logoTexture.generateMipmaps = false
+    logoTexture.premultiplyAlpha = false
+    logoTexture.colorSpace = THREE.SRGBColorSpace
   }, [logoTexture])
 
   // Pure white glow
@@ -63,8 +65,8 @@ export default function Kr8tivLogo() {
           color="#ffffff"
           emissive={emissiveColor}
           emissiveIntensity={2.0}
-          alphaMap={logoTexture}
-          alphaTest={0.1}
+          map={logoTexture}
+          alphaTest={0.05}
           transparent
           depthWrite={false}
           side={THREE.DoubleSide}
