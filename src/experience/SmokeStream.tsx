@@ -127,29 +127,27 @@ uniform float uOpacity;
 uniform float uLayerOffset;
 
 void main() {
-  // ── Soft vertical gaussian — wide, dreamy falloff ──
+  // ── Steep vertical gaussian — hard kill at plane edges ──
   float distFromCenter = abs(vUv.y - 0.5) * 2.0;
-  float gauss = exp(-distFromCenter * distFromCenter * 2.5);
+  float gauss = exp(-distFromCenter * distFromCenter * 6.0);
 
-  // ── Internal fiber texture — subtle contour lines ──
-  float fiber = sin(vUv.y * 40.0 + uLayerOffset * 8.0 + uTime * 0.5) * 0.5 + 0.5;
-  fiber = smoothstep(0.3, 0.7, fiber);
-  float fiberEffect = 0.7 + fiber * 0.3;
+  // ── Subtle density variation (no hard lines) ──
+  float fiberEffect = 1.0;
 
   // ── Very slow brightness variation along length ──
   float lengthVar = sin(vUv.x * 4.0 - uTime * 0.8 + uPhase) * 0.5 + 0.5;
-  lengthVar = 0.8 + lengthVar * 0.2;
+  lengthVar = 0.85 + lengthVar * 0.15;
 
   float intensity = gauss * fiberEffect * lengthVar;
 
-  // ── Horizontal edge fade ──
-  float edgeFade = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
+  // ── Horizontal edge fade — wide taper so no hard left/right edges ──
+  float edgeFade = smoothstep(0.0, 0.30, vUv.x) * smoothstep(1.0, 0.70, vUv.x);
   intensity *= edgeFade;
 
-  // ── Center protection zone — wide fade so product + text stay clear ──
+  // ── Center protection zone — narrow so smoke is visible near product ──
   float centerDist = length(vWorldPos.xz);
-  float centerFade = smoothstep(3.5, 12.0, centerDist);
-  intensity *= mix(0.005, 1.0, centerFade);
+  float centerFade = smoothstep(2.5, 9.0, centerDist);
+  intensity *= centerFade;
 
   // ── Pure white ──
   float alpha = intensity * uOpacity;
@@ -196,7 +194,7 @@ function StreamLayer({ index, total }: { index: number; total: number }) {
 
   // Layers near the center of the stack are slightly brighter
   const depthFactor = 1.0 - Math.abs(normalizedIndex) * 0.4
-  const layerOpacity = 0.018 * depthFactor
+  const layerOpacity = 0.035 * depthFactor
 
   const geometry = useMemo(() => {
     return new THREE.PlaneGeometry(STREAM_LENGTH, STREAM_HEIGHT, SEGMENTS_X, 1)

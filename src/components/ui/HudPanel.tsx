@@ -74,7 +74,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
 
       {/* Panel frame */}
       <div
-        className="relative p-5 backdrop-blur-md rounded-sm"
+        className="relative p-3 sm:p-5 backdrop-blur-md rounded-sm"
         style={{
           background: `linear-gradient(135deg, ${section.hudColor}08 0%, ${section.hudColor}03 100%)`,
           border: `1px solid ${section.hudColor}20`,
@@ -115,7 +115,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
         />
 
         {/* Panel header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2 sm:mb-4">
           <div className="flex items-center gap-2">
             <div
               className="w-1.5 h-1.5 rounded-full"
@@ -138,21 +138,21 @@ export default function HudPanel({ section, index }: HudPanelProps) {
 
         {/* Connector line from panel header */}
         <div
-          className="hud-connector h-px w-full mb-4 origin-left"
+          className="hud-connector h-px w-full mb-2 sm:mb-4 origin-left"
           style={{
             background: `linear-gradient(90deg, ${section.hudColor}40, transparent)`,
           }}
         />
 
         {/* Data grid */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
           {section.hudData.map((dp, j) => (
             <div key={j} className="hud-data-item opacity-0">
               <div className="text-[8px] tracking-[0.2em] uppercase text-white/30 font-mono mb-1">
                 {dp.label}
               </div>
               <div
-                className="text-lg font-mono font-medium leading-none"
+                className="text-sm sm:text-lg font-mono font-medium leading-none"
                 style={{ color: section.hudColor }}
               >
                 <AnimatedValue target={dp.value} unit={dp.unit} />
@@ -163,7 +163,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
 
         {/* Bottom status bar */}
         <div
-          className="hud-connector mt-4 pt-3 flex items-center justify-between origin-left"
+          className="hud-connector mt-2 sm:mt-4 pt-2 sm:pt-3 flex items-center justify-between origin-left"
           style={{
             borderTop: `1px solid ${section.hudColor}15`,
           }}

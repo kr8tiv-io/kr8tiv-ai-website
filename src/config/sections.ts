@@ -101,10 +101,13 @@ export const sections: Section[] = [
     alignment: 'right',
   },
   {
-    angle: 2 * Math.PI,
-    phi: Math.PI / 3.5,
-    radius: 10,
-    targetY: 0,
+    // CHANGED: Don't wrap all the way back to 0 (2π) — stop at ~5π/3
+    // to avoid looking directly into the product's bright LED strip.
+    // Pulled radius from 10→11 and raised phi for a higher vantage point.
+    angle: (5 * Math.PI) / 3,
+    phi: Math.PI / 3,
+    radius: 11,
+    targetY: 0.2,
     label: 'The Human Part',
     title: "We\u2019re just people\nwho think this\nshould be fun.",
     copy: "Here\u2019s what nobody tells you about the AI revolution: it should be fun. Not sterile. Not corporate. Not hidden behind NDAs and billion-dollar licensing fees. We\u2019re a small team that wakes up every day genuinely excited to build things that didn\u2019t exist yesterday. We make mistakes in public. We ship fast, break things, and fix them where everyone can see. We think the best companies in the next decade won\u2019t look like companies at all \u2014 they\u2019ll look like communities that build incredible products together and split the upside. That\u2019s kr8tiv. We\u2019re not trying to be the next trillion-dollar extraction machine. We\u2019re trying to build software that makes your life better, give you a piece of it, and have a stupidly good time doing it. If that sounds naive, give it a year.",

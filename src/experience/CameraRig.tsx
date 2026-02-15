@@ -19,6 +19,13 @@ const INTRO_PHI = Math.PI / 3.5
 const INTRO_RADIUS = 28
 const INTRO_TARGET_Y = 1.5
 
+// Footer camera — pulled way back and looking down to avoid
+// the bright product lights blowing out the final text
+const FOOTER_ANGLE = -Math.PI / 8
+const FOOTER_PHI = Math.PI / 2.8
+const FOOTER_RADIUS = 12
+const FOOTER_TARGET_Y = 0.4
+
 // Mobile devices need the camera pulled back so the full object is visible
 const MOBILE_RADIUS_SCALE =
   typeof window !== 'undefined' && window.innerWidth < 768 ? 1.45 : 1
@@ -41,15 +48,14 @@ export default function CameraRig() {
         phi: HERO_PHI,
         radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
         targetY: HERO_TARGET_Y,
-        duration: 3,
-        ease: 'power3.inOut',
+        duration: 3.5,
+        ease: 'power2.inOut',
       })
     }
 
-    // If intro already finished before mount, zoom immediately
     window.addEventListener('intro-complete', onIntroComplete)
 
-    // Also auto-zoom after a short delay in case intro is skipped
+    // Fallback if intro is skipped
     const fallback = setTimeout(() => {
       if (anim.current.radius > HERO_RADIUS + 1) {
         onIntroComplete()
@@ -63,15 +69,16 @@ export default function CameraRig() {
   }, [])
 
   useGSAP(() => {
-    const totalSections = sections.length + 1
-    const segmentDuration = 1 / (totalSections - 1)
+    // +2 because: hero slot + N content sections + footer section
+    const totalSlots = sections.length + 2
+    const segmentDuration = 1 / (totalSlots - 1)
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1.5,
+        scrub: 2.0, // Increased from 1.5 — smoother, less chunky
       },
     })
 
@@ -81,7 +88,6 @@ export default function CameraRig() {
       // Between section 3→4: subtle push away then pull back
       if (i === 3) {
         const prevSection = sections[i - 1]
-        // First 40% — push OUT
         tl.to(
           anim.current,
           {
@@ -94,18 +100,14 @@ export default function CameraRig() {
           },
           progress - segmentDuration
         )
-        // Remaining 60% — pull back IN to target
-        tl.to(
-          anim.current,
-          {
-            theta: section.angle,
-            phi: section.phi,
-            radius: section.radius * MOBILE_RADIUS_SCALE,
-            targetY: section.targetY,
-            duration: segmentDuration * 0.6,
-            ease: 'power2.inOut',
-          }
-        )
+        tl.to(anim.current, {
+          theta: section.angle,
+          phi: section.phi,
+          radius: section.radius * MOBILE_RADIUS_SCALE,
+          targetY: section.targetY,
+          duration: segmentDuration * 0.6,
+          ease: 'power2.inOut',
+        })
       } else {
         tl.to(
           anim.current,
@@ -115,12 +117,28 @@ export default function CameraRig() {
             radius: section.radius * MOBILE_RADIUS_SCALE,
             targetY: section.targetY,
             duration: segmentDuration,
-            ease: 'none',
+            ease: 'power1.inOut', // Was 'none' — now smooth eased transitions
           },
           progress - segmentDuration
         )
       }
     })
+
+    // FOOTER section — pull camera back and up so the product's
+    // bright lights don't blow out the final text
+    const footerProgress = (sections.length + 1) * segmentDuration
+    tl.to(
+      anim.current,
+      {
+        theta: FOOTER_ANGLE,
+        phi: FOOTER_PHI,
+        radius: FOOTER_RADIUS * MOBILE_RADIUS_SCALE,
+        targetY: FOOTER_TARGET_Y,
+        duration: segmentDuration,
+        ease: 'power1.inOut',
+      },
+      footerProgress - segmentDuration
+    )
   }, [])
 
   useFrame(() => {
