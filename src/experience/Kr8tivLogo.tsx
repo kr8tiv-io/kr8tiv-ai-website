@@ -13,13 +13,13 @@ import * as THREE from 'three'
    ──────────────────────────────────────────────────────────── */
 
 // Logo positioning — centered above the device
-const LOGO_Y = 2.2
-const FLOAT_AMPLITUDE = 0.06
+const LOGO_Y = 1.2
+const FLOAT_AMPLITUDE = 0.04
 const FLOAT_SPEED = 0.4
 
-// The PNG is 4382x1460 → aspect ratio 3:1
-const LOGO_WIDTH = 3.2
-const LOGO_HEIGHT = LOGO_WIDTH / 3
+// Logo is 800×300 → aspect ratio ~2.67:1
+const LOGO_WIDTH = 2.8
+const LOGO_HEIGHT = LOGO_WIDTH / 2.67
 
 export default function Kr8tivLogo() {
   const groupRef = useRef<THREE.Group>(null)

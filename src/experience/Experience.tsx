@@ -35,10 +35,9 @@ export default function Experience({ tier }: ExperienceProps) {
         color="#ffd4a0"
       />
 
-      {/* Subtle colored accent lights — feel, not illuminate */}
+      {/* Subtle accent lights — feel, not illuminate */}
       <pointLight position={[5, 2, 3]} intensity={0.08} color="#ffffff" distance={12} />
       <pointLight position={[-5, 2, -3]} intensity={0.05} color="#ffffff" distance={12} />
-      <pointLight position={[0, -1, 5]} intensity={0.08} color="#d4a853" distance={10} />
 
       {/* Scroll-driven camera */}
       <CameraRig />
