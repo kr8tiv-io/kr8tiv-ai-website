@@ -13,8 +13,8 @@ import * as THREE from 'three'
    ──────────────────────────────────────────────────────────── */
 
 const IS_MOBILE_VOL = typeof window !== 'undefined' && window.innerWidth < 768
-const NUM_STEPS = IS_MOBILE_VOL ? 20 : 40
-const SHADOW_STEPS = IS_MOBILE_VOL ? 2 : 3
+const NUM_STEPS = IS_MOBILE_VOL ? 16 : 28
+const SHADOW_STEPS = 2
 
 // ── Vertex Shader ───────────────────────────────────────────
 
@@ -119,7 +119,7 @@ float snoise(vec3 v) {
   return 105.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
 }
 
-/* ── FBM with per-octave wind (4 octaves for enhanced detail) */
+/* ── FBM with per-octave wind (3 octaves — 4th at 0.0625 amplitude invisible through wave masking) */
 
 float fbm(vec3 p) {
   float value = 0.0;
@@ -127,7 +127,7 @@ float fbm(vec3 p) {
   float frequency = 1.0;
   vec3 wind = uWindDirection * uTime * uWindSpeed;
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 3; i++) {
     vec3 offset = wind * (0.4 + float(i) * 0.35);
     value += amplitude * snoise((p + offset) * frequency);
     amplitude *= 0.5;

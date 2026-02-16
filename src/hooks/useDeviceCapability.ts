@@ -15,6 +15,12 @@ export function useDeviceCapability(): DeviceTier {
         )
       : ''
 
+    // Release the sniffing GL context to prevent leak
+    if (gl) {
+      const ext = (gl as WebGL2RenderingContext).getExtension('WEBGL_lose_context')
+      ext?.loseContext()
+    }
+
     // Only weak GPUs get 'low' — mobile with decent GPUs can handle smoke
     if (
       typeof renderer === 'string' &&

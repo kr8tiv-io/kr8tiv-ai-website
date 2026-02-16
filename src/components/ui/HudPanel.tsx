@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 import type { Section } from '../../config/sections'
 
 interface HudPanelProps {
@@ -9,27 +9,29 @@ interface HudPanelProps {
 function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
   const [display, setDisplay] = useState('--')
   const ref = useRef<HTMLSpanElement>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    // Observe visibility to trigger count-up
     const el = ref.current
     if (!el) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Animate from scrambled to final value
+          // Clear any stacked interval from re-entry
+          if (intervalRef.current) clearInterval(intervalRef.current)
+
           const chars = '0123456789.'
           let frame = 0
           const totalFrames = 12
-          const interval = setInterval(() => {
+          intervalRef.current = setInterval(() => {
             frame++
             if (frame >= totalFrames) {
               setDisplay(target)
-              clearInterval(interval)
+              if (intervalRef.current) clearInterval(intervalRef.current)
+              intervalRef.current = null
               return
             }
-            // Random scramble that converges to target
             const result = target
               .split('')
               .map((ch, j) => {
@@ -39,15 +41,16 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
               .join('')
             setDisplay(result)
           }, 40)
-
-          return () => clearInterval(interval)
         }
       },
       { threshold: 0.5 }
     )
 
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
   }, [target])
 
   return (
@@ -59,6 +62,9 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
 }
 
 export default function HudPanel({ section, index }: HudPanelProps) {
+  // Memoize decorative timestamp — no need to recompute on every render
+  const timestamp = useMemo(() => new Date().toISOString().slice(11, 19) + 'Z', [])
+
   return (
     <div
       className="hud-panel opacity-0 flex-shrink-0 w-full lg:w-[360px] relative"
@@ -176,7 +182,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
             <span className="text-[8px] font-mono text-white/25">NOMINAL</span>
           </div>
           <span className="text-[8px] font-mono" style={{ color: `${section.hudColor}40` }}>
-            {new Date().toISOString().slice(11, 19)}Z
+            {timestamp}
           </span>
         </div>
       </div>

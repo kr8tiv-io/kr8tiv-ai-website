@@ -18,6 +18,7 @@ export default function ProductModel() {
   const mouseLight = useRef<THREE.PointLight>(null)
 
   const [hovered, setHovered] = useState(false)
+  const distorted = useRef(false)
   const mouseWorldPos = useRef(new THREE.Vector3())
 
   const { raycaster, pointer, camera } = useThree()
@@ -87,49 +88,43 @@ export default function ProductModel() {
       mat.opacity = hovered ? 0.18 : 0.07
       mat.emissiveIntensity = hovered ? 0.5 : 0.12
 
-      // Vertex distortion based on mouse proximity
-      const posAttr = shellRef.current.geometry.attributes.position as THREE.BufferAttribute
-      const orig = outerOriginal.current
-      const mouse = mouseWorldPos.current
-      const distortRadius = 2.0
-      const distortStrength = hovered ? 0.35 : 0
+      // Skip vertex loop when not hovered and vertices are at rest
+      if (hovered || distorted.current) {
+        const posAttr = shellRef.current.geometry.attributes.position as THREE.BufferAttribute
+        const orig = outerOriginal.current
+        const mouse = mouseWorldPos.current
+        const distortRadius = 2.0
+        const distortStrength = hovered ? 0.35 : 0
+        let anyDistorted = false
 
-      for (let i = 0; i < posAttr.count; i++) {
-        const ox = orig[i * 3]
-        const oy = orig[i * 3 + 1]
-        const oz = orig[i * 3 + 2]
+        for (let i = 0; i < posAttr.count; i++) {
+          const ox = orig[i * 3]
+          const oy = orig[i * 3 + 1]
+          const oz = orig[i * 3 + 2]
 
-        // Get vertex in world-ish space (offset by group position)
-        _vertPos.set(ox, oy + 0.3, oz)
+          _vertPos.set(ox, oy + 0.3, oz)
+          const dist = _vertPos.distanceTo(mouse)
 
-        const dist = _vertPos.distanceTo(mouse)
-
-        if (dist < distortRadius && distortStrength > 0) {
-          // Push vertex outward from center, scaled by proximity
-          const influence = 1 - dist / distortRadius
-          const push = influence * influence * distortStrength
-
-          _dir.set(ox, oy, oz).normalize()
-          posAttr.setXYZ(
-            i,
-            ox + _dir.x * push,
-            oy + _dir.y * push,
-            oz + _dir.z * push
-          )
-        } else {
-          // Lerp back to original
-          const cx = posAttr.getX(i)
-          const cy = posAttr.getY(i)
-          const cz = posAttr.getZ(i)
-          posAttr.setXYZ(
-            i,
-            cx + (ox - cx) * 0.08,
-            cy + (oy - cy) * 0.08,
-            cz + (oz - cz) * 0.08
-          )
+          if (dist < distortRadius && distortStrength > 0) {
+            const influence = 1 - dist / distortRadius
+            const push = influence * influence * distortStrength
+            _dir.set(ox, oy, oz).normalize()
+            posAttr.setXYZ(i, ox + _dir.x * push, oy + _dir.y * push, oz + _dir.z * push)
+            anyDistorted = true
+          } else {
+            const cx = posAttr.getX(i)
+            const cy = posAttr.getY(i)
+            const cz = posAttr.getZ(i)
+            const dx = ox - cx, dy = oy - cy, dz = oz - cz
+            if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001 || Math.abs(dz) > 0.001) {
+              posAttr.setXYZ(i, cx + dx * 0.08, cy + dy * 0.08, cz + dz * 0.08)
+              anyDistorted = true
+            }
+          }
         }
+        posAttr.needsUpdate = true
+        distorted.current = anyDistorted
       }
-      posAttr.needsUpdate = true
     }
 
     if (innerShellRef.current && innerOriginal.current) {
@@ -140,45 +135,39 @@ export default function ProductModel() {
       mat.opacity = hovered ? 0.12 : 0.04
       mat.emissiveIntensity = hovered ? 0.35 : 0.08
 
-      // Inner shell distortion (subtler)
-      const posAttr = innerShellRef.current.geometry.attributes.position as THREE.BufferAttribute
-      const orig = innerOriginal.current
-      const mouse = mouseWorldPos.current
-      const distortRadius = 1.8
-      const distortStrength = hovered ? 0.25 : 0
+      // Skip vertex loop when not hovered and vertices are at rest
+      if (hovered || distorted.current) {
+        const posAttr = innerShellRef.current.geometry.attributes.position as THREE.BufferAttribute
+        const orig = innerOriginal.current
+        const mouse = mouseWorldPos.current
+        const distortRadius = 1.8
+        const distortStrength = hovered ? 0.25 : 0
 
-      for (let i = 0; i < posAttr.count; i++) {
-        const ox = orig[i * 3]
-        const oy = orig[i * 3 + 1]
-        const oz = orig[i * 3 + 2]
+        for (let i = 0; i < posAttr.count; i++) {
+          const ox = orig[i * 3]
+          const oy = orig[i * 3 + 1]
+          const oz = orig[i * 3 + 2]
 
-        _vertPos.set(ox, oy + 0.3, oz)
-        const dist = _vertPos.distanceTo(mouse)
+          _vertPos.set(ox, oy + 0.3, oz)
+          const dist = _vertPos.distanceTo(mouse)
 
-        if (dist < distortRadius && distortStrength > 0) {
-          const influence = 1 - dist / distortRadius
-          const push = influence * influence * distortStrength
-
-          _dir.set(ox, oy, oz).normalize()
-          posAttr.setXYZ(
-            i,
-            ox + _dir.x * push,
-            oy + _dir.y * push,
-            oz + _dir.z * push
-          )
-        } else {
-          const cx = posAttr.getX(i)
-          const cy = posAttr.getY(i)
-          const cz = posAttr.getZ(i)
-          posAttr.setXYZ(
-            i,
-            cx + (ox - cx) * 0.08,
-            cy + (oy - cy) * 0.08,
-            cz + (oz - cz) * 0.08
-          )
+          if (dist < distortRadius && distortStrength > 0) {
+            const influence = 1 - dist / distortRadius
+            const push = influence * influence * distortStrength
+            _dir.set(ox, oy, oz).normalize()
+            posAttr.setXYZ(i, ox + _dir.x * push, oy + _dir.y * push, oz + _dir.z * push)
+          } else {
+            const cx = posAttr.getX(i)
+            const cy = posAttr.getY(i)
+            const cz = posAttr.getZ(i)
+            const dx = ox - cx, dy = oy - cy, dz = oz - cz
+            if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001 || Math.abs(dz) > 0.001) {
+              posAttr.setXYZ(i, cx + dx * 0.08, cy + dy * 0.08, cz + dz * 0.08)
+            }
+          }
         }
+        posAttr.needsUpdate = true
       }
-      posAttr.needsUpdate = true
     }
 
     // Mouse-following light

@@ -11,7 +11,7 @@ import * as THREE from 'three'
  * look like soft orbs, not square pixels.
  */
 
-const FOG_COUNT = 400
+const FOG_COUNT = 200
 const MIST_COUNT = 80
 
 /** Create a soft radial gradient circle texture via Canvas2D */

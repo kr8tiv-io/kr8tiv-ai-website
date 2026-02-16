@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useCallback } from 'react'
 import { useFrame, extend } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -187,37 +187,40 @@ const STREAM_HEIGHT = 5.0                       // Tall — this is one BIG stre
 const STREAM_Y = 0.8                            // Vertical center
 const SEGMENTS_X = IS_MOBILE ? 40 : 80          // Fewer segments on mobile
 
-// ── Single Layer ────────────────────────────────────────────
+// ── Precomputed layer data ──────────────────────────────────
 
-function StreamLayer({ index, total }: { index: number; total: number }) {
-  const matRef = useRef<any>(null)
+interface LayerData {
+  index: number
+  layerOffset: number
+  layerOpacity: number
+}
 
-  // Normalize index to -1...1 range for Z spread
-  const normalizedIndex = (index / (total - 1)) * 2 - 1
+const LAYER_DATA: LayerData[] = Array.from({ length: LAYER_COUNT }, (_, i) => {
+  const normalizedIndex = (i / (LAYER_COUNT - 1)) * 2 - 1
   const layerOffset = normalizedIndex * LAYER_SPREAD
-
-  // Layers near the center of the stack are slightly brighter
   const depthFactor = 1.0 - Math.abs(normalizedIndex) * 0.4
   const layerOpacity = 0.018 * depthFactor
+  return { index: i, layerOffset, layerOpacity }
+})
 
+// ── Single Layer (no useFrame — parent drives time) ─────────
+
+function StreamLayer({ data, setRef }: { data: LayerData; setRef: (i: number, el: any) => void }) {
   const geometry = useMemo(() => {
     return new THREE.PlaneGeometry(STREAM_LENGTH, STREAM_HEIGHT, SEGMENTS_X, 1)
   }, [])
 
-  useFrame((state) => {
-    if (!matRef.current) return
-    matRef.current.uTime = state.clock.elapsedTime
-  })
+  const refCb = useCallback((el: any) => setRef(data.index, el), [data.index, setRef])
 
   return (
     <mesh geometry={geometry} renderOrder={2}>
       <streamLayerMaterial
-        ref={matRef}
+        ref={refCb}
         uSpeed={0.25}
         uAmplitude={0.9}
         uPhase={0}
-        uLayerOffset={layerOffset}
-        uOpacity={layerOpacity}
+        uLayerOffset={data.layerOffset}
+        uOpacity={data.layerOpacity}
         transparent
         depthWrite={false}
         side={THREE.DoubleSide}
@@ -228,17 +231,28 @@ function StreamLayer({ index, total }: { index: number; total: number }) {
   )
 }
 
-// ── Exported Component ──────────────────────────────────────
+// ── Exported Component — single useFrame for all layers ─────
 
 export default function SmokeStream() {
-  const layers = useMemo(() => {
-    return Array.from({ length: LAYER_COUNT }, (_, i) => i)
+  const matRefs = useRef<(any | null)[]>(new Array(LAYER_COUNT).fill(null))
+
+  const setRef = useCallback((i: number, el: any) => {
+    matRefs.current[i] = el
   }, [])
+
+  // One useFrame instead of LAYER_COUNT separate hooks
+  useFrame((state) => {
+    const t = state.clock.elapsedTime
+    for (let i = 0; i < matRefs.current.length; i++) {
+      const m = matRefs.current[i]
+      if (m) m.uTime = t
+    }
+  })
 
   return (
     <group position={[0, STREAM_Y, 0]}>
-      {layers.map((i) => (
-        <StreamLayer key={i} index={i} total={LAYER_COUNT} />
+      {LAYER_DATA.map((data) => (
+        <StreamLayer key={data.index} data={data} setRef={setRef} />
       ))}
     </group>
   )
