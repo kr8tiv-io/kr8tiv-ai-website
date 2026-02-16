@@ -61,7 +61,7 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
 export default function HudPanel({ section, index }: HudPanelProps) {
   return (
     <div
-      className="hud-panel opacity-0 flex-shrink-0 w-full lg:w-[320px] relative"
+      className="hud-panel opacity-0 flex-shrink-0 w-full lg:w-[360px] relative"
       style={{
         ['--hud-color' as string]: section.hudColor,
       }}
@@ -125,7 +125,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
               }}
             />
             <span
-              className="text-[9px] tracking-[0.3em] uppercase font-mono"
+              className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase font-mono"
               style={{ color: `${section.hudColor}cc` }}
             >
               SECTOR {String(index + 1).padStart(2, '0')}
@@ -148,11 +148,11 @@ export default function HudPanel({ section, index }: HudPanelProps) {
         <div className="grid grid-cols-2 gap-2 sm:gap-3">
           {section.hudData.map((dp, j) => (
             <div key={j} className="hud-data-item opacity-0">
-              <div className="text-[8px] tracking-[0.2em] uppercase text-white/30 font-mono mb-1">
+              <div className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-white/30 font-mono mb-1">
                 {dp.label}
               </div>
               <div
-                className="text-sm sm:text-lg font-mono font-medium leading-none"
+                className="text-base sm:text-xl font-mono font-medium leading-none"
                 style={{ color: section.hudColor }}
               >
                 <AnimatedValue target={dp.value} unit={dp.unit} />

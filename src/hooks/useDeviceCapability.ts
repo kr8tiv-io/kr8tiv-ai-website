@@ -15,13 +15,13 @@ export function useDeviceCapability(): DeviceTier {
         )
       : ''
 
+    // Only weak GPUs get 'low' — mobile with decent GPUs can handle smoke
     if (
-      isMobile ||
-      (typeof renderer === 'string' &&
-        (renderer.includes('Mali') || renderer.includes('Adreno 5')))
+      typeof renderer === 'string' &&
+      (renderer.includes('Mali') || renderer.includes('Adreno 5'))
     ) {
       setTier('low')
-    } else if (window.innerWidth < 1200) {
+    } else if (isMobile || window.innerWidth < 1200) {
       setTier('medium')
     }
   }, [])

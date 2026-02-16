@@ -19,8 +19,7 @@ const INTRO_PHI = Math.PI / 3.5
 const INTRO_RADIUS = 28
 const INTRO_TARGET_Y = 1.5
 
-// Footer camera — pulled way back and looking down to avoid
-// the bright product lights blowing out the final text
+// Footer camera — pulled back and up, away from bright product lights
 const FOOTER_ANGLE = -Math.PI / 8
 const FOOTER_PHI = Math.PI / 2.8
 const FOOTER_RADIUS = 12
@@ -32,6 +31,7 @@ const MOBILE_RADIUS_SCALE =
 
 export default function CameraRig() {
   const { camera } = useThree()
+  const introComplete = useRef(false)
 
   const anim = useRef({
     theta: INTRO_ANGLE,
@@ -43,6 +43,7 @@ export default function CameraRig() {
   // Cinematic zoom-in on load — listens for 'intro-complete' event
   useEffect(() => {
     const onIntroComplete = () => {
+      introComplete.current = true
       gsap.to(anim.current, {
         theta: HERO_ANGLE,
         phi: HERO_PHI,
@@ -78,8 +79,17 @@ export default function CameraRig() {
         trigger: '.scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 2.0, // Increased from 1.5 — smoother, less chunky
+        scrub: 2.0,
       },
+    })
+
+    // First keyframe: anchor at HERO so scroll starts from the right place
+    // (prevents double-zoom where scroll timeline fights the intro animation)
+    tl.set(anim.current, {
+      theta: HERO_ANGLE,
+      phi: HERO_PHI,
+      radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
+      targetY: HERO_TARGET_Y,
     })
 
     sections.forEach((section, i) => {
@@ -117,7 +127,7 @@ export default function CameraRig() {
             radius: section.radius * MOBILE_RADIUS_SCALE,
             targetY: section.targetY,
             duration: segmentDuration,
-            ease: 'power1.inOut', // Was 'none' — now smooth eased transitions
+            ease: 'power1.inOut',
           },
           progress - segmentDuration
         )

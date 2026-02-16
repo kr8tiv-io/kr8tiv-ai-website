@@ -12,8 +12,9 @@ import * as THREE from 'three'
    and volumetric self-shadowing.
    ──────────────────────────────────────────────────────────── */
 
-const NUM_STEPS = 40
-const SHADOW_STEPS = 3
+const IS_MOBILE_VOL = typeof window !== 'undefined' && window.innerWidth < 768
+const NUM_STEPS = IS_MOBILE_VOL ? 20 : 40
+const SHADOW_STEPS = IS_MOBILE_VOL ? 2 : 3
 
 // ── Vertex Shader ───────────────────────────────────────────
 
@@ -201,16 +202,16 @@ float sampleDensity(vec3 worldPos) {
   vec3 halfSize = (uBoxMax - uBoxMin) * 0.5;
   vec3 d = abs(worldPos - center) / halfSize;
 
-  // Edge fade — very aggressive so the box boundary is never visible
-  float edgeFade = 1.0 - smoothstep(0.1, 0.55, max(max(d.x, d.y), d.z));
+  // Edge fade — tight to prevent blotch at far camera
+  float edgeFade = 1.0 - smoothstep(0.25, 0.78, max(max(d.x, d.y), d.z));
 
-  // Height gradient — wide fade bands so top/bottom edges dissolve
+  // Height gradient — wider band for taller volume
   float normalizedY = (worldPos.y - uBoxMin.y) / (uBoxMax.y - uBoxMin.y);
-  float heightFade = smoothstep(0.0, 0.3, normalizedY) * smoothstep(1.0, 0.4, normalizedY);
+  float heightFade = smoothstep(0.0, 0.2, normalizedY) * smoothstep(1.0, 0.35, normalizedY);
 
-  // Radial fade — generous spread, invisible at boundary
+  // Radial fade — generous spread
   float radialDist = length(worldPos.xz - center.xz) / halfSize.x;
-  float radialFade = 1.0 - smoothstep(0.2, 0.7, radialDist);
+  float radialFade = 1.0 - smoothstep(0.35, 0.92, radialDist);
 
   return density * edgeFade * heightFade * radialFade * uDensityMultiplier;
 }
@@ -291,15 +292,15 @@ void main() {
 const VolumetricSmokeMaterialImpl = shaderMaterial(
   {
     uTime: 0,
-    uBoxMin: new THREE.Vector3(-5, -1.25, -5),
-    uBoxMax: new THREE.Vector3(5, 3.25, 5),
+    uBoxMin: new THREE.Vector3(-4, -0.75, -4),
+    uBoxMax: new THREE.Vector3(4, 2.75, 4),
     uWindDirection: new THREE.Vector3(1, 0.08, 0.25).normalize(),
     uWindSpeed: 0.22,
-    uDensityMultiplier: 0.22,
+    uDensityMultiplier: 0.28,
     uAbsorption: 0.38,
     uLightDir: new THREE.Vector3(5, 8, 3).normalize(),
     uLightColor: new THREE.Vector3(1.0, 0.97, 0.92),
-    uLightIntensity: 1.4,
+    uLightIntensity: 1.8,
     uPhaseG: 0.25,
     uNoiseScale: 2.0,
     uDensityThreshold: 0.35,
@@ -313,7 +314,7 @@ extend({ VolumetricSmokeMaterial: VolumetricSmokeMaterialImpl })
 // ── Volume dimensions ───────────────────────────────────────
 
 const VOL_POS: [number, number, number] = [0, 1.0, 0]
-const VOL_SCALE: [number, number, number] = [10, 4.5, 10]
+const VOL_SCALE: [number, number, number] = [8, 3.5, 8]
 
 // ── Component ───────────────────────────────────────────────
 

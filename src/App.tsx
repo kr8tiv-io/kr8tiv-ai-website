@@ -40,8 +40,7 @@ export default function App() {
             powerPreference: 'high-performance',
             alpha: false,
           }}
-          dpr={tier === 'low' ? [1, 1] : [1, 1.5]}
-          frameloop="always"
+          dpr={tier === 'low' ? [1, 1] : [1, 2]}
         >
           <color attach="background" args={['#050510']} />
           <Suspense fallback={null}>
@@ -53,6 +52,7 @@ export default function App() {
 
       {/* Layer 2: Scrollable HTML overlay */}
       {tier === 'low' ? (
+        /* Skip Lenis on low-tier devices — native scroll is lighter */
         <div>
           <NavigationBar />
           <HeroOverlay />
@@ -62,11 +62,11 @@ export default function App() {
         <ReactLenis
           root
           options={{
-            lerp: 0.06,           // Softer than 0.08 — less chunky
-            duration: 1.2,        // Slightly longer for more cinematic feel
+            lerp: 0.08,
+            duration: 1.0,
             smoothWheel: true,
             syncTouch: false,
-            wheelMultiplier: 0.8, // Slower scroll = smoother camera movement
+            wheelMultiplier: 0.9,
           }}
         >
           <LenisWrapper>

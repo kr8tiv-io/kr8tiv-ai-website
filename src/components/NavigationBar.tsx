@@ -21,18 +21,27 @@ export default function NavigationBar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="flex items-center gap-3">
-        <img
-          src="/images/kr8tiv-logo.svg"
-          alt="kr8tiv"
-          className="h-8 sm:h-9 w-auto invert hidden sm:block"
-        />
+      {/* Left — tagline only */}
+      <div className="flex items-center">
+        <span className="text-[9px] sm:text-[10px] tracking-[0.15em] text-white/30 font-mono hidden md:inline">
+          surfing the singularity
+        </span>
       </div>
 
-      <div className="flex items-center gap-4">
-        <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-mono hidden md:inline">
-          SYS.ONLINE
-        </span>
+      {/* Right — Jarvis link + social icons */}
+      <div className="flex items-center gap-4 sm:gap-5">
+        {/* Jarvis link */}
+        <a
+          href="https://jarvislife.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-white/40 hover:text-[#d4a853] transition-colors duration-300 font-mono"
+        >
+          Jarvis
+        </a>
+
+        {/* Divider */}
+        <div className="w-px h-4 bg-white/10 hidden sm:block" />
 
         {/* Social icons */}
         <div className="flex items-center gap-3">
@@ -57,15 +66,6 @@ export default function NavigationBar() {
             />
           </a>
         </div>
-
-        <a
-          href="https://kr8tiv.web.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs tracking-[0.15em] uppercase text-white/40 hover:text-[#d4a853] transition-colors duration-300 hidden sm:inline"
-        >
-          kr8tiv.ai
-        </a>
       </div>
     </nav>
   )
