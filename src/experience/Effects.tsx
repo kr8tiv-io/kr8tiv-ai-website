@@ -7,25 +7,32 @@ import {
 } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
+import type { DeviceTier } from '../hooks/useDeviceCapability'
 
-export default function Effects() {
+interface EffectsProps {
+  tier: DeviceTier
+}
+
+export default function Effects({ tier }: EffectsProps) {
+  const highTier = tier === 'high'
+
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={0.6}
-        luminanceSmoothing={0.7}
-        intensity={0.5}
+        luminanceThreshold={highTier ? 0.6 : 0.72}
+        luminanceSmoothing={highTier ? 0.7 : 0.78}
+        intensity={highTier ? 0.5 : 0.32}
         mipmapBlur
-        levels={5}
+        levels={highTier ? 5 : 4}
       />
       <ChromaticAberration
         blendFunction={BlendFunction.NORMAL}
-        offset={new THREE.Vector2(0.0004, 0.0004)}
-        radialModulation={true}
-        modulationOffset={0.5}
+        offset={new THREE.Vector2(highTier ? 0.0004 : 0.00025, highTier ? 0.0004 : 0.00025)}
+        radialModulation={highTier}
+        modulationOffset={highTier ? 0.5 : 0.2}
       />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette darkness={0.7} offset={0.2} />
+      <Vignette darkness={highTier ? 0.7 : 0.55} offset={highTier ? 0.2 : 0.24} />
     </EffectComposer>
   )
 }
