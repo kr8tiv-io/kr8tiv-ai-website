@@ -15,7 +15,7 @@ interface ProductModelProps {
 export default function ProductModel({ tier }: ProductModelProps) {
   const lowTier = tier === 'low'
   const mediumTier = tier === 'medium'
-  const stableGlass = tier !== 'high'
+  const stableGlass = lowTier
   const groupRef = useRef<THREE.Group>(null)
   const glowRef = useRef<THREE.Mesh>(null)
   const shellRef = useRef<THREE.Mesh>(null)
@@ -81,9 +81,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
     // Amber glow pulse (steady on mobile â€” no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      const glowBase = lowTier ? 0.62 : mediumTier ? 0.72 : 0.8
-      const glowPulse = lowTier ? 0.015 : mediumTier ? 0.028 : 0.055
-      const glowSpeed = lowTier ? 0.7 : mediumTier ? 0.9 : 1.2
+      const glowBase = lowTier ? 0.68 : mediumTier ? 0.78 : 0.8
+      const glowPulse = lowTier ? 0.018 : mediumTier ? 0.04 : 0.05
+      const glowSpeed = lowTier ? 0.75 : mediumTier ? 1.05 : 1.2
       mat.emissiveIntensity = glowBase + Math.sin(t * glowSpeed) * glowPulse
     }
 
@@ -193,9 +193,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
     // Mouse-following light
     if (mouseLight.current && hovered) {
       mouseLight.current.position.lerp(mouseWorldPos.current, 0.1)
-      const mouseBase = lowTier ? 0.11 : mediumTier ? 0.14 : 0.18
-      const mousePulse = lowTier ? 0.008 : mediumTier ? 0.012 : 0.02
-      const mouseSpeed = lowTier ? 1.4 : mediumTier ? 1.8 : 2.2
+      const mouseBase = lowTier ? 0.11 : mediumTier ? 0.16 : 0.18
+      const mousePulse = lowTier ? 0.008 : mediumTier ? 0.016 : 0.02
+      const mouseSpeed = lowTier ? 1.4 : mediumTier ? 2 : 2.2
       mouseLight.current.intensity = mouseBase + Math.sin(t * mouseSpeed) * mousePulse
     } else if (mouseLight.current) {
       mouseLight.current.intensity *= lowTier ? 0.9 : 0.92
@@ -203,9 +203,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
 
     // Energy core (steady on mobile â€” pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      const coreBase = lowTier ? 0.12 : mediumTier ? 0.15 : 0.18
-      const corePulse = lowTier ? 0.01 : mediumTier ? 0.015 : 0.03
-      const coreSpeed = lowTier ? 0.7 : mediumTier ? 0.9 : 1.05
+      const coreBase = lowTier ? 0.12 : mediumTier ? 0.165 : 0.18
+      const corePulse = lowTier ? 0.01 : mediumTier ? 0.02 : 0.03
+      const coreSpeed = lowTier ? 0.7 : mediumTier ? 0.95 : 1.05
       energyCoreRef.current.intensity = coreBase + Math.sin(t * coreSpeed) * corePulse
     }
   })
@@ -307,7 +307,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={lowTier ? 0.26 : mediumTier ? 0.38 : 0.52}
+            emissiveIntensity={lowTier ? 0.3 : mediumTier ? 0.48 : 0.52}
             toneMapped={false}
           />
         </mesh>
