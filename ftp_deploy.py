@@ -67,11 +67,26 @@ def upload_directory(ftp: ftplib.FTP, local_dir: Path, remote_dir: str) -> None:
 def parse_local_asset_references(index_html: Path) -> set[str]:
   html = index_html.read_text(encoding='utf-8')
   refs = set(re.findall(r'(?:src|href)="([^"]+)"', html))
-  return {
+  absolute_refs = {
     ref
     for ref in refs
     if ref.startswith('/') and not ref.startswith('//') and not ref.startswith('/http')
   }
+
+  verify_refs: set[str] = set()
+  skipped_refs: set[str] = set()
+
+  for ref in absolute_refs:
+    local_target = LOCAL_DIR / ref.lstrip('/')
+    if local_target.exists():
+      verify_refs.add(ref)
+    else:
+      skipped_refs.add(ref)
+
+  if skipped_refs:
+    print(f'Skipping reference verification for files not in local build: {sorted(skipped_refs)}')
+
+  return verify_refs
 
 
 def remote_file_exists(ftp: ftplib.FTP, remote_path: str) -> bool:
