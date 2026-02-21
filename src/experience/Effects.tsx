@@ -19,20 +19,20 @@ export default function Effects({ tier }: EffectsProps) {
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={highTier ? 0.6 : 0.72}
-        luminanceSmoothing={highTier ? 0.7 : 0.78}
-        intensity={highTier ? 0.5 : 0.32}
+        luminanceThreshold={highTier ? 0.6 : 0.64}
+        luminanceSmoothing={highTier ? 0.7 : 0.73}
+        intensity={highTier ? 0.5 : 0.44}
         mipmapBlur
-        levels={highTier ? 5 : 4}
+        levels={5}
       />
       <ChromaticAberration
         blendFunction={BlendFunction.NORMAL}
-        offset={new THREE.Vector2(highTier ? 0.0004 : 0.00025, highTier ? 0.0004 : 0.00025)}
-        radialModulation={highTier}
-        modulationOffset={highTier ? 0.5 : 0.2}
+        offset={new THREE.Vector2(highTier ? 0.0004 : 0.00033, highTier ? 0.0004 : 0.00033)}
+        radialModulation={true}
+        modulationOffset={highTier ? 0.5 : 0.35}
       />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette darkness={highTier ? 0.7 : 0.55} offset={highTier ? 0.2 : 0.24} />
+      <Vignette darkness={highTier ? 0.7 : 0.64} offset={highTier ? 0.2 : 0.22} />
     </EffectComposer>
   )
 }
