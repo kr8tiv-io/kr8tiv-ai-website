@@ -21,7 +21,7 @@ export default function Experience({ tier }: ExperienceProps) {
       {/* Local HDR avoids cross-origin fetch failures in Firefox/WebGL context churn. */}
       <Environment
         files="/hdr/studio_small_03_1k.hdr"
-        environmentIntensity={tier === 'high' ? 0.3 : 0.22}
+        environmentIntensity={tier === 'high' ? 0.3 : 0.28}
       />
 
       {/* Scene fog - deep, heavy, objects dissolve into darkness. */}
