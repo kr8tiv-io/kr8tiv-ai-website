@@ -313,39 +313,54 @@ const VolumetricSmokeMaterialImpl = shaderMaterial(
 
 extend({ VolumetricSmokeMaterial: VolumetricSmokeMaterialImpl })
 
-// ── Volume dimensions ───────────────────────────────────────
-
-const VOL_POS: [number, number, number] = [0, 1.0, 0]
-const VOL_SCALE: [number, number, number] = [14, 6, 14]
+export interface VolumetricSmokeProps {
+  densityMultiplier?: number
+  absorption?: number
+  lightIntensity?: number
+  densityThreshold?: number
+  volumeScale?: [number, number, number]
+  volumePos?: [number, number, number]
+}
 
 // ── Component ───────────────────────────────────────────────
 
-export default function VolumetricSmoke() {
+export default function VolumetricSmoke({
+  densityMultiplier = 0.2,
+  absorption = 0.34,
+  lightIntensity = 1.45,
+  densityThreshold = 0.34,
+  volumeScale = [12, 5.2, 12],
+  volumePos = [0, 1.0, 0],
+}: VolumetricSmokeProps) {
   const matRef = useRef<any>(null)
 
   // Compute world-space AABB from position + scale
   const { boxMin, boxMax } = useMemo(() => ({
     boxMin: new THREE.Vector3(
-      VOL_POS[0] - VOL_SCALE[0] / 2,
-      VOL_POS[1] - VOL_SCALE[1] / 2,
-      VOL_POS[2] - VOL_SCALE[2] / 2
+      volumePos[0] - volumeScale[0] / 2,
+      volumePos[1] - volumeScale[1] / 2,
+      volumePos[2] - volumeScale[2] / 2
     ),
     boxMax: new THREE.Vector3(
-      VOL_POS[0] + VOL_SCALE[0] / 2,
-      VOL_POS[1] + VOL_SCALE[1] / 2,
-      VOL_POS[2] + VOL_SCALE[2] / 2
+      volumePos[0] + volumeScale[0] / 2,
+      volumePos[1] + volumeScale[1] / 2,
+      volumePos[2] + volumeScale[2] / 2
     ),
-  }), [])
+  }), [volumePos, volumeScale])
 
   useFrame((state) => {
     if (!matRef.current) return
     matRef.current.uTime = state.clock.elapsedTime
     matRef.current.uBoxMin = boxMin
     matRef.current.uBoxMax = boxMax
+    matRef.current.uDensityMultiplier = densityMultiplier
+    matRef.current.uAbsorption = absorption
+    matRef.current.uLightIntensity = lightIntensity
+    matRef.current.uDensityThreshold = densityThreshold
   })
 
   return (
-    <mesh position={VOL_POS} scale={VOL_SCALE} renderOrder={1}>
+    <mesh position={volumePos} scale={volumeScale} renderOrder={1}>
       <boxGeometry args={[1, 1, 1]} />
       <volumetricSmokeMaterial
         ref={matRef}

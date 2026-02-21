@@ -2,6 +2,9 @@
 
 export type DeviceTier = 'high' | 'medium' | 'low'
 
+const LOW_RENDERER_PATTERN = /(Mali|Adreno 5|SwiftShader)/i
+const MEDIUM_RENDERER_PATTERN = /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics)/i
+
 export function useDeviceCapability(): DeviceTier {
   const [tier, setTier] = useState<DeviceTier>('high')
 
@@ -10,8 +13,6 @@ export function useDeviceCapability(): DeviceTier {
       const width = window.innerWidth
       const height = window.innerHeight
       const isMobile = width < 768
-      const isCompactDesktop = width < 1400 || height < 860
-      const isFirefox = /firefox/i.test(window.navigator.userAgent)
 
       const canvas = document.createElement('canvas')
       const gl = canvas.getContext('webgl2') || canvas.getContext('webgl')
@@ -21,16 +22,15 @@ export function useDeviceCapability(): DeviceTier {
           )
         : ''
 
-      const weakRenderer =
-        typeof renderer === 'string' &&
-        /(Mali|Adreno 5|Intel\(R\) HD Graphics|SwiftShader)/i.test(renderer)
+      const isLowRenderer = typeof renderer === 'string' && LOW_RENDERER_PATTERN.test(renderer)
+      const isMediumRenderer = typeof renderer === 'string' && MEDIUM_RENDERER_PATTERN.test(renderer)
 
-      if (isMobile || weakRenderer) {
+      if (isMobile || isLowRenderer) {
         setTier('low')
         return
       }
 
-      if (isFirefox || isCompactDesktop) {
+      if (width < 1100 || height < 700 || isMediumRenderer) {
         setTier('medium')
         return
       }

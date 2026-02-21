@@ -119,7 +119,7 @@ function VolumetricFog() {
         color="#667799"
         size={0.4}
         transparent
-        opacity={0.035}
+        opacity={0.048}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation
@@ -205,7 +205,7 @@ function InnerMist() {
         color="#ffffff"
         size={0.15}
         transparent
-        opacity={0.03}
+        opacity={0.04}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation
@@ -289,7 +289,7 @@ function GoldenEnergy() {
         color="#d4a853"
         size={0.2}
         transparent
-        opacity={0.04}
+        opacity={0.05}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation

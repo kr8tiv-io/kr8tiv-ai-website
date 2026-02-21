@@ -201,3 +201,17 @@ a, button, [role="button"] { cursor: pointer; }
     line-height: 1.38;
   }
 }
+
+@media (max-width: 1200px) and (max-height: 780px) {
+  .scroll-container .content-section .section-inner {
+    gap: 1rem;
+  }
+
+  .scroll-container .content-section .section-inner h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.34;
+  }
+}

@@ -7,7 +7,6 @@ import LoadingScreen from './components/LoadingScreen'
 import HeroOverlay from './components/HeroOverlay'
 import NavigationBar from './components/NavigationBar'
 import IntroSequence from './components/IntroSequence'
-import TransitionFlash from './components/TransitionFlash'
 import VibesButton from './components/VibesButton'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
@@ -79,9 +78,6 @@ export default function App() {
 
       {/* Vibes music toggle */}
       <VibesButton />
-
-      {/* Transition effects */}
-      <TransitionFlash />
 
       {/* Intro sequence — always mounted so its bg covers the canvas;
            animation starts only after loading finishes */}

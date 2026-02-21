@@ -118,8 +118,8 @@ export default function ScrollSections() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background: section.alignment === 'left'
-                ? 'linear-gradient(to right, rgba(5,5,16,0.75) 0%, rgba(5,5,16,0.4) 40%, transparent 65%)'
-                : 'linear-gradient(to left, rgba(5,5,16,0.75) 0%, rgba(5,5,16,0.4) 40%, transparent 65%)',
+                ? 'linear-gradient(to right, rgba(5,5,16,0.62) 0%, rgba(5,5,16,0.28) 42%, transparent 70%)'
+                : 'linear-gradient(to left, rgba(5,5,16,0.62) 0%, rgba(5,5,16,0.28) 42%, transparent 70%)',
             }}
           />
 
@@ -220,7 +220,7 @@ export default function ScrollSections() {
 
           {/* Scanline overlay */}
           <div
-            className="absolute inset-0 pointer-events-none opacity-[0.02]"
+            className="absolute inset-0 pointer-events-none opacity-[0.012]"
             style={{
               background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${section.hudColor}15 2px, ${section.hudColor}15 4px)`,
             }}
@@ -235,7 +235,7 @@ export default function ScrollSections() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 80% 70% at 50% 50%, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.6) 50%, rgba(5,5,16,0.3) 80%)',
+              'radial-gradient(ellipse 80% 70% at 50% 50%, rgba(5,5,16,0.82) 0%, rgba(5,5,16,0.52) 52%, rgba(5,5,16,0.24) 82%)',
           }}
         />
 
