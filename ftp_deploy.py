@@ -1,101 +1,148 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 import ftplib
 import os
+import re
 from pathlib import Path
+from typing import Iterable
 
-# FTP credentials
-FTP_HOST = "31.170.161.141"
-FTP_USER = "u637913108.kr8tiv.ai"
-FTP_PASS = "T|EOBYm@^QCfv#c8"
-FTP_PORT = 21
-REMOTE_DIR = "/public_html"
-LOCAL_DIR = "dist"
+FTP_HOST = os.getenv('FTP_HOST', '')
+FTP_USER = os.getenv('FTP_USER', '')
+FTP_PASS = os.getenv('FTP_PASS', '')
+FTP_PORT = int(os.getenv('FTP_PORT', '21'))
+REMOTE_DIR = os.getenv('REMOTE_DIR', '/public_html')
+LOCAL_DIR = Path(os.getenv('LOCAL_DIR', 'dist'))
 
 
-def clear_remote_dir(ftp, remote_path, keep_dirs=None):
-    """Remove all files in remote directory (keeps subdirectories structure)"""
-    if keep_dirs is None:
-        keep_dirs = {'.builds'}  # Never touch hosting system dirs
+def require_runtime_config() -> None:
+  missing = [
+    name
+    for name, value in (
+      ('FTP_HOST', FTP_HOST),
+      ('FTP_USER', FTP_USER),
+      ('FTP_PASS', FTP_PASS),
+    )
+    if not value
+  ]
+  if missing:
+    joined = ', '.join(missing)
+    raise RuntimeError(f'Missing required environment variables: {joined}')
 
+  if not LOCAL_DIR.exists():
+    raise RuntimeError(f'Local build directory does not exist: {LOCAL_DIR}')
+
+
+def remote_join(*parts: str) -> str:
+  cleaned = [part.strip('/') for part in parts if part]
+  return '/' + '/'.join(cleaned)
+
+
+def ensure_remote_dir(ftp: ftplib.FTP, remote_dir: str) -> None:
+  path = ''
+  for chunk in remote_dir.strip('/').split('/'):
+    path = f'{path}/{chunk}' if path else f'/{chunk}'
     try:
-        items = ftp.nlst(remote_path)
+      ftp.mkd(path)
     except ftplib.error_perm:
-        return
-
-    for item in items:
-        name = item.split('/')[-1]
-        if name in ('.', '..') or name in keep_dirs:
-            continue
-
-        full_path = f"{remote_path}/{name}" if not item.startswith('/') else item
-
-        # Try to delete as file first
-        try:
-            ftp.delete(full_path)
-            print(f"  Deleted: {full_path}")
-        except ftplib.error_perm:
-            # It's a directory — recurse into it and clean
-            try:
-                clear_remote_dir(ftp, full_path, keep_dirs)
-            except Exception:
-                pass
+      # Directory already exists.
+      pass
 
 
-def upload_directory(ftp, local_path, remote_path):
-    """Recursively upload directory contents"""
-    local_path = Path(local_path)
-
-    for item in local_path.iterdir():
-        remote_item = f"{remote_path}/{item.name}"
-
-        if item.is_file():
-            # Delete existing file first to avoid stale content
-            try:
-                ftp.delete(remote_item)
-            except ftplib.error_perm:
-                pass
-
-            print(f"Uploading: {item} -> {remote_item}")
-            with open(item, 'rb') as f:
-                ftp.storbinary(f'STOR {remote_item}', f)
-        elif item.is_dir():
-            print(f"Creating directory: {remote_item}")
-            try:
-                ftp.mkd(remote_item)
-            except ftplib.error_perm:
-                # Directory might already exist
-                pass
-            upload_directory(ftp, item, remote_item)
+def upload_file(ftp: ftplib.FTP, local_file: Path, remote_file: str) -> None:
+  ensure_remote_dir(ftp, str(Path(remote_file).parent).replace('\\', '/'))
+  print(f'Uploading: {local_file} -> {remote_file}')
+  with local_file.open('rb') as handle:
+    ftp.storbinary(f'STOR {remote_file}', handle)
 
 
-def main():
-    print(f"Connecting to {FTP_HOST}...")
-    ftp = ftplib.FTP()
-    ftp.connect(FTP_HOST, FTP_PORT)
-    ftp.login(FTP_USER, FTP_PASS)
+def upload_directory(ftp: ftplib.FTP, local_dir: Path, remote_dir: str) -> None:
+  ensure_remote_dir(ftp, remote_dir)
+  for item in sorted(local_dir.iterdir(), key=lambda p: p.name):
+    remote_item = remote_join(remote_dir, item.name)
+    if item.is_dir():
+      upload_directory(ftp, item, remote_item)
+    else:
+      upload_file(ftp, item, remote_item)
 
-    print(f"Connected. Changing to {REMOTE_DIR}")
+
+def parse_local_asset_references(index_html: Path) -> set[str]:
+  html = index_html.read_text(encoding='utf-8')
+  refs = set(re.findall(r'(?:src|href)="([^"]+)"', html))
+  return {
+    ref
+    for ref in refs
+    if ref.startswith('/') and not ref.startswith('//') and not ref.startswith('/http')
+  }
+
+
+def remote_file_exists(ftp: ftplib.FTP, remote_path: str) -> bool:
+  parent = str(Path(remote_path).parent).replace('\\', '/')
+  name = Path(remote_path).name
+
+  try:
+    entries = ftp.nlst(parent)
+  except ftplib.error_perm:
+    return False
+
+  normalized = {entry.split('/')[-1] for entry in entries}
+  return name in normalized
+
+
+def verify_referenced_assets(ftp: ftplib.FTP, references: Iterable[str]) -> None:
+  missing: list[str] = []
+
+  for reference in sorted(references):
+    remote_path = remote_join(REMOTE_DIR, reference)
+    if not remote_file_exists(ftp, remote_path):
+      missing.append(reference)
+
+  if missing:
+    raise RuntimeError(f'Missing uploaded assets referenced by index.html: {missing}')
+
+
+def deploy() -> None:
+  require_runtime_config()
+
+  index_html = LOCAL_DIR / 'index.html'
+  if not index_html.exists():
+    raise RuntimeError(f'Expected build artifact missing: {index_html}')
+
+  references = parse_local_asset_references(index_html)
+
+  ftp = ftplib.FTP()
+  print(f'Connecting to {FTP_HOST}:{FTP_PORT}')
+  ftp.connect(FTP_HOST, FTP_PORT)
+  ftp.login(FTP_USER, FTP_PASS)
+  ftp.set_pasv(True)
+
+  try:
     ftp.cwd(REMOTE_DIR)
 
-    # Clean old assets first
-    print("Cleaning old assets...")
-    clear_remote_dir(ftp, f"{REMOTE_DIR}/assets")
-    print("Old assets cleared.")
+    assets_dir = LOCAL_DIR / 'assets'
+    if assets_dir.exists():
+      print('Uploading assets directory first...')
+      upload_directory(ftp, assets_dir, remote_join(REMOTE_DIR, 'assets'))
 
-    print(f"Uploading {LOCAL_DIR}/ to {REMOTE_DIR}/...")
-    upload_directory(ftp, LOCAL_DIR, REMOTE_DIR)
+    print('Uploading non-index static files...')
+    for item in sorted(LOCAL_DIR.iterdir(), key=lambda p: p.name):
+      if item.name in {'index.html', 'assets'}:
+        continue
 
-    # Verify index.html was uploaded correctly
-    import io, re
-    buf = io.BytesIO()
-    ftp.retrbinary(f'RETR {REMOTE_DIR}/index.html', buf.write)
-    html = buf.getvalue().decode('utf-8')
-    scripts = re.findall(r'src="([^"]+\.js)"', html)
-    print(f"\nVerification - index.html references: {scripts}")
+      remote_item = remote_join(REMOTE_DIR, item.name)
+      if item.is_dir():
+        upload_directory(ftp, item, remote_item)
+      else:
+        upload_file(ftp, item, remote_item)
 
+    print('Uploading index.html last...')
+    upload_file(ftp, index_html, remote_join(REMOTE_DIR, 'index.html'))
+
+    print('Verifying index.html references exist remotely...')
+    verify_referenced_assets(ftp, references)
+
+    print('Deployment complete and verified.')
+  finally:
     ftp.quit()
-    print("Upload complete!")
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+  deploy()
