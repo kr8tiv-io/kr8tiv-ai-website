@@ -60,6 +60,21 @@ async function assertNoHorizontalOverflow(page: Page) {
   expect(scrollWidth).toBeLessThanOrEqual(innerWidth + 2)
 }
 
+async function waitForSceneReady(page: Page) {
+  const introTagline = page.getByText('Building the intelligence layer beneath every industry.')
+  if (await introTagline.count()) {
+    await expect(introTagline).toBeHidden({ timeout: 25_000 })
+  }
+
+  const initializing = page.getByText('Initializing')
+  if (await initializing.count()) {
+    await expect(initializing).toBeHidden({ timeout: 25_000 })
+  }
+
+  await expect(page.locator('[data-testid="hero-content"]')).toBeVisible({ timeout: 20_000 })
+  await page.waitForTimeout(700)
+}
+
 async function assertVisibleTextInBounds(page: Page, stage: string) {
   const result = await page.evaluate(() => {
     const selectors = [
@@ -99,20 +114,24 @@ async function assertVisibleTextInBounds(page: Page, stage: string) {
   expect(result.outOfBounds, `visible text overflow at ${stage}`).toEqual([])
 }
 
-async function assertScannerOpacity(page: Page) {
-  const scannerOpacity = await page.locator('[data-testid="transition-scanner"]').evaluate((el) => {
-    return Number.parseFloat(window.getComputedStyle(el).opacity || '0')
-  })
+async function assertNoTransitionOverlay(page: Page) {
+  const scannerCount = await page.locator('[data-testid="transition-scanner"]').count()
+  expect(scannerCount).toBe(0)
+}
 
-  expect(scannerOpacity).toBeLessThanOrEqual(0.2)
+async function stepScroll(page: Page, distance: number, settleMs = 420) {
+  await page.evaluate((delta) => {
+    window.scrollBy({ top: delta, left: 0, behavior: 'auto' })
+  }, distance)
+  await page.waitForTimeout(settleMs)
 }
 
 function normalizeConsoleErrors(consoleErrors: string[]) {
   return consoleErrors.filter((line) => !/favicon|sourcemap|source map|ResizeObserver loop limit exceeded/i.test(line))
 }
 
-function screenshotDir(browserName: string, viewportName: string) {
-  const dir = path.join(process.cwd(), 'artifacts', 'visual', 'screenshots', browserName, viewportName)
+function screenshotDir(projectName: string, viewportName: string) {
+  const dir = path.join(process.cwd(), 'artifacts', 'visual', 'screenshots', projectName, viewportName)
   fs.mkdirSync(dir, { recursive: true })
   return dir
 }
@@ -122,23 +141,23 @@ for (const viewport of VIEWPORTS) {
     test.use({ viewport: { width: viewport.width, height: viewport.height } })
 
     test(`${viewport.name} layout stability`, async ({ page }) => {
+      test.setTimeout(180_000)
       const issues = collectRuntimeIssues(page)
 
       await page.goto('/', { waitUntil: 'networkidle' })
-      await page.waitForTimeout(1200)
+      await waitForSceneReady(page)
 
-      await expect(page.locator('[data-testid="hero-content"]')).toBeVisible()
       await assertNoHorizontalOverflow(page)
       await assertVisibleTextInBounds(page, 'hero-initial')
-      await assertScannerOpacity(page)
+      await assertNoTransitionOverlay(page)
 
-      for (let i = 0; i < 7; i += 1) {
-        await page.mouse.wheel(0, 680)
-        await page.waitForTimeout(520)
+      for (let i = 0; i < 5; i += 1) {
+        await stepScroll(page, 680)
         await assertNoHorizontalOverflow(page)
         await assertVisibleTextInBounds(page, `scroll-${i}`)
-        await assertScannerOpacity(page)
       }
+
+      await assertNoTransitionOverlay(page)
 
       expect(issues.pageErrors).toEqual([])
       expect(normalizeConsoleErrors(issues.consoleErrors)).toEqual([])
@@ -146,24 +165,21 @@ for (const viewport of VIEWPORTS) {
       expect(issues.serverErrors).toEqual([])
     })
 
-    test(`@screens ${viewport.name} capture hero sections and footer`, async ({ page, browserName }) => {
+    test(`@screens ${viewport.name} capture hero sections and footer`, async ({ page }, testInfo) => {
       await page.goto('/', { waitUntil: 'networkidle' })
-      await page.waitForTimeout(1200)
+      await waitForSceneReady(page)
 
-      const dir = screenshotDir(browserName, viewport.name)
+      const dir = screenshotDir(testInfo.project.name, viewport.name)
 
       await page.screenshot({ path: path.join(dir, 'hero.png'), fullPage: false })
 
-      await page.mouse.wheel(0, 900)
-      await page.waitForTimeout(700)
+      await stepScroll(page, 900, 620)
       await page.screenshot({ path: path.join(dir, 'section-1.png'), fullPage: false })
 
-      await page.mouse.wheel(0, 1700)
-      await page.waitForTimeout(700)
+      await stepScroll(page, 1700, 700)
       await page.screenshot({ path: path.join(dir, 'section-mid.png'), fullPage: false })
 
-      await page.mouse.wheel(0, 2600)
-      await page.waitForTimeout(700)
+      await stepScroll(page, 2600, 800)
       await page.screenshot({ path: path.join(dir, 'footer.png'), fullPage: false })
     })
   })

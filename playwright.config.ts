@@ -1,4 +1,26 @@
 ﻿import { defineConfig, devices } from '@playwright/test'
+import { existsSync } from 'node:fs'
+
+const edgeExecutable = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+const hasEdge = existsSync(edgeExecutable)
+
+const projects = [
+  {
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] },
+  },
+  {
+    name: 'firefox',
+    use: { ...devices['Desktop Firefox'] },
+  },
+]
+
+if (hasEdge) {
+  projects.push({
+    name: 'edge',
+    use: { ...devices['Desktop Edge'], channel: 'msedge' },
+  })
+}
 
 export default defineConfig({
   testDir: './tests/visual',
@@ -14,16 +36,7 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:4173',
     trace: 'on-first-retry',
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-  ],
+  projects,
   webServer: {
     command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173',
