@@ -1,15 +1,21 @@
-import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
+﻿import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import type { DeviceTier } from '../hooks/useDeviceCapability'
 
-// Mobile has no post-processing (bloom/tone mapping) — bright emissives flash harshly
-const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768
+interface ProductModelProps {
+  tier: DeviceTier
+}
+
 
 /**
  * kr8tiv Device with white/grey neural net that distorts around the mouse.
  * The wireframe shells are off-white and warp where the cursor is closest.
  */
-export default function ProductModel() {
+export default function ProductModel({ tier }: ProductModelProps) {
+  const lowTier = tier === 'low'
+  const mediumTier = tier === 'medium'
+  const stableGlass = tier !== 'high'
   const groupRef = useRef<THREE.Group>(null)
   const glowRef = useRef<THREE.Mesh>(null)
   const shellRef = useRef<THREE.Mesh>(null)
@@ -72,10 +78,13 @@ export default function ProductModel() {
       groupRef.current.position.y = Math.sin(t * 0.3) * 0.015
     }
 
-    // Amber glow pulse (steady on mobile — no post-processing to soften pulses)
+    // Amber glow pulse (steady on mobile â€” no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      mat.emissiveIntensity = IS_MOBILE ? 0.8 : 0.8 + Math.sin(t * 1.5) * 0.1
+      const glowBase = lowTier ? 0.62 : mediumTier ? 0.72 : 0.8
+      const glowPulse = lowTier ? 0.015 : mediumTier ? 0.028 : 0.055
+      const glowSpeed = lowTier ? 0.7 : mediumTier ? 0.9 : 1.2
+      mat.emissiveIntensity = glowBase + Math.sin(t * glowSpeed) * glowPulse
     }
 
     // Neural net rotation + distortion
@@ -184,14 +193,20 @@ export default function ProductModel() {
     // Mouse-following light
     if (mouseLight.current && hovered) {
       mouseLight.current.position.lerp(mouseWorldPos.current, 0.1)
-      mouseLight.current.intensity = 0.25 + Math.sin(t * 3) * 0.05
+      const mouseBase = lowTier ? 0.11 : mediumTier ? 0.14 : 0.18
+      const mousePulse = lowTier ? 0.008 : mediumTier ? 0.012 : 0.02
+      const mouseSpeed = lowTier ? 1.4 : mediumTier ? 1.8 : 2.2
+      mouseLight.current.intensity = mouseBase + Math.sin(t * mouseSpeed) * mousePulse
     } else if (mouseLight.current) {
-      mouseLight.current.intensity *= 0.95
+      mouseLight.current.intensity *= lowTier ? 0.9 : 0.92
     }
 
-    // Energy core (steady on mobile — pulse causes flashing through glass without tone mapping)
+    // Energy core (steady on mobile â€” pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      energyCoreRef.current.intensity = IS_MOBILE ? 0.15 : 0.2 + Math.sin(t * 1.2) * 0.05
+      const coreBase = lowTier ? 0.12 : mediumTier ? 0.15 : 0.18
+      const corePulse = lowTier ? 0.01 : mediumTier ? 0.015 : 0.03
+      const coreSpeed = lowTier ? 0.7 : mediumTier ? 0.9 : 1.05
+      energyCoreRef.current.intensity = coreBase + Math.sin(t * coreSpeed) * corePulse
     }
   })
 
@@ -199,7 +214,7 @@ export default function ProductModel() {
     <group position={[0, 0.3, 0]}>
       {/* === THE BOX === */}
       <group ref={groupRef}>
-        {/* Main body — dark metallic slab */}
+        {/* Main body â€” dark metallic slab */}
         <mesh castShadow receiveShadow>
           <boxGeometry args={[2.4, 0.5, 1.6]} />
           <meshPhysicalMaterial
@@ -212,10 +227,10 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Glass top surface — simple glossy on mobile (transmission flickers without post-processing) */}
+        {/* Glass top surface â€” simple glossy on mobile (transmission flickers without post-processing) */}
         <mesh position={[0, 0.26, 0]}>
           <boxGeometry args={[2.3, 0.02, 1.5]} />
-          {IS_MOBILE ? (
+          {stableGlass ? (
             <meshPhysicalMaterial
               color="#080a14"
               metalness={0.9}
@@ -244,7 +259,7 @@ export default function ProductModel() {
           )}
         </mesh>
 
-        {/* Amber edge strip — front (nudged out to prevent z-fighting) */}
+        {/* Amber edge strip â€” front (nudged out to prevent z-fighting) */}
         <mesh ref={glowRef} position={[0, 0, 0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
@@ -255,7 +270,7 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Amber edge strip — back (nudged out to prevent z-fighting) */}
+        {/* Amber edge strip â€” back (nudged out to prevent z-fighting) */}
         <mesh position={[0, 0, -0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
@@ -286,21 +301,21 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Top indicator dot — raised above glass to avoid z-fighting flicker */}
+        {/* Top indicator dot â€” raised above glass to avoid z-fighting flicker */}
         <mesh position={[0, 0.305, 0]}>
           <sphereGeometry args={[0.03, 16, 16]} />
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={IS_MOBILE ? 0.3 : 0.6}
+            emissiveIntensity={lowTier ? 0.26 : mediumTier ? 0.38 : 0.52}
             toneMapped={false}
           />
         </mesh>
       </group>
 
-      {/* === NEURAL NET — WHITE/GREY, mouse-interactive with distortion === */}
+      {/* === NEURAL NET â€” WHITE/GREY, mouse-interactive with distortion === */}
 
-      {/* Outer icosahedron — off-white wireframe */}
+      {/* Outer icosahedron â€” off-white wireframe */}
       <mesh
         ref={shellRef}
         geometry={outerGeo}
@@ -318,7 +333,7 @@ export default function ProductModel() {
         />
       </mesh>
 
-      {/* Inner dodecahedron — slightly darker grey */}
+      {/* Inner dodecahedron â€” slightly darker grey */}
       <mesh
         ref={innerShellRef}
         geometry={innerGeo}
@@ -358,3 +373,4 @@ export default function ProductModel() {
     </group>
   )
 }
+

@@ -26,6 +26,10 @@ html, body {
 body { cursor: crosshair; }
 a, button, [role="button"] { cursor: pointer; }
 
+#root {
+  overflow-x: clip;
+}
+
 .h-screen {
   height: 100dvh;
 }
@@ -186,4 +190,14 @@ a, button, [role="button"] { cursor: pointer; }
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   border-radius: 1px;
+}
+
+@media (max-width: 1366px) and (max-height: 860px) {
+  .scroll-container .content-section .section-inner {
+    padding-top: 0.25rem;
+  }
+
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.38;
+  }
 }

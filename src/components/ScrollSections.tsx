@@ -111,7 +111,7 @@ export default function ScrollSections() {
       {sections.map((section, i) => (
         <section
           key={i}
-          className="content-section h-screen flex items-center pointer-events-none relative pt-20"
+          className="content-section h-screen flex items-center pointer-events-none relative pt-16 md:pt-20"
         >
           {/* Dark backdrop for text readability */}
           <div
@@ -125,14 +125,15 @@ export default function ScrollSections() {
 
           {/* Text content side */}
           <div
-            className={`section-inner opacity-0 flex flex-col lg:flex-row items-start gap-8 w-full px-6 sm:px-8 relative z-10 ${
+            className={`section-inner opacity-0 flex flex-col xl:flex-row items-start gap-6 xl:gap-8 w-full px-5 sm:px-7 lg:px-8 relative z-10 ${
               section.alignment === 'left'
-                ? 'lg:ml-[6vw] lg:mr-auto lg:max-w-[85vw]'
-                : 'lg:ml-auto lg:mr-[6vw] lg:max-w-[85vw] lg:flex-row-reverse'
+                ? 'xl:ml-[6vw] xl:mr-auto xl:max-w-[85vw]'
+                : 'xl:ml-auto xl:mr-[6vw] xl:max-w-[85vw] xl:flex-row-reverse'
             }`}
+            data-testid={`section-inner-${i}`}
           >
             {/* Text block */}
-            <div className="flex-shrink-0 max-w-md">
+            <div className="flex-shrink-0 max-w-[min(94vw,30rem)]">
               <span
                 className="text-[10px] uppercase tracking-[0.4em] font-medium mb-4 block font-mono"
                 style={{ color: `${section.hudColor}cc`, textShadow }}
@@ -140,13 +141,14 @@ export default function ScrollSections() {
                 {section.label}
               </span>
               <h2
-                className="title-glow text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-5 leading-[1.1] whitespace-pre-line pointer-events-auto"
+                className="title-glow text-[clamp(2.35rem,7vw,4.85rem)] font-light text-white mb-4 md:mb-5 leading-[1.04] whitespace-pre-line pointer-events-auto"
                 style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
               >
                 {section.title}
               </h2>
               <p
-                className="text-sm sm:text-base text-white/80 leading-relaxed max-w-sm"
+                className="text-[clamp(0.93rem,1.65vw,1.12rem)] text-white/80 leading-[1.42] max-w-[min(92vw,29rem)]"
+                data-testid={`section-copy-${i}`}
                 style={{ textShadow }}
               >
                 {section.copy}
@@ -191,7 +193,7 @@ export default function ScrollSections() {
 
               {/* Multiple CTAs — uniform width grid */}
               {section.ctas && (
-                <div className="grid grid-cols-2 gap-3 mt-8 pointer-events-auto max-w-[380px]">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-3 mt-7 sm:mt-8 pointer-events-auto max-w-[min(94vw,380px)]">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
@@ -237,15 +239,15 @@ export default function ScrollSections() {
           }}
         />
 
-        <div className="section-inner opacity-0 text-center max-w-2xl px-6 relative z-10">
+        <div className="section-inner opacity-0 text-center max-w-[min(94vw,52rem)] px-5 sm:px-6 relative z-10">
           <h2
-            className="title-glow text-4xl sm:text-5xl md:text-6xl font-light text-white mb-4 leading-[1.1] pointer-events-auto"
+            className="title-glow text-[clamp(2.25rem,7vw,4.8rem)] font-light text-white mb-4 leading-[1.06] pointer-events-auto"
             style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
           >
             The future is open.<br />Come build it.
           </h2>
           <p
-            className="text-sm text-white/70 mb-12 leading-relaxed max-w-lg mx-auto"
+            className="text-[clamp(0.84rem,1.45vw,0.98rem)] text-white/70 mb-9 sm:mb-12 leading-[1.5] max-w-[min(92vw,40rem)] mx-auto"
             style={{ textShadow }}
           >
             kr8tiv AI is an open-source, tokenized, collaborative AI company building autonomous
