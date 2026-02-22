@@ -113,16 +113,6 @@ export default function ScrollSections() {
           key={i}
           className="content-section h-screen flex items-center pointer-events-none relative pt-16 md:pt-20"
         >
-          {/* Dark backdrop for text readability */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: section.alignment === 'left'
-                ? 'linear-gradient(to right, rgba(5,5,16,0.62) 0%, rgba(5,5,16,0.28) 42%, transparent 70%)'
-                : 'linear-gradient(to left, rgba(5,5,16,0.62) 0%, rgba(5,5,16,0.28) 42%, transparent 70%)',
-            }}
-          />
-
           {/* Text content side */}
           <div
             className={`section-inner opacity-0 flex flex-col xl:flex-row items-start gap-6 xl:gap-8 w-full px-5 sm:px-7 lg:px-8 relative z-10 ${
@@ -217,28 +207,11 @@ export default function ScrollSections() {
             {/* HUD Panel */}
             <HudPanel section={section} index={i} />
           </div>
-
-          {/* Scanline overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.012]"
-            style={{
-              background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${section.hudColor}15 2px, ${section.hudColor}15 4px)`,
-            }}
-          />
         </section>
       ))}
 
       {/* Footer / CTA — The future is open */}
       <section className="content-section h-screen flex items-center justify-center relative">
-        {/* Full dark backdrop — this is the final section, text must be perfectly readable */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse 80% 70% at 50% 50%, rgba(5,5,16,0.82) 0%, rgba(5,5,16,0.52) 52%, rgba(5,5,16,0.24) 82%)',
-          }}
-        />
-
         <div className="section-inner opacity-0 text-center max-w-[min(94vw,52rem)] px-5 sm:px-6 relative z-10">
           <h2
             className="title-glow text-[clamp(2.25rem,7vw,4.8rem)] font-light text-white mb-4 leading-[1.06] pointer-events-auto"

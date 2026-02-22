@@ -119,6 +119,31 @@ async function assertNoTransitionOverlay(page: Page) {
   expect(scannerCount).toBe(0)
 }
 
+async function assertNoSlidingReadabilityLayers(page: Page, stage: string) {
+  const result = await page.evaluate(() => {
+    const candidates = Array.from(
+      document.querySelectorAll<HTMLElement>('.content-section > .absolute.inset-0.pointer-events-none')
+    )
+
+    const movingLayerRegex = /(linear-gradient\(to right|linear-gradient\(to left|repeating-linear-gradient\(0deg)/i
+
+    const movingLayers = candidates
+      .map((element) => {
+        const inlineBackground = element.style.background || ''
+        const computedBackground = window.getComputedStyle(element).backgroundImage || ''
+        return `${inlineBackground} ${computedBackground}`
+      })
+      .filter((background) => movingLayerRegex.test(background))
+
+    return {
+      count: movingLayers.length,
+      samples: movingLayers.slice(0, 4),
+    }
+  })
+
+  expect(result.count, `unexpected moving readability layers at ${stage}: ${result.samples.join(' | ')}`).toBe(0)
+}
+
 async function stepScroll(page: Page, distance: number, settleMs = 420) {
   await page.evaluate((delta) => {
     window.scrollBy({ top: delta, left: 0, behavior: 'auto' })
@@ -150,14 +175,17 @@ for (const viewport of VIEWPORTS) {
       await assertNoHorizontalOverflow(page)
       await assertVisibleTextInBounds(page, 'hero-initial')
       await assertNoTransitionOverlay(page)
+      await assertNoSlidingReadabilityLayers(page, 'hero-initial')
 
       for (let i = 0; i < 5; i += 1) {
         await stepScroll(page, 680)
         await assertNoHorizontalOverflow(page)
         await assertVisibleTextInBounds(page, `scroll-${i}`)
+        await assertNoSlidingReadabilityLayers(page, `scroll-${i}`)
       }
 
       await assertNoTransitionOverlay(page)
+      await assertNoSlidingReadabilityLayers(page, 'final')
 
       expect(issues.pageErrors).toEqual([])
       expect(normalizeConsoleErrors(issues.consoleErrors)).toEqual([])
