@@ -23,7 +23,7 @@ export default function NavigationBar() {
     >
       <div className="flex items-center gap-3">
         <img
-          src="/images/kr8tiv-logo.svg"
+          src="/images/kr8tiv-logo.png"
           alt="kr8tiv"
           className="h-8 sm:h-9 w-auto invert hidden sm:block"
         />

@@ -7,14 +7,17 @@ import LoadingScreen from './components/LoadingScreen'
 import HeroOverlay from './components/HeroOverlay'
 import NavigationBar from './components/NavigationBar'
 import IntroSequence from './components/IntroSequence'
+import TransitionFlash from './components/TransitionFlash'
 import VibesButton from './components/VibesButton'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
+import { useScrollVelocity } from './hooks/useScrollVelocity'
 
 const Experience = lazy(() => import('./experience/Experience'))
 
 function LenisWrapper({ children }: { children: React.ReactNode }) {
   useGSAPSync()
+  useScrollVelocity() // Feeds scroll speed to 3D scene for reactive effects
   return <>{children}</>
 }
 
@@ -39,8 +42,7 @@ export default function App() {
             powerPreference: 'high-performance',
             alpha: false,
           }}
-          dpr={tier === 'low' ? [1, 1] : [1, 1.5]}
-          frameloop="always"
+          dpr={tier === 'low' ? [1, 1.5] : [1.5, 2]}
         >
           <color attach="background" args={['#050510']} />
           <Suspense fallback={null}>
@@ -61,11 +63,11 @@ export default function App() {
         <ReactLenis
           root
           options={{
-            lerp: 0.06,           // Softer than 0.08 — less chunky
-            duration: 1.2,        // Slightly longer for more cinematic feel
+            lerp: 0.08,
+            duration: 1.0,
             smoothWheel: true,
             syncTouch: false,
-            wheelMultiplier: 0.8, // Slower scroll = smoother camera movement
+            wheelMultiplier: 0.9,
           }}
         >
           <LenisWrapper>
@@ -79,16 +81,18 @@ export default function App() {
       {/* Vibes music toggle */}
       <VibesButton />
 
-      {/* Intro sequence — always mounted so its bg covers the canvas;
-           animation starts only after loading finishes */}
-      {!introComplete && (
-        <IntroSequence onComplete={handleIntroComplete} startAnimation={loadingDone} />
+      {/* Transition effects */}
+      <TransitionFlash />
+
+      {/* Intro sequence — plays after loading */}
+      {loadingDone && !introComplete && (
+        <IntroSequence onComplete={handleIntroComplete} />
       )}
 
       {/* Loading overlay */}
       <LoadingScreen onDone={() => {
         document.body.style.overflow = 'hidden'
-        setLoadingDone(true)
+        setTimeout(() => setLoadingDone(true), 300)
       }} />
     </>
   )

@@ -7,10 +7,10 @@ import * as THREE from 'three'
    Smoke Stream — One Thick Volumetric Flow
 
    Instead of multiple thin ribbons, this creates ONE massive
-   flowing volume by stacking ~18 semi-transparent planes at
+   flowing volume by stacking ~20 semi-transparent planes at
    slightly different Z depths and phases. The visual result
-   is a single coherent stream with internal layered fiber
-   texture.
+   looks like the reference image — a single coherent stream
+   with internal layered fiber texture.
 
    Each layer is a wide plane with vertex wave displacement.
    Layers are staggered in Z and phase so the internal structure
@@ -20,7 +20,7 @@ import * as THREE from 'three'
    fades to nothing at the edges and near the center (so text
    and the product stay readable).
 
-   Performance: ~18 planes x 80 segments = ~1440 triangles total.
+   Performance: ~20 planes × 64 segments = 1280 triangles total.
    Vertex shader does the heavy lifting. Very cheap.
    ──────────────────────────────────────────────────────────── */
 
@@ -125,14 +125,14 @@ uniform float uTime;
 uniform float uPhase;
 uniform float uOpacity;
 uniform float uLayerOffset;
-uniform float uCenterFloor;
 
 void main() {
-  // ── Soft vertical gaussian — aggressive falloff at edges ──
+  // ── Soft vertical gaussian — wide, dreamy falloff ──
   float distFromCenter = abs(vUv.y - 0.5) * 2.0;
-  float gauss = exp(-distFromCenter * distFromCenter * 4.0);
+  float gauss = exp(-distFromCenter * distFromCenter * 2.5);
 
   // ── Internal fiber texture — subtle contour lines ──
+  // This creates the "layered light painting" look from the reference
   float fiber = sin(vUv.y * 40.0 + uLayerOffset * 8.0 + uTime * 0.5) * 0.5 + 0.5;
   fiber = smoothstep(0.3, 0.7, fiber);
   float fiberEffect = 0.7 + fiber * 0.3;
@@ -143,20 +143,14 @@ void main() {
 
   float intensity = gauss * fiberEffect * lengthVar;
 
-  // ── Horizontal edge fade — wide so plane ends are invisible ──
-  float edgeFade = smoothstep(0.0, 0.35, vUv.x) * smoothstep(1.0, 0.65, vUv.x);
-  edgeFade = edgeFade * edgeFade; // Exponential for feathered edges
+  // ── Horizontal edge fade ──
+  float edgeFade = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
   intensity *= edgeFade;
-
-  // ── World-space distance fade — dissolve at far extents ──
-  float worldDist = length(vWorldPos.xz);
-  float worldFade = 1.0 - smoothstep(6.0, 14.0, worldDist);
-  intensity *= worldFade;
 
   // ── Center protection zone — wide fade so product + text stay clear ──
   float centerDist = length(vWorldPos.xz);
   float centerFade = smoothstep(3.5, 12.0, centerDist);
-  intensity *= mix(uCenterFloor, 1.0, centerFade);
+  intensity *= mix(0.005, 1.0, centerFade);
 
   // ── Pure white ──
   float alpha = intensity * uOpacity;
@@ -175,14 +169,12 @@ const StreamLayerMaterialImpl = shaderMaterial(
     uPhase: 0,
     uLayerOffset: 0,
     uOpacity: 0.04,
-    uCenterFloor: 0.1,
   },
   streamVertexShader,
   streamFragmentShader
 )
 
 extend({ StreamLayerMaterial: StreamLayerMaterialImpl })
-
 
 // ── Configuration ───────────────────────────────────────────
 
@@ -193,34 +185,18 @@ const STREAM_HEIGHT = 5.0      // Tall — this is one BIG stream
 const STREAM_Y = 0.8           // Vertical center
 const SEGMENTS_X = 80          // Subdivision for smooth waves
 
-export interface SmokeStreamProps {
-  layerCount?: number
-  opacityMultiplier?: number
-  centerFloor?: number
-}
-
 // ── Single Layer ────────────────────────────────────────────
 
-function StreamLayer({
-  index,
-  total,
-  opacityMultiplier,
-  centerFloor,
-}: {
-  index: number
-  total: number
-  opacityMultiplier: number
-  centerFloor: number
-}) {
+function StreamLayer({ index, total }: { index: number; total: number }) {
   const matRef = useRef<any>(null)
 
   // Normalize index to -1...1 range for Z spread
-  const normalizedIndex = (index / Math.max(total - 1, 1)) * 2 - 1
+  const normalizedIndex = (index / (total - 1)) * 2 - 1
   const layerOffset = normalizedIndex * LAYER_SPREAD
 
   // Layers near the center of the stack are slightly brighter
   const depthFactor = 1.0 - Math.abs(normalizedIndex) * 0.4
-  const layerOpacity = 0.018 * depthFactor * opacityMultiplier
+  const layerOpacity = 0.018 * depthFactor
 
   const geometry = useMemo(() => {
     return new THREE.PlaneGeometry(STREAM_LENGTH, STREAM_HEIGHT, SEGMENTS_X, 1)
@@ -240,7 +216,6 @@ function StreamLayer({
         uPhase={0}
         uLayerOffset={layerOffset}
         uOpacity={layerOpacity}
-        uCenterFloor={centerFloor}
         transparent
         depthWrite={false}
         side={THREE.DoubleSide}
@@ -253,25 +228,15 @@ function StreamLayer({
 
 // ── Exported Component ──────────────────────────────────────
 
-export default function SmokeStream({
-  layerCount = LAYER_COUNT,
-  opacityMultiplier = 1,
-  centerFloor = 0.1,
-}: SmokeStreamProps) {
+export default function SmokeStream() {
   const layers = useMemo(() => {
-    return Array.from({ length: layerCount }, (_, i) => i)
-  }, [layerCount])
+    return Array.from({ length: LAYER_COUNT }, (_, i) => i)
+  }, [])
 
   return (
     <group position={[0, STREAM_Y, 0]}>
       {layers.map((i) => (
-        <StreamLayer
-          key={i}
-          index={i}
-          total={layerCount}
-          opacityMultiplier={opacityMultiplier}
-          centerFloor={centerFloor}
-        />
+        <StreamLayer key={i} index={i} total={LAYER_COUNT} />
       ))}
     </group>
   )

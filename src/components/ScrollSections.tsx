@@ -7,10 +7,6 @@ import HudPanel from './ui/HudPanel'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Shared text shadow for readability over 3D background
-const textShadow = '0 0 20px rgba(5,5,16,0.95), 0 0 50px rgba(5,5,16,0.8), 0 2px 30px rgba(5,5,16,0.9)'
-const titleShadow = '0 0 30px rgba(5,5,16,0.95), 0 0 60px rgba(5,5,16,0.8), 0 2px 40px rgba(5,5,16,0.9)'
-
 export default function ScrollSections() {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -39,6 +35,8 @@ export default function ScrollSections() {
           pinSpacing: true,
           scrub: 1.2,
           anticipatePin: 1,
+          fastScrollEnd: true,
+          invalidateOnRefresh: true,
         },
       })
 
@@ -111,36 +109,31 @@ export default function ScrollSections() {
       {sections.map((section, i) => (
         <section
           key={i}
-          className="content-section h-screen flex items-center pointer-events-none relative pt-16 md:pt-20"
+          className="content-section h-screen flex items-center pointer-events-none relative pt-10 sm:pt-20 overflow-hidden"
         >
           {/* Text content side */}
           <div
-            className={`section-inner opacity-0 flex flex-col xl:flex-row items-start gap-6 xl:gap-8 w-full px-5 sm:px-7 lg:px-8 relative z-10 ${
+            className={`section-inner opacity-0 flex flex-col lg:flex-row items-start gap-4 sm:gap-8 w-full px-4 sm:px-8 ${
               section.alignment === 'left'
-                ? 'xl:ml-[6vw] xl:mr-auto xl:max-w-[85vw]'
-                : 'xl:ml-auto xl:mr-[6vw] xl:max-w-[85vw] xl:flex-row-reverse'
+                ? 'lg:ml-[6vw] lg:mr-auto lg:max-w-[85vw]'
+                : 'lg:ml-auto lg:mr-[6vw] lg:max-w-[85vw] lg:flex-row-reverse'
             }`}
-            data-testid={`section-inner-${i}`}
           >
             {/* Text block */}
-            <div className="flex-shrink-0 max-w-[min(94vw,30rem)]">
+            <div className="flex-shrink-0 max-w-md">
               <span
-                className="text-[10px] uppercase tracking-[0.4em] font-medium mb-4 block font-mono"
-                style={{ color: `${section.hudColor}cc`, textShadow }}
+                className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-medium mb-2 sm:mb-4 block font-mono"
+                style={{ color: `${section.hudColor}cc` }}
               >
                 {section.label}
               </span>
               <h2
-                className="title-glow text-[clamp(2.35rem,7vw,4.85rem)] font-light text-white mb-4 md:mb-5 leading-[1.04] whitespace-pre-line pointer-events-auto"
-                style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
+                className="title-glow text-lg sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-2 sm:mb-5 leading-[1.15] sm:whitespace-pre-line pointer-events-auto"
+                style={{ fontFamily: 'var(--font-display)' }}
               >
                 {section.title}
               </h2>
-              <p
-                className="text-[clamp(0.93rem,1.65vw,1.12rem)] text-white/80 leading-[1.42] max-w-[min(92vw,29rem)]"
-                data-testid={`section-copy-${i}`}
-                style={{ textShadow }}
-              >
+              <p className="text-[11px] sm:text-base text-white/80 leading-relaxed max-w-sm line-clamp-4 sm:line-clamp-none">
                 {section.copy}
               </p>
 
@@ -174,27 +167,23 @@ export default function ScrollSections() {
                   href={section.cta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto inline-block mt-8 px-8 py-3 border text-white text-xs tracking-[0.2em] uppercase hover:bg-white/5 transition-all duration-300"
+                  className="pointer-events-auto inline-block mt-3 sm:mt-8 px-4 sm:px-8 py-2 sm:py-3 border text-white text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] uppercase hover:bg-white/5 transition-all duration-300"
                   style={{ borderColor: `${section.hudColor}40` }}
                 >
                   {section.cta.text}
                 </a>
               )}
 
-              {/* Multiple CTAs — uniform width grid */}
+              {/* Multiple CTAs */}
               {section.ctas && (
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-3 mt-7 sm:mt-8 pointer-events-auto max-w-[min(94vw,380px)]">
+                <div className="flex flex-wrap gap-1.5 sm:gap-3 mt-3 sm:mt-8 pointer-events-auto">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
                       href={cta.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center justify-center px-4 py-2.5 border text-white text-[11px] tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300 ${
-                        section.ctas && j === section.ctas.length - 1 && section.ctas.length % 2 !== 0
-                          ? 'col-span-2'
-                          : ''
-                      }`}
+                      className="inline-block min-w-0 sm:min-w-[180px] text-center px-2.5 sm:px-6 py-1.5 sm:py-2.5 border text-white text-[8px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300"
                       style={{ borderColor: `${section.hudColor}40` }}
                     >
                       {cta.text}
@@ -204,25 +193,32 @@ export default function ScrollSections() {
               )}
             </div>
 
-            {/* HUD Panel */}
-            <HudPanel section={section} index={i} />
+            {/* HUD Panel — hidden on mobile to prevent viewport overflow */}
+            <div className="hidden sm:block">
+              <HudPanel section={section} index={i} />
+            </div>
           </div>
+
+          {/* Scanline overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.02]"
+            style={{
+              background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${section.hudColor}15 2px, ${section.hudColor}15 4px)`,
+            }}
+          />
         </section>
       ))}
 
       {/* Footer / CTA — The future is open */}
-      <section className="content-section h-screen flex items-center justify-center relative">
-        <div className="section-inner opacity-0 text-center max-w-[min(94vw,52rem)] px-5 sm:px-6 relative z-10">
+      <section className="content-section h-screen flex items-center justify-center">
+        <div className="section-inner opacity-0 text-center max-w-2xl px-4 sm:px-6">
           <h2
-            className="title-glow text-[clamp(2.25rem,7vw,4.8rem)] font-light text-white mb-4 leading-[1.06] pointer-events-auto"
-            style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
+            className="title-glow text-xl sm:text-5xl md:text-6xl font-light text-white mb-3 sm:mb-4 leading-[1.1] pointer-events-auto"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             The future is open.<br />Come build it.
           </h2>
-          <p
-            className="text-[clamp(0.84rem,1.45vw,0.98rem)] text-white/70 mb-9 sm:mb-12 leading-[1.5] max-w-[min(92vw,40rem)] mx-auto"
-            style={{ textShadow }}
-          >
+          <p className="text-[10px] sm:text-sm text-white/70 mb-4 sm:mb-12 leading-relaxed max-w-lg mx-auto px-2 sm:px-0 line-clamp-4 sm:line-clamp-none">
             kr8tiv AI is an open-source, tokenized, collaborative AI company building autonomous
             systems that the world actually needs. We&apos;re proud to be in this race to the bottom &mdash;
             proud to be ushering in a new age of technology where the best products are free, the
@@ -231,33 +227,33 @@ export default function ScrollSections() {
           </p>
 
           {/* Primary CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-10 pointer-events-auto">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-1.5 sm:gap-4 mb-3 sm:mb-10 pointer-events-auto px-4 sm:px-0">
             <a
               href="https://kr8tiv.web.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-black/60 border border-[#d4a853]/30 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853]/60 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
+              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-[#d4a853]/30 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-[#d4a853]/60 transition-all duration-300"
             >
-              Enter the Ecosystem &rarr;
+              Enter Ecosystem &rarr;
             </a>
             <a
               href="https://jarvislife.io/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
+              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-white/20 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300"
             >
               Explore JARVIS &rarr;
             </a>
             <a
               href="mailto:hello@kr8tiv.ai"
-              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 pointer-events-auto backdrop-blur-sm"
+              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-white/20 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300 pointer-events-auto"
             >
               Custom Solutions &rarr;
             </a>
           </div>
 
           {/* Social icons */}
-          <div className="flex items-center justify-center gap-6 pointer-events-auto mb-12">
+          <div className="flex items-center justify-center gap-3 sm:gap-6 pointer-events-auto mb-3 sm:mb-12">
             <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
                className="group flex flex-col items-center gap-2">
               <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
@@ -300,11 +296,11 @@ export default function ScrollSections() {
           </div>
 
           {/* Tagline */}
-          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4" style={{ textShadow }}>
+          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4">
             Anarcho-capitalist liberation tech. You&apos;re welcome.
           </div>
 
-          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase" style={{ textShadow }}>
+          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase">
             &copy; 2026 kr8tiv AI &mdash; All systems nominal
           </div>
         </div>

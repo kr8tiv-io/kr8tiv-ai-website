@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { sections } from '../config/sections'
@@ -19,13 +18,6 @@ const INTRO_PHI = Math.PI / 3.5
 const INTRO_RADIUS = 28
 const INTRO_TARGET_Y = 1.5
 
-// Footer camera — pulled way back and looking down to avoid
-// the bright product lights blowing out the final text
-const FOOTER_ANGLE = -Math.PI / 8
-const FOOTER_PHI = Math.PI / 2.8
-const FOOTER_RADIUS = 12
-const FOOTER_TARGET_Y = 0.4
-
 // Mobile devices need the camera pulled back so the full object is visible
 const MOBILE_RADIUS_SCALE =
   typeof window !== 'undefined' && window.innerWidth < 768 ? 1.45 : 1
@@ -40,45 +32,23 @@ export default function CameraRig() {
     targetY: INTRO_TARGET_Y,
   })
 
-  // Cinematic zoom-in on load — listens for 'intro-complete' event
-  useEffect(() => {
-    const onIntroComplete = () => {
-      gsap.to(anim.current, {
-        theta: HERO_ANGLE,
-        phi: HERO_PHI,
-        radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
-        targetY: HERO_TARGET_Y,
-        duration: 3.5,
-        ease: 'power2.inOut',
-      })
-    }
+  const scrollTlRef = useRef<gsap.core.Timeline | null>(null)
+  const zoomStartedRef = useRef(false)
 
-    window.addEventListener('intro-complete', onIntroComplete)
+  const buildScrollTimeline = () => {
+    if (scrollTlRef.current) return
 
-    // Fallback if intro is skipped
-    const fallback = setTimeout(() => {
-      if (anim.current.radius > HERO_RADIUS + 1) {
-        onIntroComplete()
-      }
-    }, 5000)
-
-    return () => {
-      window.removeEventListener('intro-complete', onIntroComplete)
-      clearTimeout(fallback)
-    }
-  }, [])
-
-  useGSAP(() => {
-    // +2 because: hero slot + N content sections + footer section
-    const totalSlots = sections.length + 2
-    const segmentDuration = 1 / (totalSlots - 1)
+    const totalSections = sections.length + 1
+    const segmentDuration = 1 / (totalSections - 1)
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 2.0, // Increased from 1.5 — smoother, less chunky
+        scrub: 1.2,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
       },
     })
 
@@ -88,6 +58,7 @@ export default function CameraRig() {
       // Between section 3→4: subtle push away then pull back
       if (i === 3) {
         const prevSection = sections[i - 1]
+        // First 40% — push OUT
         tl.to(
           anim.current,
           {
@@ -100,6 +71,7 @@ export default function CameraRig() {
           },
           progress - segmentDuration
         )
+        // Remaining 60% — pull back IN to target
         tl.to(anim.current, {
           theta: section.angle,
           phi: section.phi,
@@ -117,28 +89,56 @@ export default function CameraRig() {
             radius: section.radius * MOBILE_RADIUS_SCALE,
             targetY: section.targetY,
             duration: segmentDuration,
-            ease: 'power1.inOut', // Was 'none' — now smooth eased transitions
+            ease: 'none',
           },
           progress - segmentDuration
         )
       }
     })
 
-    // FOOTER section — pull camera back and up so the product's
-    // bright lights don't blow out the final text
-    const footerProgress = (sections.length + 1) * segmentDuration
-    tl.to(
-      anim.current,
-      {
-        theta: FOOTER_ANGLE,
-        phi: FOOTER_PHI,
-        radius: FOOTER_RADIUS * MOBILE_RADIUS_SCALE,
-        targetY: FOOTER_TARGET_Y,
-        duration: segmentDuration,
-        ease: 'power1.inOut',
-      },
-      footerProgress - segmentDuration
-    )
+    scrollTlRef.current = tl
+    ScrollTrigger.refresh()
+  }
+
+  // Cinematic zoom-in on load — listens for 'intro-complete' event
+  useEffect(() => {
+    const onIntroComplete = () => {
+      if (zoomStartedRef.current) return
+      zoomStartedRef.current = true
+
+      gsap.to(anim.current, {
+        theta: HERO_ANGLE,
+        phi: HERO_PHI,
+        radius: HERO_RADIUS * MOBILE_RADIUS_SCALE,
+        targetY: HERO_TARGET_Y,
+        duration: 3,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          buildScrollTimeline()
+          // Used by App to unlock scroll; also helps avoid missing the event.
+          ;(window as any).__kr8tiv_intro_zoom_complete = true
+          window.dispatchEvent(new CustomEvent('intro-zoom-complete'))
+        },
+      })
+    }
+
+    // If intro already finished before mount, zoom immediately
+    window.addEventListener('intro-complete', onIntroComplete)
+
+    // Also auto-zoom after a short delay in case intro is skipped
+    const fallback = setTimeout(() => {
+      if (anim.current.radius > HERO_RADIUS + 1) {
+        onIntroComplete()
+      }
+    }, 5000)
+
+    return () => {
+      window.removeEventListener('intro-complete', onIntroComplete)
+      clearTimeout(fallback)
+      scrollTlRef.current?.scrollTrigger?.kill()
+      scrollTlRef.current?.kill()
+      scrollTlRef.current = null
+    }
   }, [])
 
   useFrame(() => {
