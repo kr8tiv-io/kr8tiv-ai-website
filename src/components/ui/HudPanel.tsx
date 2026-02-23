@@ -61,7 +61,7 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
 export default function HudPanel({ section, index }: HudPanelProps) {
   return (
     <div
-      className="hud-panel opacity-0 flex-shrink-0 w-full lg:w-[320px] relative"
+      className="hud-panel opacity-0 flex-shrink-0 w-full xl:w-[320px] max-w-[min(94vw,420px)] relative"
       style={{
         ['--hud-color' as string]: section.hudColor,
       }}
@@ -74,7 +74,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
 
       {/* Panel frame */}
       <div
-        className="relative p-5 backdrop-blur-md rounded-sm"
+        className="relative p-4 sm:p-5 backdrop-blur-md rounded-sm"
         style={{
           background: `linear-gradient(135deg, ${section.hudColor}08 0%, ${section.hudColor}03 100%)`,
           border: `1px solid ${section.hudColor}20`,
@@ -125,7 +125,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
               }}
             />
             <span
-              className="text-[9px] tracking-[0.3em] uppercase font-mono"
+              className="text-[8px] sm:text-[9px] tracking-[0.28em] uppercase font-mono"
               style={{ color: `${section.hudColor}cc` }}
             >
               SECTOR {String(index + 1).padStart(2, '0')}
@@ -145,14 +145,14 @@ export default function HudPanel({ section, index }: HudPanelProps) {
         />
 
         {/* Data grid */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
           {section.hudData.map((dp, j) => (
             <div key={j} className="hud-data-item opacity-0">
               <div className="text-[8px] tracking-[0.2em] uppercase text-white/30 font-mono mb-1">
                 {dp.label}
               </div>
               <div
-                className="text-lg font-mono font-medium leading-none"
+                className="text-base sm:text-lg font-mono font-medium leading-none"
                 style={{ color: section.hudColor }}
               >
                 <AnimatedValue target={dp.value} unit={dp.unit} />

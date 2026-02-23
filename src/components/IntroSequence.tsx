@@ -3,17 +3,21 @@ import gsap from 'gsap'
 
 interface IntroSequenceProps {
   onComplete: () => void
+  startAnimation?: boolean
 }
 
-export default function IntroSequence({ onComplete }: IntroSequenceProps) {
+export default function IntroSequence({ onComplete, startAnimation = true }: IntroSequenceProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
+  const tlRef = useRef<gsap.core.Timeline | null>(null)
 
+  // Build timeline once, but pause it until startAnimation is true
   useEffect(() => {
     if (!containerRef.current || !titleRef.current || !taglineRef.current) return
 
     const tl = gsap.timeline({
+      paused: !startAnimation,
       onComplete: () => {
         if (containerRef.current) {
           containerRef.current.style.display = 'none'
@@ -22,6 +26,7 @@ export default function IntroSequence({ onComplete }: IntroSequenceProps) {
         onComplete()
       },
     })
+    tlRef.current = tl
 
     // Phase 1 (0-1.5s): "kr8tiv" fades in
     tl.fromTo(
@@ -53,8 +58,16 @@ export default function IntroSequence({ onComplete }: IntroSequenceProps) {
 
     return () => {
       tl.kill()
+      tlRef.current = null
     }
   }, [onComplete])
+
+  // Play the timeline when startAnimation becomes true
+  useEffect(() => {
+    if (startAnimation && tlRef.current && tlRef.current.paused()) {
+      tlRef.current.play()
+    }
+  }, [startAnimation])
 
   return (
     <div
