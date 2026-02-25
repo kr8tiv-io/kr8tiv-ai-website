@@ -99,15 +99,15 @@ a, button, [role="button"] { cursor: pointer; }
 
 .hud-tracer {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.26) 42%, transparent 72%);
   box-shadow:
-    0 0 6px 2px rgba(255,255,255,0.5),
-    0 0 12px 4px rgba(255,255,255,0.2),
-    0 0 20px 6px rgba(212,168,83,0.15);
-  filter: blur(0.5px);
+    0 0 4px 1px rgba(255,255,255,0.26),
+    0 0 8px 2px rgba(255,255,255,0.12),
+    0 0 12px 3px rgba(212,168,83,0.08);
+  filter: blur(0.2px);
   animation: trace-border 8s linear infinite;
   offset-path: inset(0 round 2px);
   offset-distance: 0%;
@@ -115,9 +115,9 @@ a, button, [role="button"] { cursor: pointer; }
 
 .hud-tracer-2 {
   animation-delay: -4s;
-  opacity: 0.4;
-  width: 4px;
-  height: 4px;
+  opacity: 0.28;
+  width: 3px;
+  height: 3px;
 }
 
 @keyframes trace-border {
@@ -186,9 +186,9 @@ a, button, [role="button"] { cursor: pointer; }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  width: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   border-radius: 1px;
 }
 
@@ -199,6 +199,21 @@ a, button, [role="button"] { cursor: pointer; }
 
   .scroll-container .content-section .section-inner p {
     line-height: 1.38;
+  }
+}
+
+@media (max-height: 800px) and (min-width: 768px) {
+  .scroll-container .content-section .section-inner {
+    gap: 1rem;
+  }
+
+  .scroll-container .content-section .section-inner h2 {
+    margin-bottom: 0.7rem;
+  }
+
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.34;
+    letter-spacing: 0.002em;
   }
 }
 
@@ -213,5 +228,25 @@ a, button, [role="button"] { cursor: pointer; }
 
   .scroll-container .content-section .section-inner p {
     line-height: 1.34;
+  }
+}
+
+@media (max-width: 390px), (max-width: 767px) and (max-height: 700px) {
+  .scroll-container .content-section .section-inner {
+    gap: 0.7rem;
+  }
+
+  .scroll-container .content-section .section-text {
+    max-width: 95vw;
+  }
+
+  .scroll-container .content-section .section-title {
+    letter-spacing: -0.012em;
+    margin-bottom: 0.6rem;
+  }
+
+  .scroll-container .content-section .section-copy {
+    line-height: 1.28;
+    letter-spacing: 0.001em;
   }
 }

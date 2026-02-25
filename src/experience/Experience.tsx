@@ -91,7 +91,7 @@ export default function Experience({ tier }: ExperienceProps) {
 
       <MouseLight />
       <MouseTracers />
-      <Ground />
+      <Ground tier={tier} />
 
       {tier !== 'low' && <Effects tier={tier} />}
     </>

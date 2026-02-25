@@ -16,6 +16,10 @@ export default function ProductModel({ tier }: ProductModelProps) {
   const lowTier = tier === 'low'
   const mediumTier = tier === 'medium'
   const stableGlass = lowTier
+  const modelBaseY = lowTier ? 0.1 : mediumTier ? 0.24 : 0.3
+  const frontStripEmissive = lowTier ? 0.58 : mediumTier ? 0.84 : 1.0
+  const rearStripEmissive = lowTier ? 0.46 : mediumTier ? 0.68 : 0.8
+  const sideStripEmissive = lowTier ? 0.32 : mediumTier ? 0.42 : 0.5
   const groupRef = useRef<THREE.Group>(null)
   const glowRef = useRef<THREE.Mesh>(null)
   const shellRef = useRef<THREE.Mesh>(null)
@@ -211,7 +215,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
   })
 
   return (
-    <group position={[0, 0.3, 0]}>
+    <group position={[0, modelBaseY, 0]}>
       {/* === THE BOX === */}
       <group ref={groupRef}>
         {/* Main body â€” dark metallic slab */}
@@ -265,7 +269,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={1.0}
+            emissiveIntensity={frontStripEmissive}
             toneMapped={false}
           />
         </mesh>
@@ -276,7 +280,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={0.8}
+            emissiveIntensity={rearStripEmissive}
             toneMapped={false}
           />
         </mesh>
@@ -287,7 +291,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={0.5}
+            emissiveIntensity={sideStripEmissive}
             toneMapped={false}
           />
         </mesh>
@@ -296,7 +300,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={0.5}
+            emissiveIntensity={sideStripEmissive}
             toneMapped={false}
           />
         </mesh>
