@@ -7,21 +7,9 @@
   --color-accent-bright: #f0c75e;
   --color-hud: #ffffff;
   --color-hud-dim: rgba(255, 255, 255, 0.12);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-  --vibes-bottom: 1.5rem;
   --font-display: 'Syne', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-}
-
-@media (max-width: 639px) {
-  :root {
-    /* Pull the fixed "VIBES" control upward so it doesn't sit on top of footer CTAs/icons. */
-    --vibes-bottom: 6rem;
-  }
 }
 
 html, body {
@@ -38,10 +26,12 @@ html, body {
 body { cursor: crosshair; }
 a, button, [role="button"] { cursor: pointer; }
 
+#root {
+  overflow-x: clip;
+}
+
 .h-screen {
-  /* Use a stable viewport height to reduce ScrollTrigger pin jitter on mobile browsers. */
-  height: 100vh;
-  height: 100svh;
+  height: 100dvh;
 }
 
 ::selection {
@@ -61,53 +51,6 @@ a, button, [role="button"] { cursor: pointer; }
 ::-webkit-scrollbar-thumb {
   background: rgba(212, 168, 83, 0.3);
   border-radius: 2px;
-}
-
-/* ── Dark text readability glow ──────────────────────────────
-   Every text element in the HTML overlay gets a subtle dark halo
-   so it reads cleanly over the bright 3D scene.
-   ──────────────────────────────────────────────────────────── */
-
-/* All text in scroll sections + hero gets a dark shadow */
-.scroll-container h2,
-.scroll-container p,
-.scroll-container span,
-.scroll-container a,
-.scroll-container div {
-  text-shadow:
-    0 0 8px rgba(0, 0, 0, 0.9),
-    0 0 20px rgba(0, 0, 0, 0.7),
-    0 0 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Hero text gets extra dark glow for the big titles */
-section h1 {
-  text-shadow:
-    0 0 12px rgba(0, 0, 0, 1),
-    0 0 30px rgba(0, 0, 0, 0.8),
-    0 0 60px rgba(0, 0, 0, 0.5);
-}
-
-/* Dark veil behind scroll sections — dims the 3D scene so
-   the product model and wireframe don't pop through the text.
-   Uses a full-viewport pseudo-element, not a visible box. */
-.scroll-container .content-section:not(:first-child)::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    rgba(5, 5, 16, 0.55) 0%,
-    rgba(5, 5, 16, 0.45) 50%,
-    rgba(5, 5, 16, 0.3) 100%
-  );
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* HUD panel — solid black background so data reads clearly */
-.hud-panel .relative {
-  background: rgba(0, 0, 0, 0.92) !important;
 }
 
 /* HUD glow utility */
@@ -156,26 +99,25 @@ section h1 {
 
 .hud-tracer {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(212,168,83,0.6) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.26) 42%, transparent 72%);
   box-shadow:
-    0 0 8px 3px rgba(255,255,255,0.6),
-    0 0 16px 6px rgba(212,168,83,0.3),
-    0 0 28px 10px rgba(212,168,83,0.15);
-  filter: blur(0.3px);
+    0 0 4px 1px rgba(255,255,255,0.26),
+    0 0 8px 2px rgba(255,255,255,0.12),
+    0 0 12px 3px rgba(212,168,83,0.08);
+  filter: blur(0.2px);
   animation: trace-border 8s linear infinite;
   offset-path: inset(0 round 2px);
   offset-distance: 0%;
-  z-index: 10;
 }
 
 .hud-tracer-2 {
   animation-delay: -4s;
-  opacity: 0.5;
-  width: 5px;
-  height: 5px;
+  opacity: 0.28;
+  width: 3px;
+  height: 3px;
 }
 
 @keyframes trace-border {
@@ -244,24 +186,67 @@ section h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  width: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   border-radius: 1px;
 }
 
-@media (hover: none) {
-  body { cursor: auto; }
-}
-
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
-  /* Decorative; disable on mobile/reduced motion to reduce paint + animation cost. */
-  .hud-tracer,
-  .hud-tracer-2 {
-    display: none;
+@media (max-width: 1366px) and (max-height: 860px) {
+  .scroll-container .content-section .section-inner {
+    padding-top: 0.25rem;
   }
 
-  .title-glow:hover {
-    animation: none;
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.38;
+  }
+}
+
+@media (max-height: 800px) and (min-width: 768px) {
+  .scroll-container .content-section .section-inner {
+    gap: 1rem;
+  }
+
+  .scroll-container .content-section .section-inner h2 {
+    margin-bottom: 0.7rem;
+  }
+
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.34;
+    letter-spacing: 0.002em;
+  }
+}
+
+@media (max-width: 1200px) and (max-height: 780px) {
+  .scroll-container .content-section .section-inner {
+    gap: 1rem;
+  }
+
+  .scroll-container .content-section .section-inner h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .scroll-container .content-section .section-inner p {
+    line-height: 1.34;
+  }
+}
+
+@media (max-width: 390px), (max-width: 767px) and (max-height: 700px) {
+  .scroll-container .content-section .section-inner {
+    gap: 0.7rem;
+  }
+
+  .scroll-container .content-section .section-text {
+    max-width: 95vw;
+  }
+
+  .scroll-container .content-section .section-title {
+    letter-spacing: -0.012em;
+    margin-bottom: 0.6rem;
+  }
+
+  .scroll-container .content-section .section-copy {
+    line-height: 1.28;
+    letter-spacing: 0.001em;
   }
 }

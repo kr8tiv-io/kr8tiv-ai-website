@@ -4,6 +4,7 @@ import type { Section } from '../../config/sections'
 interface HudPanelProps {
   section: Section
   index: number
+  compact?: boolean
 }
 
 function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
@@ -58,7 +59,7 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
   )
 }
 
-export default function HudPanel({ section, index }: HudPanelProps) {
+export default function HudPanel({ section, index, compact = false }: HudPanelProps) {
   return (
     <div
       className="hud-panel opacity-0 flex-shrink-0 w-full xl:w-[320px] max-w-[min(94vw,420px)] relative"
@@ -67,18 +68,23 @@ export default function HudPanel({ section, index }: HudPanelProps) {
       }}
     >
       {/* Tracer animation — glowing star orbiting the border */}
-      <div className="hud-tracer-container">
-        <div className="hud-tracer" />
-        <div className="hud-tracer hud-tracer-2" />
-      </div>
+      {!compact && (
+        <div className="hud-tracer-container">
+          <div className="hud-tracer" />
+          <div className="hud-tracer hud-tracer-2" />
+        </div>
+      )}
 
       {/* Panel frame */}
       <div
-        className="relative p-4 sm:p-5 backdrop-blur-md rounded-sm"
+        className={`relative rounded-sm ${compact ? 'p-3 sm:p-3.5' : 'p-4 sm:p-5'}`}
         style={{
-          background: `linear-gradient(135deg, ${section.hudColor}08 0%, ${section.hudColor}03 100%)`,
+          background:
+            'linear-gradient(145deg, rgba(8, 12, 20, 0.76) 0%, rgba(7, 10, 18, 0.62) 55%, rgba(6, 9, 16, 0.48) 100%)',
           border: `1px solid ${section.hudColor}20`,
-          boxShadow: `0 0 30px ${section.hudColor}08, inset 0 0 30px ${section.hudColor}03`,
+          boxShadow: `0 0 24px ${section.hudColor}08, inset 0 0 24px ${section.hudColor}03`,
+          backdropFilter: 'none',
+          WebkitBackdropFilter: 'none',
         }}
       >
         {/* Corner brackets — top-left */}
@@ -115,7 +121,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
         />
 
         {/* Panel header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className={`flex items-center justify-between ${compact ? 'mb-3' : 'mb-4'}`}>
           <div className="flex items-center gap-2">
             <div
               className="w-1.5 h-1.5 rounded-full"
@@ -125,34 +131,34 @@ export default function HudPanel({ section, index }: HudPanelProps) {
               }}
             />
             <span
-              className="text-[8px] sm:text-[9px] tracking-[0.28em] uppercase font-mono"
+              className={`${compact ? 'text-[7px] sm:text-[8px]' : 'text-[8px] sm:text-[9px]'} tracking-[0.28em] uppercase font-mono`}
               style={{ color: `${section.hudColor}cc` }}
             >
               SECTOR {String(index + 1).padStart(2, '0')}
             </span>
           </div>
-          <span className="text-[8px] font-mono text-white/20">
-            SYS.{['WHO', 'TKN', 'JRV', 'IND', 'HMN'][index]}
+          <span className={`${compact ? 'text-[7px]' : 'text-[8px]'} font-mono text-white/20`}>
+            SYS.{section.sysCode}
           </span>
         </div>
 
         {/* Connector line from panel header */}
         <div
-          className="hud-connector h-px w-full mb-4 origin-left"
+          className={`hud-connector h-px w-full origin-left ${compact ? 'mb-3' : 'mb-4'}`}
           style={{
             background: `linear-gradient(90deg, ${section.hudColor}40, transparent)`,
           }}
         />
 
         {/* Data grid */}
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+        <div className={`grid grid-cols-2 ${compact ? 'gap-2' : 'gap-2.5 sm:gap-3'}`}>
           {section.hudData.map((dp, j) => (
             <div key={j} className="hud-data-item opacity-0">
-              <div className="text-[8px] tracking-[0.2em] uppercase text-white/30 font-mono mb-1">
+              <div className={`${compact ? 'text-[7px]' : 'text-[8px]'} tracking-[0.2em] uppercase text-white/30 font-mono mb-1`}>
                 {dp.label}
               </div>
               <div
-                className="text-base sm:text-lg font-mono font-medium leading-none"
+                className={`${compact ? 'text-sm sm:text-base' : 'text-base sm:text-lg'} font-mono font-medium leading-none`}
                 style={{ color: section.hudColor }}
               >
                 <AnimatedValue target={dp.value} unit={dp.unit} />
@@ -163,7 +169,7 @@ export default function HudPanel({ section, index }: HudPanelProps) {
 
         {/* Bottom status bar */}
         <div
-          className="hud-connector mt-4 pt-3 flex items-center justify-between origin-left"
+          className={`hud-connector flex items-center justify-between origin-left ${compact ? 'mt-3 pt-2.5' : 'mt-4 pt-3'}`}
           style={{
             borderTop: `1px solid ${section.hudColor}15`,
           }}
@@ -173,20 +179,24 @@ export default function HudPanel({ section, index }: HudPanelProps) {
               className="w-1 h-1 rounded-full animate-pulse"
               style={{ backgroundColor: '#22c55e' }}
             />
-            <span className="text-[8px] font-mono text-white/25">NOMINAL</span>
+            <span className={`${compact ? 'text-[7px]' : 'text-[8px]'} font-mono text-white/25`}>NOMINAL</span>
           </div>
-          <span className="text-[8px] font-mono" style={{ color: `${section.hudColor}40` }}>
+          <span className={`${compact ? 'text-[7px]' : 'text-[8px]'} font-mono`} style={{ color: `${section.hudColor}40` }}>
             {new Date().toISOString().slice(11, 19)}Z
           </span>
         </div>
       </div>
 
-      {/* Floating data lines connecting to the 3D scene */}
-      <div className="absolute -top-4 left-1/2 w-px h-4" style={{ background: `${section.hudColor}20` }} />
-      <div
-        className="absolute -bottom-2 left-8 w-16 h-px"
-        style={{ background: `linear-gradient(90deg, ${section.hudColor}30, transparent)` }}
-      />
+      {!compact && (
+        <>
+          {/* Floating data lines connecting to the 3D scene */}
+          <div className="absolute -top-4 left-1/2 w-px h-4" style={{ background: `${section.hudColor}20` }} />
+          <div
+            className="absolute -bottom-2 left-8 w-16 h-px"
+            style={{ background: `linear-gradient(90deg, ${section.hudColor}30, transparent)` }}
+          />
+        </>
+      )}
     </div>
   )
 }

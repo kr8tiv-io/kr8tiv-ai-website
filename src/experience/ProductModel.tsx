@@ -1,26 +1,25 @@
-import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
+﻿import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import EnergyLines from './EnergyLines'
+import type { DeviceTier } from '../hooks/useDeviceCapability'
 
-/* ─────────────────────────────────────────────────────────────
-   ProductModel — Enhanced kr8tiv device with:
+interface ProductModelProps {
+  tier: DeviceTier
+}
 
-   PERFORMANCE:
-   - Vertex distortion uses spring physics (smoother, same cost)
-   - Reduced unnecessary per-frame allocations
 
-   VISUAL UPGRADES:
-   - Stronger mouse vertex ATTRACTION (not just push — magnetic pull)
-   - Elastic snapback with overshoot (spring physics, not linear lerp)
-   - EnergyLines integration — animated pulses along wireframe edges
-   - Stronger hover state — the whole device reacts
-   - Iridescent shell edges on hover
-   ──────────────────────────────────────────────────────────── */
-
-const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768
-
-export default function ProductModel() {
+/**
+ * kr8tiv Device with white/grey neural net that distorts around the mouse.
+ * The wireframe shells are off-white and warp where the cursor is closest.
+ */
+export default function ProductModel({ tier }: ProductModelProps) {
+  const lowTier = tier === 'low'
+  const mediumTier = tier === 'medium'
+  const stableGlass = lowTier
+  const modelBaseY = lowTier ? 0.1 : mediumTier ? 0.24 : 0.3
+  const frontStripEmissive = lowTier ? 0.58 : mediumTier ? 0.84 : 1.0
+  const rearStripEmissive = lowTier ? 0.46 : mediumTier ? 0.68 : 0.8
+  const sideStripEmissive = lowTier ? 0.32 : mediumTier ? 0.42 : 0.5
   const groupRef = useRef<THREE.Group>(null)
   const glowRef = useRef<THREE.Mesh>(null)
   const shellRef = useRef<THREE.Mesh>(null)
@@ -37,30 +36,29 @@ export default function ProductModel() {
   const outerOriginal = useRef<Float32Array | null>(null)
   const innerOriginal = useRef<Float32Array | null>(null)
 
-  // Spring velocities for elastic snapback
-  const outerVelocities = useRef<Float32Array | null>(null)
-  const innerVelocities = useRef<Float32Array | null>(null)
+  // Create geometries and store originals
+  const outerGeo = useMemo(() => {
+    const geo = new THREE.IcosahedronGeometry(2.2, 2)
+    return geo
+  }, [])
 
-  const outerGeo = useMemo(() => new THREE.IcosahedronGeometry(2.2, 2), [])
-  const innerGeo = useMemo(() => new THREE.DodecahedronGeometry(1.7, 1), [])
+  const innerGeo = useMemo(() => {
+    const geo = new THREE.DodecahedronGeometry(1.7, 1)
+    return geo
+  }, [])
 
-  // Copy original positions and init velocity buffers
+  // Copy original positions once geometries mount
   useEffect(() => {
     const outerPos = outerGeo.attributes.position as THREE.BufferAttribute
     outerOriginal.current = new Float32Array(outerPos.array)
-    outerVelocities.current = new Float32Array(outerPos.count * 3)
 
     const innerPos = innerGeo.attributes.position as THREE.BufferAttribute
     innerOriginal.current = new Float32Array(innerPos.array)
-    innerVelocities.current = new Float32Array(innerPos.count * 3)
   }, [outerGeo, innerGeo])
 
-  // Reusable objects
+  // Hoisted plane + target to avoid per-frame allocations
   const _rayPlane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), [])
   const _rayTarget = useMemo(() => new THREE.Vector3(), [])
-  const _vertPos = useMemo(() => new THREE.Vector3(), [])
-  const _dir = useMemo(() => new THREE.Vector3(), [])
-  const _targetPos = useMemo(() => new THREE.Vector3(), [])
 
   const onPointerMove = useCallback(() => {
     raycaster.setFromCamera(pointer, camera)
@@ -70,102 +68,31 @@ export default function ProductModel() {
     }
   }, [raycaster, pointer, camera, _rayPlane, _rayTarget])
 
-  // Spring physics constants
-  const SPRING_K = 0.12      // Spring stiffness
-  const SPRING_DAMPING = 0.82 // Damping (< 1 = underdamped = overshoot)
-  const ATTRACT_RADIUS = 2.5  // Mouse influence radius
-  const ATTRACT_STRENGTH = 0.45 // How strongly vertices pull toward mouse
-
-  /**
-   * Spring-based vertex distortion.
-   * Vertices are attracted toward the mouse with spring physics,
-   * creating elastic snapback with natural overshoot.
-   */
-  function updateShellSpring(
-    mesh: THREE.Mesh,
-    original: Float32Array,
-    velocities: Float32Array,
-    isHovered: boolean,
-    attractStrength: number
-  ) {
-    const posAttr = mesh.geometry.attributes.position as THREE.BufferAttribute
-    const mouse = mouseWorldPos.current
-    const strength = isHovered ? attractStrength : 0
-
-    for (let i = 0; i < posAttr.count; i++) {
-      const i3 = i * 3
-      const ox = original[i3]
-      const oy = original[i3 + 1]
-      const oz = original[i3 + 2]
-
-      const cx = posAttr.getX(i)
-      const cy = posAttr.getY(i)
-      const cz = posAttr.getZ(i)
-
-      // Get vertex world position (approximate)
-      _vertPos.set(ox, oy + 0.3, oz)
-      const dist = _vertPos.distanceTo(mouse)
-
-      // Compute target position
-      if (dist < ATTRACT_RADIUS && strength > 0) {
-        const influence = 1 - dist / ATTRACT_RADIUS
-        const pull = influence * influence * strength
-
-        // Direction FROM vertex TOWARD mouse (magnetic attraction)
-        _dir.set(
-          mouse.x - ox,
-          mouse.y - 0.3 - oy,
-          mouse.z - oz
-        ).normalize()
-
-        _targetPos.set(
-          ox + _dir.x * pull,
-          oy + _dir.y * pull,
-          oz + _dir.z * pull
-        )
-      } else {
-        _targetPos.set(ox, oy, oz)
-      }
-
-      // Spring force: F = -k * (current - target)
-      const forceX = -SPRING_K * (cx - _targetPos.x)
-      const forceY = -SPRING_K * (cy - _targetPos.y)
-      const forceZ = -SPRING_K * (cz - _targetPos.z)
-
-      // Update velocity with damping
-      velocities[i3] = (velocities[i3] + forceX) * SPRING_DAMPING
-      velocities[i3 + 1] = (velocities[i3 + 1] + forceY) * SPRING_DAMPING
-      velocities[i3 + 2] = (velocities[i3 + 2] + forceZ) * SPRING_DAMPING
-
-      // Apply velocity
-      posAttr.setXYZ(
-        i,
-        cx + velocities[i3],
-        cy + velocities[i3 + 1],
-        cz + velocities[i3 + 2]
-      )
-    }
-    posAttr.needsUpdate = true
-  }
+  // Temp vectors to avoid GC
+  const _vertPos = useMemo(() => new THREE.Vector3(), [])
+  const _dir = useMemo(() => new THREE.Vector3(), [])
 
   useFrame((state) => {
     const t = state.clock.elapsedTime
 
     if (hovered) onPointerMove()
 
-    // Subtle float
+    // Barely perceptible float
     if (groupRef.current) {
       groupRef.current.position.y = Math.sin(t * 0.3) * 0.015
     }
 
-    // Amber glow pulse
+    // Amber glow pulse (steady on mobile â€” no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      mat.emissiveIntensity = IS_MOBILE ? 0.8 : 1.5 + Math.sin(t * 1.5) * 0.15
+      const glowBase = lowTier ? 0.68 : mediumTier ? 0.78 : 0.8
+      const glowPulse = lowTier ? 0.018 : mediumTier ? 0.04 : 0.05
+      const glowSpeed = lowTier ? 0.75 : mediumTier ? 1.05 : 1.2
+      mat.emissiveIntensity = glowBase + Math.sin(t * glowSpeed) * glowPulse
     }
 
-    // Outer shell — spring distortion
-    if (shellRef.current && outerOriginal.current && outerVelocities.current) {
+    // Neural net rotation + distortion
+    if (shellRef.current && outerOriginal.current) {
       shellRef.current.rotation.y = t * 0.015
       shellRef.current.rotation.x = Math.sin(t * 0.12) * 0.02
 
@@ -173,17 +100,52 @@ export default function ProductModel() {
       mat.opacity = hovered ? 0.18 : 0.07
       mat.emissiveIntensity = hovered ? 0.5 : 0.12
 
-      updateShellSpring(
-        shellRef.current,
-        outerOriginal.current,
-        outerVelocities.current,
-        hovered,
-        ATTRACT_STRENGTH
-      )
+      // Vertex distortion based on mouse proximity
+      const posAttr = shellRef.current.geometry.attributes.position as THREE.BufferAttribute
+      const orig = outerOriginal.current
+      const mouse = mouseWorldPos.current
+      const distortRadius = 2.0
+      const distortStrength = hovered ? 0.35 : 0
+
+      for (let i = 0; i < posAttr.count; i++) {
+        const ox = orig[i * 3]
+        const oy = orig[i * 3 + 1]
+        const oz = orig[i * 3 + 2]
+
+        // Get vertex in world-ish space (offset by group position)
+        _vertPos.set(ox, oy + 0.3, oz)
+
+        const dist = _vertPos.distanceTo(mouse)
+
+        if (dist < distortRadius && distortStrength > 0) {
+          // Push vertex outward from center, scaled by proximity
+          const influence = 1 - dist / distortRadius
+          const push = influence * influence * distortStrength
+
+          _dir.set(ox, oy, oz).normalize()
+          posAttr.setXYZ(
+            i,
+            ox + _dir.x * push,
+            oy + _dir.y * push,
+            oz + _dir.z * push
+          )
+        } else {
+          // Lerp back to original
+          const cx = posAttr.getX(i)
+          const cy = posAttr.getY(i)
+          const cz = posAttr.getZ(i)
+          posAttr.setXYZ(
+            i,
+            cx + (ox - cx) * 0.08,
+            cy + (oy - cy) * 0.08,
+            cz + (oz - cz) * 0.08
+          )
+        }
+      }
+      posAttr.needsUpdate = true
     }
 
-    // Inner shell — spring distortion (subtler)
-    if (innerShellRef.current && innerOriginal.current && innerVelocities.current) {
+    if (innerShellRef.current && innerOriginal.current) {
       innerShellRef.current.rotation.y = -t * 0.02
       innerShellRef.current.rotation.z = Math.sin(t * 0.1) * 0.015
 
@@ -191,36 +153,72 @@ export default function ProductModel() {
       mat.opacity = hovered ? 0.12 : 0.04
       mat.emissiveIntensity = hovered ? 0.35 : 0.08
 
-      updateShellSpring(
-        innerShellRef.current,
-        innerOriginal.current,
-        innerVelocities.current,
-        hovered,
-        ATTRACT_STRENGTH * 0.65
-      )
+      // Inner shell distortion (subtler)
+      const posAttr = innerShellRef.current.geometry.attributes.position as THREE.BufferAttribute
+      const orig = innerOriginal.current
+      const mouse = mouseWorldPos.current
+      const distortRadius = 1.8
+      const distortStrength = hovered ? 0.25 : 0
+
+      for (let i = 0; i < posAttr.count; i++) {
+        const ox = orig[i * 3]
+        const oy = orig[i * 3 + 1]
+        const oz = orig[i * 3 + 2]
+
+        _vertPos.set(ox, oy + 0.3, oz)
+        const dist = _vertPos.distanceTo(mouse)
+
+        if (dist < distortRadius && distortStrength > 0) {
+          const influence = 1 - dist / distortRadius
+          const push = influence * influence * distortStrength
+
+          _dir.set(ox, oy, oz).normalize()
+          posAttr.setXYZ(
+            i,
+            ox + _dir.x * push,
+            oy + _dir.y * push,
+            oz + _dir.z * push
+          )
+        } else {
+          const cx = posAttr.getX(i)
+          const cy = posAttr.getY(i)
+          const cz = posAttr.getZ(i)
+          posAttr.setXYZ(
+            i,
+            cx + (ox - cx) * 0.08,
+            cy + (oy - cy) * 0.08,
+            cz + (oz - cz) * 0.08
+          )
+        }
+      }
+      posAttr.needsUpdate = true
     }
 
-    // Mouse-following light — brighter on hover
+    // Mouse-following light
     if (mouseLight.current && hovered) {
       mouseLight.current.position.lerp(mouseWorldPos.current, 0.1)
-      mouseLight.current.intensity = 0.6 + Math.sin(t * 3) * 0.12
+      const mouseBase = lowTier ? 0.11 : mediumTier ? 0.16 : 0.18
+      const mousePulse = lowTier ? 0.008 : mediumTier ? 0.016 : 0.02
+      const mouseSpeed = lowTier ? 1.4 : mediumTier ? 2 : 2.2
+      mouseLight.current.intensity = mouseBase + Math.sin(t * mouseSpeed) * mousePulse
     } else if (mouseLight.current) {
-      mouseLight.current.intensity *= 0.92
+      mouseLight.current.intensity *= lowTier ? 0.9 : 0.92
     }
 
-    // Energy core
+    // Energy core (steady on mobile â€” pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      energyCoreRef.current.intensity = IS_MOBILE
-        ? 0.15
-        : 0.35 + Math.sin(t * 1.2) * 0.08
+      const coreBase = lowTier ? 0.12 : mediumTier ? 0.165 : 0.18
+      const corePulse = lowTier ? 0.01 : mediumTier ? 0.02 : 0.03
+      const coreSpeed = lowTier ? 0.7 : mediumTier ? 0.95 : 1.05
+      energyCoreRef.current.intensity = coreBase + Math.sin(t * coreSpeed) * corePulse
     }
   })
 
   return (
-    <group position={[0, 0.3, 0]}>
+    <group position={[0, modelBaseY, 0]}>
       {/* === THE BOX === */}
       <group ref={groupRef}>
-        {/* Main body — dark metallic slab */}
+        {/* Main body â€” dark metallic slab */}
         <mesh castShadow receiveShadow>
           <boxGeometry args={[2.4, 0.5, 1.6]} />
           <meshPhysicalMaterial
@@ -233,10 +231,10 @@ export default function ProductModel() {
           />
         </mesh>
 
-        {/* Glass top surface */}
+        {/* Glass top surface â€” simple glossy on mobile (transmission flickers without post-processing) */}
         <mesh position={[0, 0.26, 0]}>
           <boxGeometry args={[2.3, 0.02, 1.5]} />
-          {IS_MOBILE ? (
+          {stableGlass ? (
             <meshPhysicalMaterial
               color="#080a14"
               metalness={0.9}
@@ -265,35 +263,35 @@ export default function ProductModel() {
           )}
         </mesh>
 
-        {/* Amber edge strip — front */}
+        {/* Amber edge strip â€” front (nudged out to prevent z-fighting) */}
         <mesh ref={glowRef} position={[0, 0, 0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={1.8}
+            emissiveIntensity={frontStripEmissive}
             toneMapped={false}
           />
         </mesh>
 
-        {/* Amber edge strip — back */}
+        {/* Amber edge strip â€” back (nudged out to prevent z-fighting) */}
         <mesh position={[0, 0, -0.812]}>
           <boxGeometry args={[2.2, 0.06, 0.02]} />
           <meshStandardMaterial
             color="#d4a853"
             emissive="#d4a853"
-            emissiveIntensity={1.4}
+            emissiveIntensity={rearStripEmissive}
             toneMapped={false}
           />
         </mesh>
 
-        {/* White side accent lights */}
+        {/* White side accent lights (nudged out to prevent z-fighting) */}
         <mesh position={[1.212, 0, 0]}>
           <boxGeometry args={[0.02, 0.04, 1.4]} />
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={0.5}
+            emissiveIntensity={sideStripEmissive}
             toneMapped={false}
           />
         </mesh>
@@ -302,16 +300,26 @@ export default function ProductModel() {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={0.5}
+            emissiveIntensity={sideStripEmissive}
             toneMapped={false}
           />
         </mesh>
 
+        {/* Top indicator dot â€” raised above glass to avoid z-fighting flicker */}
+        <mesh position={[0, 0.305, 0]}>
+          <sphereGeometry args={[0.03, 16, 16]} />
+          <meshStandardMaterial
+            color="#ffffff"
+            emissive="#ffffff"
+            emissiveIntensity={lowTier ? 0.3 : mediumTier ? 0.48 : 0.52}
+            toneMapped={false}
+          />
+        </mesh>
       </group>
 
-      {/* === NEURAL NET — WHITE/GREY, spring-physics mouse-interactive === */}
+      {/* === NEURAL NET â€” WHITE/GREY, mouse-interactive with distortion === */}
 
-      {/* Outer icosahedron wireframe */}
+      {/* Outer icosahedron â€” off-white wireframe */}
       <mesh
         ref={shellRef}
         geometry={outerGeo}
@@ -329,7 +337,7 @@ export default function ProductModel() {
         />
       </mesh>
 
-      {/* Inner dodecahedron wireframe */}
+      {/* Inner dodecahedron â€” slightly darker grey */}
       <mesh
         ref={innerShellRef}
         geometry={innerGeo}
@@ -347,16 +355,13 @@ export default function ProductModel() {
         />
       </mesh>
 
-      {/* === ENERGY LINES — animated neural network pulses === */}
-      <EnergyLines hovered={hovered} mouseWorldPos={mouseWorldPos.current} />
-
       {/* Mouse-following point light */}
       <pointLight
         ref={mouseLight}
         position={[0, 0, 3]}
         color="#ffffff"
         intensity={0}
-        distance={4}
+        distance={3}
         decay={2}
       />
 
@@ -365,10 +370,11 @@ export default function ProductModel() {
         ref={energyCoreRef}
         position={[0, 0.3, 0]}
         color="#d4a853"
-        intensity={0.6}
+        intensity={0.3}
         distance={4}
         decay={2}
       />
     </group>
   )
 }
+

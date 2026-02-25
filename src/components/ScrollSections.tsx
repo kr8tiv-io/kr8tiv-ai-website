@@ -1,14 +1,45 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { sections } from '../config/sections'
+import { sections, type Section } from '../config/sections'
 import HudPanel from './ui/HudPanel'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Shared text shadow for readability over 3D background
+const textShadow = '0 0 20px rgba(5,5,16,0.95), 0 0 50px rgba(5,5,16,0.8), 0 2px 30px rgba(5,5,16,0.9)'
+const titleShadow = '0 0 30px rgba(5,5,16,0.95), 0 0 60px rgba(5,5,16,0.8), 0 2px 40px rgba(5,5,16,0.9)'
+
+function getViewportFlags() {
+  if (typeof window === 'undefined') {
+    return { isCompactDesktop: false, isSmallMobile: false }
+  }
+
+  const width = window.innerWidth
+  const height = window.innerHeight
+
+  return {
+    isCompactDesktop: width <= 1366 || height <= 800,
+    isSmallMobile: width <= 390 || height <= 700,
+  }
+}
+
+const DENSITY_DWELL_BOOST: Record<Section['density'], number> = {
+  compact: 0,
+  standard: 180,
+  dense: 380,
+}
+
 export default function ScrollSections() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [{ isCompactDesktop, isSmallMobile }, setViewportFlags] = useState(getViewportFlags)
+
+  useEffect(() => {
+    const onResize = () => setViewportFlags(getViewportFlags())
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   useGSAP(() => {
     if (!containerRef.current) return
@@ -23,27 +54,34 @@ export default function ScrollSections() {
       const hudPanel = el.querySelector('.hud-panel')
       const hudDataItems = el.querySelectorAll('.hud-data-item')
       const hudLines = el.querySelectorAll('.hud-connector')
+      const sectionData = sections[i - 1]
 
-      if (!inner) return
+      if (!inner || !sectionData) return
+
+      const viewportDwellBoost = isSmallMobile ? 380 : isCompactDesktop ? 220 : 0
+      const sectionDwell = 1600 + DENSITY_DWELL_BOOST[sectionData.density] + viewportDwellBoost
+      const entryY = isSmallMobile ? 12 : isCompactDesktop ? 16 : 22
+      const entryScale = isSmallMobile ? 0.995 : isCompactDesktop ? 0.988 : 0.98
+      const exitY = isSmallMobile ? -8 : isCompactDesktop ? -12 : -16
+      const hudInX = isSmallMobile ? 18 : isCompactDesktop ? 24 : 28
+      const hudOutX = isSmallMobile ? 10 : isCompactDesktop ? 14 : 16
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           start: 'top top',
-          end: '+=1600',
+          end: `+=${sectionDwell}`,
           pin: true,
           pinSpacing: true,
-          scrub: 1.2,
+          scrub: isSmallMobile ? 1.05 : 1.2,
           anticipatePin: 1,
-          fastScrollEnd: true,
-          invalidateOnRefresh: true,
         },
       })
 
       // Fade in text (first 20%)
       tl.fromTo(
         inner,
-        { opacity: 0, y: 60, scale: 0.95 },
+        { opacity: 0, y: entryY, scale: entryScale },
         { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: 'power3.out' }
       )
 
@@ -51,7 +89,7 @@ export default function ScrollSections() {
       if (hudPanel) {
         tl.fromTo(
           hudPanel,
-          { opacity: 0, x: sections[i - 1]?.alignment === 'left' ? 80 : -80, scale: 0.85 },
+          { opacity: 0, x: sectionData.alignment === 'left' ? hudInX : -hudInX, scale: 0.86 },
           { opacity: 1, x: 0, scale: 1, duration: 0.2, ease: 'back.out(1.4)' },
           '<0.05'
         )
@@ -84,13 +122,13 @@ export default function ScrollSections() {
       }
 
       // Fade out (last 20%)
-      tl.to(inner, { opacity: 0, y: -30, duration: 0.2, ease: 'power2.in' })
+      tl.to(inner, { opacity: 0, y: exitY, duration: 0.2, ease: 'power2.in' })
       if (hudPanel) {
         tl.to(
           hudPanel,
           {
             opacity: 0,
-            x: sections[i - 1]?.alignment === 'left' ? -40 : 40,
+            x: sectionData.alignment === 'left' ? -hudOutX : hudOutX,
             duration: 0.15,
             ease: 'power2.in',
           },
@@ -98,7 +136,7 @@ export default function ScrollSections() {
         )
       }
     })
-  }, [])
+  }, [isCompactDesktop, isSmallMobile])
 
   return (
     <div ref={containerRef} className="scroll-container relative z-10">
@@ -109,31 +147,75 @@ export default function ScrollSections() {
       {sections.map((section, i) => (
         <section
           key={i}
-          className="content-section h-screen flex items-center pointer-events-none relative pt-10 sm:pt-20 overflow-hidden"
+          className={`content-section h-screen flex ${
+            isSmallMobile ? 'items-start' : 'items-center'
+          } pointer-events-none relative ${
+            isSmallMobile ? 'pt-12' : isCompactDesktop ? 'pt-14 md:pt-16' : 'pt-16 md:pt-20'
+          }`}
         >
           {/* Text content side */}
           <div
-            className={`section-inner opacity-0 flex flex-col lg:flex-row items-start gap-4 sm:gap-8 w-full px-4 sm:px-8 ${
+            className={`section-inner opacity-0 flex flex-col xl:flex-row items-start ${
+              isSmallMobile ? 'gap-3 sm:gap-4 xl:gap-5' : isCompactDesktop ? 'gap-4 xl:gap-6' : 'gap-6 xl:gap-8'
+            } w-full ${
+              isSmallMobile ? 'px-4 sm:px-5' : 'px-5 sm:px-7 lg:px-8'
+            } relative z-10 ${
               section.alignment === 'left'
-                ? 'lg:ml-[6vw] lg:mr-auto lg:max-w-[85vw]'
-                : 'lg:ml-auto lg:mr-[6vw] lg:max-w-[85vw] lg:flex-row-reverse'
+                ? 'xl:ml-[6vw] xl:mr-auto xl:max-w-[85vw]'
+                : 'xl:ml-auto xl:mr-[6vw] xl:max-w-[85vw] xl:flex-row-reverse'
             }`}
+            data-testid={`section-inner-${i}`}
+            data-density={section.density}
           >
             {/* Text block */}
-            <div className="flex-shrink-0 max-w-md">
+            <div className={`section-text flex-shrink-0 ${
+              section.density === 'dense' && (isCompactDesktop || isSmallMobile)
+                ? isSmallMobile
+                  ? 'max-w-[min(96vw,31rem)]'
+                  : 'max-w-[min(95vw,34rem)]'
+                : 'max-w-[min(94vw,30rem)]'
+            }`}>
               <span
-                className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-medium mb-2 sm:mb-4 block font-mono"
-                style={{ color: `${section.hudColor}cc` }}
+                className={`uppercase tracking-[0.32em] font-medium block font-mono ${
+                  isSmallMobile ? 'text-[9px] mb-2.5' : isCompactDesktop ? 'text-[9.5px] mb-3' : 'text-[10px] mb-4'
+                }`}
+                style={{ color: `${section.hudColor}cc`, textShadow }}
               >
                 {section.label}
               </span>
               <h2
-                className="title-glow text-lg sm:text-4xl md:text-5xl lg:text-6xl font-light text-white mb-2 sm:mb-5 leading-[1.15] sm:whitespace-pre-line pointer-events-auto"
-                style={{ fontFamily: 'var(--font-display)' }}
+                className={`section-title title-glow font-light text-white whitespace-pre-line pointer-events-auto ${
+                  isSmallMobile
+                    ? 'text-[clamp(2rem,10vw,3.2rem)] mb-2.5 leading-[1.02]'
+                    : isCompactDesktop
+                      ? section.density === 'dense'
+                        ? 'text-[clamp(1.95rem,5.9vw,3.8rem)] mb-3 leading-[1.02]'
+                        : 'text-[clamp(2.05rem,6.2vw,4.05rem)] mb-3.5 leading-[1.03]'
+                      : 'text-[clamp(2.35rem,7vw,4.85rem)] mb-4 md:mb-5 leading-[1.04]'
+                }`}
+                style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
               >
                 {section.title}
               </h2>
-              <p className="text-[11px] sm:text-base text-white/80 leading-relaxed max-w-sm line-clamp-4 sm:line-clamp-none">
+              <p
+                className={`section-copy text-white/80 ${
+                  section.density === 'dense' && (isCompactDesktop || isSmallMobile)
+                    ? isSmallMobile
+                      ? 'max-w-[min(95vw,31rem)]'
+                      : 'max-w-[min(92vw,33rem)]'
+                    : 'max-w-[min(92vw,29rem)]'
+                } ${
+                  isSmallMobile
+                    ? 'text-[clamp(0.86rem,3.8vw,0.99rem)] leading-[1.3]'
+                    : isCompactDesktop
+                      ? section.density === 'dense'
+                        ? 'text-[clamp(0.88rem,1.45vw,0.98rem)] leading-[1.33]'
+                        : 'text-[clamp(0.9rem,1.55vw,1.04rem)] leading-[1.35]'
+                      : 'text-[clamp(0.93rem,1.65vw,1.12rem)] leading-[1.42]'
+                }`}
+                data-testid={`section-copy-${i}`}
+                style={{ textShadow }}
+              >
                 {section.copy}
               </p>
 
@@ -167,23 +249,27 @@ export default function ScrollSections() {
                   href={section.cta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto inline-block mt-3 sm:mt-8 px-4 sm:px-8 py-2 sm:py-3 border text-white text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] uppercase hover:bg-white/5 transition-all duration-300"
+                  className="pointer-events-auto inline-block mt-8 px-8 py-3 border text-white text-xs tracking-[0.2em] uppercase hover:bg-white/5 transition-all duration-300"
                   style={{ borderColor: `${section.hudColor}40` }}
                 >
                   {section.cta.text}
                 </a>
               )}
 
-              {/* Multiple CTAs */}
+              {/* Multiple CTAs — uniform width grid */}
               {section.ctas && (
-                <div className="flex flex-wrap gap-1.5 sm:gap-3 mt-3 sm:mt-8 pointer-events-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto max-w-[min(95vw,420px)]">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
                       href={cta.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block min-w-0 sm:min-w-[180px] text-center px-2.5 sm:px-6 py-1.5 sm:py-2.5 border text-white text-[8px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300"
+                      className={`flex items-center justify-center px-4 py-2.5 border text-white text-[11px] tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300 ${
+                        section.ctas && j === section.ctas.length - 1 && section.ctas.length % 2 !== 0
+                          ? 'sm:col-span-2'
+                          : ''
+                      }`}
                       style={{ borderColor: `${section.hudColor}40` }}
                     >
                       {cta.text}
@@ -193,32 +279,39 @@ export default function ScrollSections() {
               )}
             </div>
 
-            {/* HUD Panel — hidden on mobile to prevent viewport overflow */}
-            <div className="hidden sm:block">
-              <HudPanel section={section} index={i} />
-            </div>
+            {/* HUD Panel */}
+            <HudPanel section={section} index={i} compact={isSmallMobile} />
           </div>
-
-          {/* Scanline overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.02]"
-            style={{
-              background: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${section.hudColor}15 2px, ${section.hudColor}15 4px)`,
-            }}
-          />
         </section>
       ))}
 
       {/* Footer / CTA — The future is open */}
-      <section className="content-section h-screen flex items-center justify-center">
-        <div className="section-inner opacity-0 text-center max-w-2xl px-4 sm:px-6">
+      <section className="content-section h-screen flex items-center justify-center relative">
+        <div className={`section-inner opacity-0 text-center max-w-[min(94vw,52rem)] relative z-10 ${
+          isSmallMobile ? 'px-4' : 'px-5 sm:px-6'
+        }`}>
           <h2
-            className="title-glow text-xl sm:text-5xl md:text-6xl font-light text-white mb-3 sm:mb-4 leading-[1.1] pointer-events-auto"
-            style={{ fontFamily: 'var(--font-display)' }}
+            className={`title-glow font-light text-white pointer-events-auto ${
+              isSmallMobile
+                ? 'text-[clamp(1.95rem,10vw,3rem)] mb-2.5 leading-[1.04]'
+                : isCompactDesktop
+                  ? 'text-[clamp(2.05rem,6.4vw,4rem)] mb-3 leading-[1.05]'
+                  : 'text-[clamp(2.25rem,7vw,4.8rem)] mb-4 leading-[1.06]'
+            }`}
+            style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
           >
             The future is open.<br />Come build it.
           </h2>
-          <p className="text-[10px] sm:text-sm text-white/70 mb-4 sm:mb-12 leading-relaxed max-w-lg mx-auto px-2 sm:px-0 line-clamp-4 sm:line-clamp-none">
+          <p
+            className={`text-white/70 max-w-[min(92vw,40rem)] mx-auto ${
+              isSmallMobile
+                ? 'text-[clamp(0.8rem,3.7vw,0.9rem)] mb-7 leading-[1.38]'
+                : isCompactDesktop
+                  ? 'text-[clamp(0.82rem,1.35vw,0.95rem)] mb-8 sm:mb-10 leading-[1.43]'
+                  : 'text-[clamp(0.84rem,1.45vw,0.98rem)] mb-9 sm:mb-12 leading-[1.5]'
+            }`}
+            style={{ textShadow }}
+          >
             kr8tiv AI is an open-source, tokenized, collaborative AI company building autonomous
             systems that the world actually needs. We&apos;re proud to be in this race to the bottom &mdash;
             proud to be ushering in a new age of technology where the best products are free, the
@@ -227,33 +320,33 @@ export default function ScrollSections() {
           </p>
 
           {/* Primary CTAs */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-1.5 sm:gap-4 mb-3 sm:mb-10 pointer-events-auto px-4 sm:px-0">
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-10 pointer-events-auto">
             <a
               href="https://kr8tiv.web.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-[#d4a853]/30 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-[#d4a853]/60 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 border border-[#d4a853]/30 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853]/60 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
-              Enter Ecosystem &rarr;
+              Enter the Ecosystem &rarr;
             </a>
             <a
               href="https://jarvislife.io/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-white/20 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
               Explore JARVIS &rarr;
             </a>
             <a
               href="mailto:hello@kr8tiv.ai"
-              className="w-full sm:w-auto text-center px-3 sm:px-8 py-2 sm:py-3 bg-black border border-white/20 text-white text-[9px] sm:text-xs tracking-[0.1em] sm:tracking-[0.2em] uppercase hover:border-white/40 transition-all duration-300 pointer-events-auto"
+              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 pointer-events-auto backdrop-blur-sm"
             >
               Custom Solutions &rarr;
             </a>
           </div>
 
           {/* Social icons */}
-          <div className="flex items-center justify-center gap-3 sm:gap-6 pointer-events-auto mb-3 sm:mb-12">
+          <div className="flex items-center justify-center gap-6 pointer-events-auto mb-12">
             <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
                className="group flex flex-col items-center gap-2">
               <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
@@ -296,11 +389,11 @@ export default function ScrollSections() {
           </div>
 
           {/* Tagline */}
-          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4">
+          <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4" style={{ textShadow }}>
             Anarcho-capitalist liberation tech. You&apos;re welcome.
           </div>
 
-          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase">
+          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase" style={{ textShadow }}>
             &copy; 2026 kr8tiv AI &mdash; All systems nominal
           </div>
         </div>

@@ -33,6 +33,7 @@ uniform float uLayerOffset;
 
 varying vec2 vUv;
 varying vec3 vWorldPos;
+varying vec3 vWorldNormal;
 
 // Simple noise for organic variation
 vec3 mod289v(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -111,6 +112,7 @@ void main() {
 
   vec4 wp = modelMatrix * vec4(pos, 1.0);
   vWorldPos = wp.xyz;
+  vWorldNormal = normalize(mat3(modelMatrix) * normal);
   gl_Position = projectionMatrix * viewMatrix * wp;
 }
 `
@@ -120,6 +122,7 @@ precision highp float;
 
 varying vec2 vUv;
 varying vec3 vWorldPos;
+varying vec3 vWorldNormal;
 
 uniform float uTime;
 uniform float uPhase;
@@ -151,6 +154,16 @@ void main() {
   float centerDist = length(vWorldPos.xz);
   float centerFade = smoothstep(3.5, 12.0, centerDist);
   intensity *= mix(0.005, 1.0, centerFade);
+
+  // Keep the stream volumetric, not a foreground slab.
+  vec3 viewDir = normalize(cameraPosition - vWorldPos);
+  float facing = abs(dot(normalize(vWorldNormal), viewDir));
+  float facingFade = smoothstep(0.12, 0.45, facing);
+  intensity *= facingFade;
+
+  float cameraDistance = distance(vWorldPos, cameraPosition);
+  float nearCameraFade = smoothstep(2.8, 5.4, cameraDistance);
+  intensity *= nearCameraFade;
 
   // ── Pure white ──
   float alpha = intensity * uOpacity;
