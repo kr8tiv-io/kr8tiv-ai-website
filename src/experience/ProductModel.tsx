@@ -17,9 +17,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
   const mediumTier = tier === 'medium'
   const stableGlass = lowTier
   const modelBaseY = lowTier ? 0.1 : mediumTier ? 0.24 : 0.3
-  const frontStripEmissive = lowTier ? 0.58 : mediumTier ? 0.84 : 1.0
-  const rearStripEmissive = lowTier ? 0.46 : mediumTier ? 0.68 : 0.8
-  const sideStripEmissive = lowTier ? 0.32 : mediumTier ? 0.42 : 0.5
+  const frontStripEmissive = lowTier ? 0.34 : mediumTier ? 0.46 : 0.56
+  const rearStripEmissive = lowTier ? 0.28 : mediumTier ? 0.36 : 0.44
+  const sideStripEmissive = lowTier ? 0.18 : mediumTier ? 0.24 : 0.3
   const groupRef = useRef<THREE.Group>(null)
   const glowRef = useRef<THREE.Mesh>(null)
   const shellRef = useRef<THREE.Mesh>(null)
@@ -85,9 +85,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
     // Amber glow pulse (steady on mobile â€” no post-processing to soften pulses)
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshStandardMaterial
-      const glowBase = lowTier ? 0.68 : mediumTier ? 0.78 : 0.8
-      const glowPulse = lowTier ? 0.018 : mediumTier ? 0.04 : 0.05
-      const glowSpeed = lowTier ? 0.75 : mediumTier ? 1.05 : 1.2
+      const glowBase = lowTier ? 0.46 : mediumTier ? 0.5 : 0.54
+      const glowPulse = lowTier ? 0.003 : mediumTier ? 0.005 : 0.007
+      const glowSpeed = lowTier ? 0.45 : mediumTier ? 0.55 : 0.65
       mat.emissiveIntensity = glowBase + Math.sin(t * glowSpeed) * glowPulse
     }
 
@@ -98,7 +98,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
 
       const mat = shellRef.current.material as THREE.MeshStandardMaterial
       mat.opacity = hovered ? 0.18 : 0.07
-      mat.emissiveIntensity = hovered ? 0.5 : 0.12
+      mat.emissiveIntensity = hovered ? 0.22 : 0.07
 
       // Vertex distortion based on mouse proximity
       const posAttr = shellRef.current.geometry.attributes.position as THREE.BufferAttribute
@@ -151,7 +151,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
 
       const mat = innerShellRef.current.material as THREE.MeshStandardMaterial
       mat.opacity = hovered ? 0.12 : 0.04
-      mat.emissiveIntensity = hovered ? 0.35 : 0.08
+      mat.emissiveIntensity = hovered ? 0.16 : 0.05
 
       // Inner shell distortion (subtler)
       const posAttr = innerShellRef.current.geometry.attributes.position as THREE.BufferAttribute
@@ -197,9 +197,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
     // Mouse-following light
     if (mouseLight.current && hovered) {
       mouseLight.current.position.lerp(mouseWorldPos.current, 0.1)
-      const mouseBase = lowTier ? 0.11 : mediumTier ? 0.16 : 0.18
-      const mousePulse = lowTier ? 0.008 : mediumTier ? 0.016 : 0.02
-      const mouseSpeed = lowTier ? 1.4 : mediumTier ? 2 : 2.2
+      const mouseBase = lowTier ? 0.08 : mediumTier ? 0.11 : 0.13
+      const mousePulse = lowTier ? 0.0015 : mediumTier ? 0.003 : 0.004
+      const mouseSpeed = lowTier ? 0.9 : mediumTier ? 1.1 : 1.2
       mouseLight.current.intensity = mouseBase + Math.sin(t * mouseSpeed) * mousePulse
     } else if (mouseLight.current) {
       mouseLight.current.intensity *= lowTier ? 0.9 : 0.92
@@ -207,9 +207,9 @@ export default function ProductModel({ tier }: ProductModelProps) {
 
     // Energy core (steady on mobile â€” pulse causes flashing through glass without tone mapping)
     if (energyCoreRef.current) {
-      const coreBase = lowTier ? 0.12 : mediumTier ? 0.165 : 0.18
-      const corePulse = lowTier ? 0.01 : mediumTier ? 0.02 : 0.03
-      const coreSpeed = lowTier ? 0.7 : mediumTier ? 0.95 : 1.05
+      const coreBase = lowTier ? 0.08 : mediumTier ? 0.11 : 0.125
+      const corePulse = lowTier ? 0.002 : mediumTier ? 0.0035 : 0.005
+      const coreSpeed = lowTier ? 0.45 : mediumTier ? 0.55 : 0.65
       energyCoreRef.current.intensity = coreBase + Math.sin(t * coreSpeed) * corePulse
     }
   })
@@ -311,7 +311,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
           <meshStandardMaterial
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={lowTier ? 0.3 : mediumTier ? 0.48 : 0.52}
+            emissiveIntensity={lowTier ? 0.14 : mediumTier ? 0.2 : 0.24}
             toneMapped={false}
           />
         </mesh>
@@ -370,7 +370,7 @@ export default function ProductModel({ tier }: ProductModelProps) {
         ref={energyCoreRef}
         position={[0, 0.3, 0]}
         color="#d4a853"
-        intensity={0.3}
+        intensity={0.12}
         distance={4}
         decay={2}
       />

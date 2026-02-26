@@ -25,8 +25,8 @@ import * as THREE from 'three'
 // Scroll-velocity-reactive chromatic aberration offset.
 // Passed by reference — mutating in useFrame updates the effect directly.
 // (refs on postprocessing wrappers crash JSON.stringify in React 19)
-const _offsetVec = new THREE.Vector2(0.0006, 0.0006)
-const _targetOffset = new THREE.Vector2(0.0006, 0.0006)
+const _offsetVec = new THREE.Vector2(0.00015, 0.00015)
+const _targetOffset = new THREE.Vector2(0.00015, 0.00015)
 
 export default function Effects() {
   useFrame(() => {
@@ -34,8 +34,8 @@ export default function Effects() {
     const normalized = vel / 1500
 
     _targetOffset.set(
-      0.0006 + normalized * 0.004,
-      0.0006 + normalized * 0.004
+      0.00015 + normalized * 0.0012,
+      0.00015 + normalized * 0.0012
     )
     _offsetVec.lerp(_targetOffset, 0.12)
   })
@@ -44,8 +44,8 @@ export default function Effects() {
     <EffectComposer multisampling={0}>
       <Bloom
         luminanceThreshold={0.45}
-        luminanceSmoothing={0.7}
-        intensity={0.8}
+        luminanceSmoothing={0.8}
+        intensity={0.45}
         mipmapBlur
         levels={5}
       />
