@@ -128,6 +128,7 @@ uniform float uTime;
 uniform float uPhase;
 uniform float uOpacity;
 uniform float uLayerOffset;
+uniform float uCenterFloor;
 
 void main() {
   // ── Soft vertical gaussian — wide, dreamy falloff ──
@@ -153,7 +154,7 @@ void main() {
   // ── Center protection zone — wide fade so product + text stay clear ──
   float centerDist = length(vWorldPos.xz);
   float centerFade = smoothstep(3.5, 12.0, centerDist);
-  intensity *= mix(0.005, 1.0, centerFade);
+  intensity *= mix(uCenterFloor, 1.0, centerFade);
 
   // Keep the stream volumetric, not a foreground slab.
   vec3 viewDir = normalize(cameraPosition - vWorldPos);
@@ -182,6 +183,7 @@ const StreamLayerMaterialImpl = shaderMaterial(
     uPhase: 0,
     uLayerOffset: 0,
     uOpacity: 0.04,
+    uCenterFloor: 0.1,
   },
   streamVertexShader,
   streamFragmentShader
@@ -200,16 +202,26 @@ const SEGMENTS_X = 80          // Subdivision for smooth waves
 
 // ── Single Layer ────────────────────────────────────────────
 
-function StreamLayer({ index, total }: { index: number; total: number }) {
+function StreamLayer({
+  index,
+  total,
+  opacityMultiplier,
+  centerFloor,
+}: {
+  index: number
+  total: number
+  opacityMultiplier: number
+  centerFloor: number
+}) {
   const matRef = useRef<any>(null)
 
   // Normalize index to -1...1 range for Z spread
-  const normalizedIndex = (index / (total - 1)) * 2 - 1
+  const normalizedIndex = (index / Math.max(total - 1, 1)) * 2 - 1
   const layerOffset = normalizedIndex * LAYER_SPREAD
 
   // Layers near the center of the stack are slightly brighter
   const depthFactor = 1.0 - Math.abs(normalizedIndex) * 0.4
-  const layerOpacity = 0.018 * depthFactor
+  const layerOpacity = 0.018 * depthFactor * opacityMultiplier
 
   const geometry = useMemo(() => {
     return new THREE.PlaneGeometry(STREAM_LENGTH, STREAM_HEIGHT, SEGMENTS_X, 1)
@@ -229,6 +241,7 @@ function StreamLayer({ index, total }: { index: number; total: number }) {
         uPhase={0}
         uLayerOffset={layerOffset}
         uOpacity={layerOpacity}
+        uCenterFloor={centerFloor}
         transparent
         depthWrite={false}
         side={THREE.DoubleSide}
@@ -241,15 +254,31 @@ function StreamLayer({ index, total }: { index: number; total: number }) {
 
 // ── Exported Component ──────────────────────────────────────
 
-export default function SmokeStream() {
+interface SmokeStreamProps {
+  layerCount?: number
+  opacityMultiplier?: number
+  centerFloor?: number
+}
+
+export default function SmokeStream({
+  layerCount = LAYER_COUNT,
+  opacityMultiplier = 1,
+  centerFloor = 0.1,
+}: SmokeStreamProps) {
   const layers = useMemo(() => {
-    return Array.from({ length: LAYER_COUNT }, (_, i) => i)
-  }, [])
+    return Array.from({ length: layerCount }, (_, i) => i)
+  }, [layerCount])
 
   return (
     <group position={[0, STREAM_Y, 0]}>
       {layers.map((i) => (
-        <StreamLayer key={i} index={i} total={LAYER_COUNT} />
+        <StreamLayer
+          key={i}
+          index={i}
+          total={layerCount}
+          opacityMultiplier={opacityMultiplier}
+          centerFloor={centerFloor}
+        />
       ))}
     </group>
   )

@@ -5,5 +5,8 @@ declare namespace React.JSX {
   interface IntrinsicElements {
     volumetricSmokeMaterial: any
     streamLayerMaterial: any
+    energyLineMaterial: any
+    fogParticleMaterial: any
+    goldParticleMaterial: any
   }
 }
