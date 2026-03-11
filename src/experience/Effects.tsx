@@ -8,6 +8,7 @@ import {
 } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
+import type { DeviceTier } from '../hooks/useDeviceCapability'
 
 /**
  * Effects — Optimized post-processing stack.
@@ -28,14 +29,22 @@ import * as THREE from 'three'
 const _offsetVec = new THREE.Vector2(0.00015, 0.00015)
 const _targetOffset = new THREE.Vector2(0.00015, 0.00015)
 
-export default function Effects() {
+interface EffectsProps {
+  tier: DeviceTier
+}
+
+export default function Effects({ tier }: EffectsProps) {
+  const highTier = tier === 'high'
+
   useFrame(() => {
     const vel = Math.min(Math.abs((window as any).__kr8tiv_scrollVel ?? 0), 1500)
     const normalized = vel / 1500
+    const baseOffset = highTier ? 0.0004 : 0.00025
+    const velocityOffset = highTier ? 0.0002 : 0.00012
 
     _targetOffset.set(
-      0.00015 + normalized * 0.0012,
-      0.00015 + normalized * 0.0012
+      baseOffset + normalized * velocityOffset,
+      baseOffset + normalized * velocityOffset
     )
     _offsetVec.lerp(_targetOffset, 0.12)
   })
@@ -43,20 +52,20 @@ export default function Effects() {
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={0.45}
-        luminanceSmoothing={0.8}
-        intensity={0.45}
+        luminanceThreshold={highTier ? 0.6 : 0.72}
+        luminanceSmoothing={highTier ? 0.7 : 0.78}
+        intensity={highTier ? 0.5 : 0.32}
         mipmapBlur
-        levels={5}
+        levels={highTier ? 5 : 4}
       />
       <ChromaticAberration
         blendFunction={BlendFunction.NORMAL}
         offset={_offsetVec}
-        radialModulation
-        modulationOffset={0.5}
+        radialModulation={highTier}
+        modulationOffset={highTier ? 0.5 : 0.2}
       />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette darkness={0.65} offset={0.2} />
+      <Vignette darkness={highTier ? 0.7 : 0.55} offset={highTier ? 0.2 : 0.24} />
     </EffectComposer>
   )
 }
