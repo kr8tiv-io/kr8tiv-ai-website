@@ -32,14 +32,7 @@ export default function Experience({ tier }: ExperienceProps) {
       : tier === 'medium'
         ? {
             stream: { layerCount: 18, opacityMultiplier: 1.05, centerFloor: 0.14 as const },
-            volume: {
-              densityMultiplier: 0.2,
-              absorption: 0.34,
-              lightIntensity: 1.38,
-              densityThreshold: 0.35,
-              volumeScale: [10.5, 4.9, 10.5] as [number, number, number],
-              volumePos: [0, 1.0, 0] as [number, number, number],
-            },
+            volume: null,
           }
         : null
 
@@ -74,7 +67,7 @@ export default function Experience({ tier }: ExperienceProps) {
       <Kr8tivLogo />
 
       {tier !== 'low' && smokeProfile && <SmokeStream {...smokeProfile.stream} />}
-      {tier !== 'low' && smokeProfile && <VolumetricSmoke {...smokeProfile.volume} />}
+      {tier === 'high' && smokeProfile?.volume && <VolumetricSmoke {...smokeProfile.volume} />}
 
       <HudRing />
 

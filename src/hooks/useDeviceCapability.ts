@@ -4,16 +4,20 @@ export type DeviceTier = 'high' | 'medium' | 'low'
 
 export interface DeviceCapability {
   tier: DeviceTier
+  preferConservativeWebGL: boolean
   supportsWebGL: boolean
   webglChecked: boolean
 }
 
 const LOW_RENDERER_PATTERN = /(Mali|Adreno 5|SwiftShader)/i
 const MEDIUM_RENDERER_PATTERN = /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics)/i
+const FIREFOX_PATTERN = /firefox/i
+const WINDOWS_PATTERN = /windows/i
 
 export function useDeviceCapability(): DeviceCapability {
   const [capability, setCapability] = useState<DeviceCapability>({
     tier: 'high',
+    preferConservativeWebGL: false,
     supportsWebGL: false,
     webglChecked: false,
   })
@@ -23,6 +27,16 @@ export function useDeviceCapability(): DeviceCapability {
       const width = window.innerWidth
       const height = window.innerHeight
       const isMobile = width < 768
+      const userAgent = window.navigator.userAgent
+      const isFirefoxOnWindows = FIREFOX_PATTERN.test(userAgent) && WINDOWS_PATTERN.test(userAgent)
+
+      let tier: DeviceTier = 'high'
+
+      if (isMobile) {
+        tier = 'low'
+      } else if (width < 1100 || height < 700) {
+        tier = 'medium'
+      }
 
       const detectionCanvas = document.createElement('canvas')
       const detectionGl =
@@ -36,17 +50,15 @@ export function useDeviceCapability(): DeviceCapability {
       const isLowRenderer = typeof renderer === 'string' && LOW_RENDERER_PATTERN.test(renderer)
       const isMediumRenderer = typeof renderer === 'string' && MEDIUM_RENDERER_PATTERN.test(renderer)
 
-      let tier: DeviceTier = 'high'
-
-      if (isMobile || isLowRenderer) {
+      if (isLowRenderer) {
         tier = 'low'
-      } else if (width < 1100 || height < 700 || isMediumRenderer) {
+      } else if (isFirefoxOnWindows || width < 1100 || height < 700 || isMediumRenderer) {
         tier = 'medium'
       }
 
       const probeOptions = {
         alpha: false,
-        antialias: tier !== 'low',
+        antialias: tier === 'high' && !isFirefoxOnWindows,
       }
       const startupCanvas = document.createElement('canvas')
       const startupGl =
@@ -56,6 +68,7 @@ export function useDeviceCapability(): DeviceCapability {
 
       setCapability({
         tier,
+        preferConservativeWebGL: isFirefoxOnWindows,
         supportsWebGL,
         webglChecked: true,
       })

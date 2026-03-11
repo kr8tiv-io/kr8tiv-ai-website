@@ -26,7 +26,7 @@ function isWebGLErrorMessage(message: string) {
 }
 
 export default function App() {
-  const { tier, supportsWebGL, webglChecked } = useDeviceCapability()
+  const { tier, preferConservativeWebGL, supportsWebGL, webglChecked } = useDeviceCapability()
   const [loadingDone, setLoadingDone] = useState(false)
   const [introComplete, setIntroComplete] = useState(false)
   const [canvasReady, setCanvasReady] = useState(false)
@@ -77,6 +77,8 @@ export default function App() {
   }, [canvasFailed, canvasReady, supportsWebGL, webglChecked])
 
   const shouldRenderCanvas = webglChecked && supportsWebGL && !canvasFailed
+  const canvasDpr: [number, number] =
+    tier === 'low' ? [1, 1] : preferConservativeWebGL ? [1, 1.25] : [1, 1.5]
 
   return (
     <>
@@ -86,11 +88,12 @@ export default function App() {
           <Canvas
             camera={{ position: [0, 1.5, 5], fov: tier === 'low' ? 50 : 35 }}
             gl={{
-              antialias: tier !== 'low',
-              powerPreference: 'high-performance',
+              antialias: !preferConservativeWebGL && tier !== 'low',
+              powerPreference: preferConservativeWebGL ? 'default' : 'high-performance',
               alpha: false,
+              stencil: !preferConservativeWebGL,
             }}
-            dpr={tier === 'low' ? [1, 1.5] : [1.5, 2]}
+            dpr={canvasDpr}
             onCreated={() => setCanvasReady(true)}
           >
             <color attach="background" args={['#050510']} />
