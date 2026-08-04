@@ -31,3 +31,6 @@ yarn-error.log*
 artifacts/visual/
 test-results/
 playwright-report/
+
+# Ad-hoc verification scripts
+*.tmp.mjs
