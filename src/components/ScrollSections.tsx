@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { sections, type Section } from '../config/sections'
+import {
+  PAGE_EVOLVE,
+  PAGE_JARVIS,
+  PAGE_KIN,
+  sections,
+  type Section,
+} from '../config/sections'
 import HudPanel from './ui/HudPanel'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -23,6 +29,13 @@ function getViewportFlags() {
     isCompactDesktop: width <= 1366 || height <= 800,
     isSmallMobile: width <= 390 || height <= 700,
   }
+}
+
+/** Off-site links open in a new tab; our own static pages stay in this one. */
+function linkTarget(href: string) {
+  return /^https?:\/\//i.test(href)
+    ? { target: '_blank', rel: 'noopener noreferrer' as const }
+    : {}
 }
 
 const DENSITY_DWELL_BOOST: Record<Section['density'], number> = {
@@ -240,27 +253,12 @@ export default function ScrollSections() {
                 {section.copy}
               </p>
 
-              {/* Built on Solana · Born on Bags — first section only */}
+              {/* Proof line — first section only */}
               {i === 0 && (
                 <div className="flex items-center gap-3 mt-6 pointer-events-auto">
                   <span className="text-[11px] tracking-[0.1em] text-white/50 font-mono">
-                    Built on Solana &middot; Born on
+                    Running in production today &middot; Edmonton, Alberta
                   </span>
-                  <a
-                    href="https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 group"
-                  >
-                    <img
-                      src="https://bags.fm/assets/images/bags-icon.png"
-                      alt="Bags"
-                      className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                    <span className="text-[11px] tracking-[0.1em] text-white/50 group-hover:text-white/80 font-mono transition-colors duration-300">
-                      Bags
-                    </span>
-                  </a>
                 </div>
               )}
 
@@ -268,8 +266,7 @@ export default function ScrollSections() {
               {section.cta && !section.ctas && (
                 <a
                   href={section.cta.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...linkTarget(section.cta.href)}
                   className="pointer-events-auto inline-block mt-8 px-8 py-3 border text-white text-xs tracking-[0.2em] uppercase hover:bg-white/5 transition-all duration-300"
                   style={{ borderColor: `${section.hudColor}40` }}
                 >
@@ -284,8 +281,7 @@ export default function ScrollSections() {
                     <a
                       key={j}
                       href={cta.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...linkTarget(cta.href)}
                       className={`flex items-center justify-center px-4 py-2.5 border text-white text-[11px] tracking-[0.15em] uppercase hover:bg-white/5 transition-all duration-300 ${
                         section.ctas && j === section.ctas.length - 1 && section.ctas.length % 2 !== 0
                           ? 'sm:col-span-2'
@@ -336,8 +332,9 @@ export default function ScrollSections() {
             Every engagement starts the same way: one week inside your operation,
             mapping where the hours actually go. You get a written plan of what an
             AI back-office would take off your plate and what it costs to build.
-            No pitch deck, no lock-in &mdash; and everything we build stays open source,
-            so you own the code that runs your business.
+            Fixed scope, no lock-in &mdash; and the source code for everything we
+            build for you is handed over, so the system that runs your business
+            stays yours.
           </p>
 
           {/* Engagement ladder */}
@@ -407,6 +404,26 @@ export default function ScrollSections() {
             </a>
           </div>
 
+          {/* Deeper reading — static pages, available at every breakpoint */}
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 pointer-events-auto mb-10">
+            {[
+              { label: 'Evolve case study', href: PAGE_EVOLVE },
+              { label: 'JARVIS', href: PAGE_JARVIS },
+              { label: 'KIN', href: PAGE_KIN },
+              { label: 'kr8tiv.io — design studio', href: 'https://kr8tiv.io' },
+            ].map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                {...linkTarget(link.href)}
+                className="text-[10px] tracking-[0.18em] uppercase text-white/45 hover:text-[#d4a853] transition-colors duration-300"
+                style={{ textShadow }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
           {/* Social icons */}
           <div className="flex items-center justify-center gap-6 pointer-events-auto mb-12">
             <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
@@ -452,7 +469,7 @@ export default function ScrollSections() {
 
           {/* Tagline */}
           <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4" style={{ textShadow }}>
-            Anarcho-capitalist liberation tech. You&apos;re welcome.
+            Fewer forms. Fewer evenings lost. That&apos;s the whole business.
           </div>
 
           <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase mb-3" style={{ textShadow }}>

@@ -26,10 +26,17 @@ export interface Section {
   ctas?: SectionCta[]
 }
 
+import { asset } from '../lib/asset'
+
 export const PHONE_DISPLAY = '780-915-5471'
 export const PHONE_HREF = 'tel:+17809155471'
 export const AUDIT_MAILTO =
   'mailto:hello@kr8tiv.ai?subject=AI%20Ops%20Audit&body=Tell%20us%20what%20eats%20your%20week%20%E2%80%94%20we%27ll%20tell%20you%20what%20an%20agent%20could%20take%20off%20your%20plate.'
+
+/** Static sub-pages (real HTML, base-URL aware so subpath previews work). */
+export const PAGE_EVOLVE = asset('/work/evolve/')
+export const PAGE_JARVIS = asset('/jarvis/')
+export const PAGE_KIN = asset('/kin/')
 
 export const sections: Section[] = [
   {
@@ -72,9 +79,9 @@ export const sections: Section[] = [
     hudColor: '#ffffff',
     alignment: 'right',
     ctas: [
+      { text: 'Read the full case study →', href: PAGE_EVOLVE },
       { text: 'Book an AI Ops Audit →', href: AUDIT_MAILTO },
       { text: `Call ${PHONE_DISPLAY} →`, href: PHONE_HREF },
-      { text: 'The design side: kr8tiv.io →', href: 'https://kr8tiv.io/work/' },
     ],
   },
   {
@@ -86,17 +93,17 @@ export const sections: Section[] = [
     density: 'standard',
     label: 'How It Works',
     title: 'Your tools.\nOur agents.',
-    copy: "We don't sell you a platform and a migration. Your business already runs on something — spreadsheets, a drive, email, a calendar. We leave all of it exactly where it is and wire AI agents in underneath: MCP-native connectors that read, write, and reconcile across the tools you already trust. If we disappeared tomorrow, you'd still own everything — the data, the documents, and the code, because every line of it is public.",
+    copy: "We don't sell you a platform and a migration. Your business already runs on something — spreadsheets, a drive, email, a calendar. We leave all of it exactly where it is and wire AI agents in underneath: MCP-native connectors that read, write, and reconcile across the tools you already trust. Nothing is retyped, nothing is re-platformed, and your team keeps working in the software they already know.",
     hudData: [
       { label: 'YOUR STACK', value: 'KEPT' },
       { label: 'MIGRATION', value: 'NONE' },
       { label: 'AGENTS', value: 'MCP', unit: 'NATIVE' },
-      { label: 'CODE', value: 'OPEN' },
+      { label: 'RETRAINING', value: 'NONE' },
       { label: 'LOCK-IN', value: 'ZERO' },
     ],
     hudColor: '#ffffff',
     alignment: 'left',
-    cta: { text: 'Read the code →', href: 'https://github.com/kr8tiv-ai' },
+    cta: { text: 'See it running at Evolve →', href: PAGE_EVOLVE },
   },
   {
     angle: Math.PI * 1.42,
@@ -107,19 +114,18 @@ export const sections: Section[] = [
     density: 'standard',
     label: 'The Engines',
     title: 'JARVIS thinks.\nKIN talks.',
-    copy: "Two products power every back-office we ship. JARVIS is the context engine — an autonomous system that knows your business, watches your numbers, and gets smarter every week; it started as a live trading terminal on Solana and is growing into a portable intelligence layer for everything else. KIN is the concierge — a bespoke AI companion on voice, Telegram, and WhatsApp, configured end-to-end so the least technical person on your crew can use frontier AI without touching a setting.",
+    copy: "Two systems power every back-office we ship. JARVIS is the context engine — it holds everything your business knows in one place, watches the numbers between jobs, and hands each agent the context it needs to act correctly instead of guessing. KIN is the front desk — a bespoke AI assistant reachable on voice, Telegram, and WhatsApp, configured end to end so the least technical person on your crew can ask for a quote, a schedule, or a number and simply get it.",
     hudData: [
       { label: 'JARVIS', value: 'CONTEXT', unit: 'ENGINE' },
-      { label: 'KIN', value: 'CONCIERGE', unit: 'AI' },
-      { label: 'STATUS', value: 'LIVE' },
-      { label: 'SOURCE', value: 'PUBLIC' },
+      { label: 'KIN', value: 'ASSISTANT', unit: 'VOICE + CHAT' },
+      { label: 'STATUS', value: 'IN', unit: 'PRODUCTION' },
+      { label: 'DEPLOYED ON', value: 'YOUR', unit: 'STACK' },
     ],
     hudColor: '#ffffff',
     alignment: 'right',
     ctas: [
-      { text: 'JARVIS Dashboard →', href: 'https://jarvislife.io/' },
-      { text: 'Meet Your KIN →', href: 'https://meetyourkin.com' },
-      { text: 'GitHub →', href: 'https://github.com/Matt-Aurora-Ventures/Jarvis' },
+      { text: 'JARVIS — the context engine →', href: PAGE_JARVIS },
+      { text: 'KIN — the AI front desk →', href: PAGE_KIN },
     ],
   },
   {
@@ -127,23 +133,23 @@ export const sections: Section[] = [
     phi: Math.PI / 2.6,
     radius: 7.6,
     targetY: 0.25,
-    sysCode: 'TKN',
+    sysCode: 'OWN',
     density: 'standard',
-    label: 'Open Source · Tokenized',
-    title: 'Read the code that\nruns your business.',
-    copy: "Most AI companies ask you to trust a black box. We publish everything — every agent, every pipeline, every line. And because kr8tiv AI is tokenized, the people who use what we build own a piece of it: 75% of revenue flows to $KR8TIV holders, 5% to charity, and the rest keeps the lights on. You're not renting software from a landlord. You're holding equity in the thing that does your paperwork.",
+    label: 'What You Own',
+    title: 'It stays yours\nwhen we leave.',
+    copy: "Most AI vendors rent you a black box and keep the keys. We hand over the whole thing: the source code for every agent we write for you, the documentation to run it, and the accounts it runs in — which were yours to begin with. Fixed-scope engagements, a written plan before anyone touches a keyboard, and a support agreement you can end any month. If you ever want to bring it in-house or hand it to another firm, there is nothing to unwind.",
     hudData: [
-      { label: 'REVENUE TO HOLDERS', value: '75', unit: '%' },
-      { label: 'TO CHARITY', value: '5', unit: '%' },
-      { label: 'REPOS', value: 'PUBLIC' },
+      { label: 'SOURCE CODE', value: 'HANDED', unit: 'OVER' },
+      { label: 'YOUR DATA', value: 'YOUR', unit: 'ACCOUNTS' },
       { label: 'BLACK BOXES', value: '0' },
-      { label: 'VIBES', value: 'IMPECCABLE' },
+      { label: 'CONTRACT', value: 'MONTH', unit: 'TO MONTH' },
+      { label: 'EXIT COST', value: 'NONE' },
     ],
     hudColor: '#ffffff',
     alignment: 'left',
     ctas: [
-      { text: '$KR8TIV on Bags →', href: 'https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS' },
-      { text: '@kr8tivAI on X →', href: 'https://x.com/kr8tivai' },
+      { text: 'Book an AI Ops Audit →', href: AUDIT_MAILTO },
+      { text: `Call ${PHONE_DISPLAY} →`, href: PHONE_HREF },
     ],
   },
   {
@@ -155,7 +161,7 @@ export const sections: Section[] = [
     density: 'dense',
     label: 'The Human Part',
     title: "Built by people who\nran the businesses.",
-    copy: "We're not consultants who discovered AI last quarter. We've been the founder drowning in receipts at midnight, the one-person office chasing invoices between jobs. That's why everything we build starts from the same question: what would give this person their evenings back? We ship fast, in public, and fix our mistakes where everyone can see. The best companies of the next decade won't look like software vendors — they'll look like a crew you trust with the keys. That's the whole pitch.",
+    copy: "We're not consultants who discovered AI last quarter. We've been the founder drowning in receipts at midnight, the one-person office chasing invoices between jobs. That's why everything we build starts from the same question: what would give this person their evenings back? We ship fast, we show our work, and we fix our mistakes in front of you. The best companies of the next decade won't look like software vendors — they'll look like a crew you trust with the keys. That's the whole pitch.",
     hudData: [
       { label: 'TEAM', value: 'SMALL', unit: '& LOUD' },
       { label: 'CORPORATE JARGON', value: 'BANNED' },

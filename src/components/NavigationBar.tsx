@@ -1,9 +1,34 @@
-import { AUDIT_MAILTO, PHONE_DISPLAY, PHONE_HREF } from '../config/sections'
-import { asset } from '../lib/asset'
+import {
+  AUDIT_MAILTO,
+  PAGE_EVOLVE,
+  PAGE_JARVIS,
+  PAGE_KIN,
+  PHONE_DISPLAY,
+  PHONE_HREF,
+} from '../config/sections'
+
+const PAGE_LINKS = [
+  { label: 'Case study', href: PAGE_EVOLVE },
+  { label: 'JARVIS', href: PAGE_JARVIS },
+  { label: 'KIN', href: PAGE_KIN },
+]
 
 export default function NavigationBar() {
   return (
     <div className="fixed top-3 right-4 sm:top-4 sm:right-6 lg:right-8 z-50 flex items-center gap-2.5 sm:gap-4">
+      {/* Static sub-pages — desktop only; mobile gets the same links in the footer */}
+      <nav className="hidden lg:flex items-center gap-4" aria-label="Pages">
+        {PAGE_LINKS.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="text-[10px] tracking-[0.18em] uppercase text-white/40 hover:text-white/85 transition-colors duration-300"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
       <a
         href={PHONE_HREF}
         className="text-[10px] tracking-[0.15em] text-white/40 hover:text-white/80 font-mono transition-colors duration-300 hidden md:inline"
@@ -24,16 +49,6 @@ export default function NavigationBar() {
         <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
            className="text-white/30 hover:text-white/80 transition-colors duration-300" title="X">
           <span className="text-base font-bold leading-none">&#x1D54F;</span>
-        </a>
-        <a href="https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS" target="_blank" rel="noopener noreferrer"
-           className="text-white/30 hover:text-white/80 transition-colors duration-300" title="Bags">
-          <img
-            src={asset('/images/bags-icon.png')}
-            alt="Bags"
-            width={14}
-            height={14}
-            className="w-3.5 h-3.5 grayscale opacity-40 hover:opacity-80 transition-opacity duration-300"
-          />
         </a>
       </div>
 

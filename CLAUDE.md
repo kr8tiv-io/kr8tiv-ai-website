@@ -26,12 +26,26 @@ stopping at 5 content sections with HUD info panels that pop out.
 - `snap` property creates pause-at-section behavior
 - Use a GSAP proxy object ref that `useFrame` reads every frame (NO React re-renders)
 
-## Content Sections (5 rotating with HUD panels)
-1. "Signal Processing" -- real-time market analysis (white HUD)
-2. "Risk Management" -- multi-layered safety (white HUD)
-3. "Intelligence" -- ML-powered alpha detection (white HUD)
-4. "Open Source" -- community-driven brand CTA (white HUD)
-5. "Connect" -- social links and outro (white HUD)
+## Content Sections (6 rotating with HUD panels, defined in src/config/sections.ts)
+1. "What We Automate" -- receipts, quoting, dispatch, digests
+2. "Case Study - Evolve Eco Blasting" -- the proof, links to /work/evolve/
+3. "How It Works" -- agents wired into the client's existing stack
+4. "The Engines" -- JARVIS (context engine) and KIN (AI front desk)
+5. "What You Own" -- source handover, data in the client's accounts, no lock-in
+6. "The Human Part" -- who builds it
+Followed by the footer/CTA section (Audit -> Build -> Care ladder).
+
+## Positioning (locked)
+kr8tiv AI is a PROFESSIONAL SERVICE that businesses hire to build AI automations
+and back-office/operational systems. No token, crypto, or open-source-movement
+messaging anywhere in copy, nav, meta, or structured data.
+
+## Static sub-pages
+Plain HTML in public/ (no JS, no 3D, crawlable, shared public/styles/page.css):
+/work/evolve/, /jarvis/, /kin/. Links between pages are RELATIVE so they work
+at the site root and on the GitHub Pages subpath preview. From React, link to
+them via PAGE_EVOLVE / PAGE_JARVIS / PAGE_KIN in src/config/sections.ts
+(base-URL aware through src/lib/asset.ts).
 
 ## Design Language
 - Dark theme (#050510 background)

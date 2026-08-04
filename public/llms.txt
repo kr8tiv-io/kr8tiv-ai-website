@@ -1,6 +1,6 @@
 # kr8tiv AI
 
-> kr8tiv AI builds AI back-office systems for real businesses — receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and MCP-native watchdog agents — wired into the tools a business already uses (spreadsheets, drive, email). Everything is open source and the company is tokenized: 75% of revenue flows to $KR8TIV holders, 5% to charity. Based in Edmonton, Alberta; working everywhere.
+> kr8tiv AI is a professional AI automation company. We build AI back-office and operations systems for businesses — receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and MCP-native watchdog agents — wired into the tools a business already uses (spreadsheets, drive, email). Fixed-scope engagements; the source code for everything we build for a client is handed over to that client. Based in Edmonton, Alberta; working everywhere.
 
 Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.io/start/
 
@@ -8,20 +8,23 @@ Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.io/start
 
 - AI Ops Audit: one week inside an operation, mapping where the hours go; deliverable is a written automation plan the client keeps either way.
 - Back-Office Build: agents wired into the client's existing stack — automated receipt filing (photo → logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, watchdog agents that flag unpaid invoices and unscheduled deposits.
-- Care: ongoing tuning and new automations. No lock-in — the client owns the data, documents, and code.
+- Care: ongoing tuning and new automations, month to month. No lock-in — the client owns the data, the documents, and the source code we wrote for them.
 
 ## Proof
 
-- Case study: Evolve Eco Blasting (Edmonton industrial surface restoration, https://evolveecoblasting.com) — one crew, zero office staff. kr8tiv AI built their complete operations layer on the spreadsheets and drive they already owned. Nothing was replaced.
+- Case study: Evolve Eco Blasting (Edmonton industrial surface restoration, https://evolveecoblasting.com) — one crew, zero office staff. kr8tiv AI built their complete operations layer on the spreadsheets and drive they already owned. Nothing was replaced. Full write-up: https://kr8tiv.ai/work/evolve/
 
 ## Products
 
-- JARVIS — autonomous context engine; started as a live trading terminal on Solana, growing into a portable intelligence layer: https://jarvislife.io
-- KIN — bespoke concierge AI companion on voice, Telegram, and WhatsApp: https://meetyourkin.com
+- JARVIS — the context engine behind every build: one place that holds what a business knows, so each agent acts on current facts instead of guessing. https://kr8tiv.ai/jarvis/
+- KIN — the AI front desk: a bespoke assistant on voice, Telegram, and WhatsApp, configured end to end for non-technical staff. https://kr8tiv.ai/kin/
 
 ## Links
 
 - Site: https://kr8tiv.ai
-- GitHub (all code public): https://github.com/kr8tiv-ai
+- Case study: https://kr8tiv.ai/work/evolve/
+- JARVIS: https://kr8tiv.ai/jarvis/
+- KIN: https://kr8tiv.ai/kin/
 - X: https://x.com/kr8tivai
+- LinkedIn: https://www.linkedin.com/company/kr8tivai
 - Design sister studio: https://kr8tiv.io

@@ -32,7 +32,7 @@ export default function HeroOverlay() {
         <p className="text-sm sm:text-base md:text-lg text-white/75 max-w-[92vw] sm:max-w-xl leading-relaxed mb-7 sm:mb-9">
           We build AI operations systems for real businesses — quoting, receipts,
           dispatch, daily reporting — running around the clock on the tools you
-          already use. Open source, end to end.
+          already use. Built for you, handed over to you.
         </p>
 
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 pointer-events-auto">
@@ -63,11 +63,11 @@ export default function HeroOverlay() {
       <div className="absolute top-24 left-8 text-[8px] font-mono text-white/10 hidden lg:block">
         <div>STATUS: SHIPPING</div>
         <div className="mt-0.5">BACK OFFICES: RUNNING</div>
-        <div className="mt-0.5 text-white/20">CODE: PUBLIC</div>
+        <div className="mt-0.5 text-white/20">SOURCE: YOURS</div>
       </div>
 
       <div className="absolute top-24 right-8 text-[8px] font-mono text-white/10 text-right hidden lg:block">
-        <div>REVENUE: SHARED</div>
+        <div>MIGRATIONS: ZERO</div>
         <div className="mt-0.5">BLACK BOXES: ZERO</div>
       </div>
     </section>
