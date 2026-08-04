@@ -1,4 +1,5 @@
 import { AUDIT_MAILTO, PHONE_DISPLAY, PHONE_HREF } from '../config/sections'
+import { asset } from '../lib/asset'
 
 export default function NavigationBar() {
   return (
@@ -27,7 +28,7 @@ export default function NavigationBar() {
         <a href="https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS" target="_blank" rel="noopener noreferrer"
            className="text-white/30 hover:text-white/80 transition-colors duration-300" title="Bags">
           <img
-            src="/images/bags-icon.png"
+            src={asset('/images/bags-icon.png')}
             alt="Bags"
             width={14}
             height={14}

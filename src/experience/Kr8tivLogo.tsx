@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
+import { asset } from '../lib/asset'
 
 /* ─────────────────────────────────────────────────────────────
    Kr8tiv Logo — Holographic Projection Above Device
@@ -117,7 +118,7 @@ export default function Kr8tivLogo() {
   const yawRef = useRef(0)
 
   // Load logo texture
-  const logoTexture = useTexture('/images/kr8tiv-logo.png')
+  const logoTexture = useTexture(asset('/images/kr8tiv-logo.png'))
 
   useMemo(() => {
     logoTexture.minFilter = THREE.LinearFilter

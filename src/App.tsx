@@ -14,6 +14,7 @@ import VibesButton from './components/VibesButton'
 import { useGSAPSync } from './hooks/useGSAPSync'
 import { useDeviceCapability } from './hooks/useDeviceCapability'
 import { useScrollVelocity } from './hooks/useScrollVelocity'
+import { asset } from './lib/asset'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -167,7 +168,7 @@ export default function App() {
       {showStaticFallback && (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <img
-            src="/fallback-scene.jpg"
+            src={asset('/fallback-scene.jpg')}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-70"

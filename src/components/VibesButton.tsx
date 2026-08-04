@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { asset } from '../lib/asset'
 
 export default function VibesButton() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -18,7 +19,7 @@ export default function VibesButton() {
   const toggle = () => {
     // Lazy-create audio on first click (avoids 4.5MB download on mount)
     if (!audioRef.current) {
-      const audio = new Audio('/vibes.mp3')
+      const audio = new Audio(asset('/vibes.mp3'))
       audio.loop = true
       audio.volume = 0.35
       audio.preload = 'none'
