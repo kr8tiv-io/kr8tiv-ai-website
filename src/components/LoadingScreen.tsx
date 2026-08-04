@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useProgress } from '@react-three/drei'
 
 interface LoadingScreenProps {
@@ -6,33 +6,55 @@ interface LoadingScreenProps {
   onDone?: () => void
 }
 
+/** Dead-man switch: lift the curtain even if the loader never reports 100%. */
+const MAX_HOLD_MS = 12000
+
 export default function LoadingScreen({ forceComplete = false, onDone }: LoadingScreenProps) {
   const { progress, active } = useProgress()
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
+  const startedRef = useRef(false)
+  const timerRef = useRef<number | undefined>(undefined)
   const displayProgress = forceComplete ? 100 : progress
 
+  // The dismiss timer lives in a ref, NOT in effect cleanup. Previously the
+  // setFadeOut() re-render re-ran this effect, whose cleanup cancelled the very
+  // timeout that unmounts the overlay — so it stayed mounted at opacity 0,
+  // fixed inset-0 z-100, swallowing every click on the site.
   useEffect(() => {
-    if (fadeOut) {
-      return
-    }
+    if (startedRef.current) return
+    if (!(forceComplete || (!active && progress >= 100))) return
 
-    if (forceComplete || (!active && progress >= 100)) {
+    startedRef.current = true
+    setFadeOut(true)
+    timerRef.current = window.setTimeout(() => {
+      setVisible(false)
+      onDone?.()
+    }, 1200)
+  }, [active, forceComplete, progress, onDone])
+
+  // Failsafe: if progress never settles (stalled asset, odd browser), dismiss anyway.
+  useEffect(() => {
+    const failsafe = window.setTimeout(() => {
+      if (startedRef.current) return
+      startedRef.current = true
       setFadeOut(true)
-      const timer = setTimeout(() => {
+      timerRef.current = window.setTimeout(() => {
         setVisible(false)
         onDone?.()
-      }, 1200)
-      return () => clearTimeout(timer)
-    }
-  }, [active, fadeOut, forceComplete, progress, onDone])
+      }, 800)
+    }, MAX_HOLD_MS)
+    return () => window.clearTimeout(failsafe)
+  }, [onDone])
+
+  useEffect(() => () => window.clearTimeout(timerRef.current), [])
 
   if (!visible) return null
 
   return (
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#050510] transition-opacity duration-1000 ${
-        fadeOut ? 'opacity-0' : 'opacity-100'
+        fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       <div className="text-center">

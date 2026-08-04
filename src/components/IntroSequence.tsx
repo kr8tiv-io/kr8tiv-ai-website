@@ -28,32 +28,34 @@ export default function IntroSequence({ onComplete, startAnimation = true }: Int
     })
     tlRef.current = tl
 
-    // Phase 1 (0-1.5s): "kr8tiv" fades in
+    // The whole beat is kept under ~2.6s: the loading screen already showed the
+    // wordmark, so a longer curtain is just dead time before the hero.
+    // Phase 1: "kr8tiv" fades in
     tl.fromTo(
       titleRef.current,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' },
-      0.3
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+      0.15
     )
 
-    // Phase 2 (1.5-3s): Tagline fades in
+    // Phase 2: Tagline fades in
     tl.fromTo(
       taglineRef.current,
       { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-      1.5
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+      0.7
     )
 
-    // Phase 3 (3-5s): Everything fades out
+    // Phase 3: Everything fades out
     tl.to(
       [titleRef.current, taglineRef.current],
-      { opacity: 0, duration: 1, ease: 'power2.in' },
-      3.5
+      { opacity: 0, duration: 0.6, ease: 'power2.in' },
+      1.65
     )
     tl.to(
       containerRef.current,
-      { opacity: 0, duration: 1.5, ease: 'power2.inOut' },
-      4
+      { opacity: 0, duration: 0.8, ease: 'power2.inOut' },
+      1.8
     )
 
     return () => {
