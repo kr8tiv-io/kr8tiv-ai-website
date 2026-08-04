@@ -276,7 +276,7 @@ export default function ScrollSections() {
 
               {/* Multiple CTAs — uniform width grid */}
               {section.ctas && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto max-w-[min(95vw,420px)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto max-w-[min(95vw,480px)]">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
@@ -302,8 +302,9 @@ export default function ScrollSections() {
         </section>
       ))}
 
-      {/* Footer / CTA — The future is open */}
-      <section className="content-section h-screen flex items-center justify-center relative">
+      {/* Footer / CTA — min-h so the tagline and credit stay reachable when the
+          content is taller than the viewport (it is, on phones). */}
+      <section className="content-section min-h-screen py-20 sm:py-24 flex items-center justify-center relative">
         <div className={`section-inner opacity-0 text-center max-w-[min(94vw,52rem)] relative z-10 ${
           isSmallMobile ? 'px-4' : 'px-5 sm:px-6'
         }`}>
