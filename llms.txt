@@ -1,0 +1,27 @@
+# kr8tiv AI
+
+> kr8tiv AI builds AI back-office systems for real businesses — receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and MCP-native watchdog agents — wired into the tools a business already uses (spreadsheets, drive, email). Everything is open source and the company is tokenized: 75% of revenue flows to $KR8TIV holders, 5% to charity. Based in Edmonton, Alberta; working everywhere.
+
+Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.io/start/
+
+## What we build
+
+- AI Ops Audit: one week inside an operation, mapping where the hours go; deliverable is a written automation plan the client keeps either way.
+- Back-Office Build: agents wired into the client's existing stack — automated receipt filing (photo → logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, watchdog agents that flag unpaid invoices and unscheduled deposits.
+- Care: ongoing tuning and new automations. No lock-in — the client owns the data, documents, and code.
+
+## Proof
+
+- Case study: Evolve Eco Blasting (Edmonton industrial surface restoration, https://evolveecoblasting.com) — one crew, zero office staff. kr8tiv AI built their complete operations layer on the spreadsheets and drive they already owned. Nothing was replaced.
+
+## Products
+
+- JARVIS — autonomous context engine; started as a live trading terminal on Solana, growing into a portable intelligence layer: https://jarvislife.io
+- KIN — bespoke concierge AI companion on voice, Telegram, and WhatsApp: https://meetyourkin.com
+
+## Links
+
+- Site: https://kr8tiv.ai
+- GitHub (all code public): https://github.com/kr8tiv-ai
+- X: https://x.com/kr8tivai
+- Design sister studio: https://kr8tiv.io
