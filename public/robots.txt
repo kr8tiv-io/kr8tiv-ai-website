@@ -1,0 +1,22 @@
+# robots.txt · kr8tiv.ai
+# Traditional search engines AND AI crawlers are welcome here.
+
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://kr8tiv.ai/sitemap.xml

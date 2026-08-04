@@ -86,7 +86,7 @@ export default function IntroSequence({ onComplete, startAnimation = true }: Int
         className="mt-6 text-sm sm:text-base text-white/40 max-w-lg text-center leading-relaxed px-4 opacity-0"
         style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
       >
-        Building the intelligence layer beneath every industry.
+        We build AI back-offices. The paperwork does itself now.
       </p>
     </div>
   )

@@ -1,9 +1,14 @@
+import { AUDIT_MAILTO, PHONE_DISPLAY, PHONE_HREF } from '../config/sections'
+
 export default function NavigationBar() {
   return (
     <div className="fixed top-3 right-4 sm:top-4 sm:right-6 lg:right-8 z-50 flex items-center gap-2.5 sm:gap-4">
-      <span className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-mono hidden md:inline">
-          SYS.ONLINE
-      </span>
+      <a
+        href={PHONE_HREF}
+        className="text-[10px] tracking-[0.15em] text-white/40 hover:text-white/80 font-mono transition-colors duration-300 hidden md:inline"
+      >
+        {PHONE_DISPLAY}
+      </a>
 
       {/* Social icons */}
       <div className="flex items-center gap-2 sm:gap-3">
@@ -22,20 +27,20 @@ export default function NavigationBar() {
         <a href="https://bags.fm/U1zc8QpnrQ3HBJUBrWFYWbQTLzNsCpPgZNegWXdBAGS" target="_blank" rel="noopener noreferrer"
            className="text-white/30 hover:text-white/80 transition-colors duration-300" title="Bags">
           <img
-            src="https://bags.fm/assets/images/bags-icon.png"
+            src="/images/bags-icon.png"
             alt="Bags"
+            width={14}
+            height={14}
             className="w-3.5 h-3.5 grayscale opacity-40 hover:opacity-80 transition-opacity duration-300"
           />
         </a>
       </div>
 
       <a
-        href="https://kr8tiv.web.app/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-xs tracking-[0.15em] uppercase text-white/40 hover:text-[#d4a853] transition-colors duration-300 hidden sm:inline"
+        href={AUDIT_MAILTO}
+        className="px-3.5 py-1.5 border border-[#d4a853]/40 text-[10px] tracking-[0.18em] uppercase text-white/70 hover:text-white hover:border-[#d4a853] hover:bg-[#d4a853]/10 transition-all duration-300"
       >
-        kr8tiv.ai
+        Book audit
       </a>
     </div>
   )

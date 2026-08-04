@@ -101,7 +101,7 @@ void main() {
 
 // ── Positioning ─────────────────────────────────────────────
 
-const LOGO_Y = 1.2
+const LOGO_Y = 2.0
 const FLOAT_AMPLITUDE = 0.04
 const FLOAT_SPEED = 0.4
 
@@ -114,6 +114,7 @@ const LOGO_HEIGHT = LOGO_WIDTH / 2.67
 export default function Kr8tivLogo() {
   const groupRef = useRef<THREE.Group>(null)
   const matRef = useRef<THREE.ShaderMaterial>(null)
+  const yawRef = useRef(0)
 
   // Load logo texture
   const logoTexture = useTexture('/images/kr8tiv-logo.png')
@@ -143,10 +144,18 @@ export default function Kr8tivLogo() {
   useFrame((state) => {
     const t = state.clock.elapsedTime
 
-    // Gentle floating
+    // Gentle floating + soft billboard: the hologram slowly turns to face the
+    // camera so the wordmark never reads mirrored from the back orbit angles.
     if (groupRef.current) {
       groupRef.current.position.y = LOGO_Y + Math.sin(t * FLOAT_SPEED) * FLOAT_AMPLITUDE
-      groupRef.current.rotation.y = Math.sin(t * 0.15) * 0.015
+
+      const cam = state.camera.position
+      const targetYaw = Math.atan2(cam.x, cam.z)
+      let dYaw = targetYaw - yawRef.current
+      while (dYaw > Math.PI) dYaw -= Math.PI * 2
+      while (dYaw < -Math.PI) dYaw += Math.PI * 2
+      yawRef.current += dYaw * 0.06
+      groupRef.current.rotation.y = yawRef.current + Math.sin(t * 0.15) * 0.015
     }
 
     if (matRef.current) {

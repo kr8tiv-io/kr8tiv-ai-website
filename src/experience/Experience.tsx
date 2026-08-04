@@ -1,6 +1,6 @@
 ﻿import { Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
-import ProductModel from './ProductModel'
+import OpsMachine from './OpsMachine'
 import VolumetricSmoke from './VolumetricSmoke'
 import SmokeStream from './SmokeStream'
 import Ground from './Ground'
@@ -63,8 +63,9 @@ export default function Experience({ tier }: ExperienceProps) {
       <pointLight position={[-5, 2, -3]} intensity={0.04} color="#ffffff" distance={12} />
 
       <CameraRig />
-      <ProductModel tier={tier} />
-      <Kr8tivLogo />
+      <OpsMachine tier={tier} />
+      {/* Holographic wordmark — desktop/tablet only; on phones it collides with the HTML hero */}
+      {tier !== 'low' && <Kr8tivLogo />}
 
       {tier !== 'low' && smokeProfile && <SmokeStream {...smokeProfile.stream} />}
       {tier === 'high' && smokeProfile?.volume && <VolumetricSmoke {...smokeProfile.volume} />}

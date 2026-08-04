@@ -10,6 +10,11 @@
   --font-display: 'Syne', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  /* Notch / home-indicator safe areas (viewport-fit=cover) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 html, body {
@@ -30,8 +35,30 @@ a, button, [role="button"] { cursor: pointer; }
   overflow-x: clip;
 }
 
+/* Pinned full-screen sections use the SMALL viewport unit so the iOS URL bar
+   collapsing never resizes a pinned section mid-scroll (the fixed canvas
+   fills any sliver behind). Fallbacks cascade for older engines. */
 .h-screen {
+  height: 100vh;
   height: 100dvh;
+  height: 100svh;
+}
+
+/* Motion is decorative here — honor the request to calm it down.
+   Scroll-scrubbed movement stays (it is user-driven); autonomous
+   loops (tracers, pulses, flicker) stop. */
+@media (prefers-reduced-motion: reduce) {
+  .hud-tracer,
+  .hud-tracer-2 {
+    animation: none !important;
+    display: none;
+  }
+  .title-glow:hover {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
 }
 
 ::selection {

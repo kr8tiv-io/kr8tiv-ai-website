@@ -56,6 +56,27 @@ export default function ScrollSections() {
       const hudLines = el.querySelectorAll('.hud-connector')
       const sectionData = sections[i - 1]
 
+      // Footer (the section after the last data section): fade in and STAY —
+      // it's the conversion endpoint, it must never scrub back out.
+      if (inner && !sectionData) {
+        gsap.fromTo(
+          inner,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 65%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        )
+        return
+      }
+
       if (!inner || !sectionData) return
 
       const viewportDwellBoost = isSmallMobile ? 380 : isCompactDesktop ? 220 : 0
@@ -300,48 +321,89 @@ export default function ScrollSections() {
             }`}
             style={{ fontFamily: 'var(--font-display)', textShadow: titleShadow }}
           >
-            The future is open.<br />Come build it.
+            Get your evenings back.<br />Start with an audit.
           </h2>
           <p
             className={`text-white/70 max-w-[min(92vw,40rem)] mx-auto ${
               isSmallMobile
-                ? 'text-[clamp(0.8rem,3.7vw,0.9rem)] mb-7 leading-[1.38]'
+                ? 'text-[clamp(0.8rem,3.7vw,0.9rem)] mb-6 leading-[1.38]'
                 : isCompactDesktop
-                  ? 'text-[clamp(0.82rem,1.35vw,0.95rem)] mb-8 sm:mb-10 leading-[1.43]'
-                  : 'text-[clamp(0.84rem,1.45vw,0.98rem)] mb-9 sm:mb-12 leading-[1.5]'
+                  ? 'text-[clamp(0.82rem,1.35vw,0.95rem)] mb-7 sm:mb-8 leading-[1.43]'
+                  : 'text-[clamp(0.84rem,1.45vw,0.98rem)] mb-8 sm:mb-10 leading-[1.5]'
             }`}
             style={{ textShadow }}
           >
-            kr8tiv AI is an open-source, tokenized, collaborative AI company building autonomous
-            systems that the world actually needs. We&apos;re proud to be in this race to the bottom &mdash;
-            proud to be ushering in a new age of technology where the best products are free, the
-            best companies share, and the people who use AI own the upside. We&apos;re just getting
-            started. Get in.
+            Every engagement starts the same way: one week inside your operation,
+            mapping where the hours actually go. You get a written plan of what an
+            AI back-office would take off your plate and what it costs to build.
+            No pitch deck, no lock-in &mdash; and everything we build stays open source,
+            so you own the code that runs your business.
           </p>
 
+          {/* Engagement ladder */}
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mx-auto max-w-[min(94vw,54rem)] pointer-events-auto text-left ${
+              isSmallMobile ? 'mb-6' : 'mb-8 sm:mb-10'
+            }`}
+          >
+            {[
+              {
+                step: '01',
+                name: 'AI Ops Audit',
+                detail: 'One week. We map your operation, find the hours, and hand you the plan — keep it either way.',
+              },
+              {
+                step: '02',
+                name: 'Back-Office Build',
+                detail: 'We wire the agents into the tools you already run — receipts, quotes, dispatch, digests.',
+              },
+              {
+                step: '03',
+                name: 'Care',
+                detail: 'The system watches your business; we watch the system. Tuning, new automations, no lock-in.',
+              },
+            ].map((tier) => (
+              <div
+                key={tier.step}
+                className="border border-white/12 bg-black/40 backdrop-blur-sm p-4 sm:p-5 hover:border-[#d4a853]/40 transition-colors duration-300"
+              >
+                <div className="text-[9px] font-mono tracking-[0.3em] text-[#d4a853]/80 mb-2">
+                  {tier.step}
+                </div>
+                <div
+                  className="text-white text-sm sm:text-base mb-1.5"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  {tier.name}
+                </div>
+                <div className="text-white/55 text-[11px] sm:text-xs leading-relaxed">
+                  {tier.detail}
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Primary CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-10 pointer-events-auto">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-10 pointer-events-auto">
             <a
-              href="https://kr8tiv.web.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-black/60 border border-[#d4a853]/30 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853]/60 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
+              href="mailto:hello@kr8tiv.ai?subject=AI%20Ops%20Audit"
+              className="px-8 py-3 bg-[#d4a853]/10 border border-[#d4a853]/50 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853] hover:bg-[#d4a853]/20 transition-all duration-300 backdrop-blur-sm"
             >
-              Enter the Ecosystem &rarr;
+              Book an AI Ops Audit &rarr;
             </a>
             <a
-              href="https://jarvislife.io/"
+              href="tel:+17809155471"
+              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.18em] uppercase font-mono hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
+            >
+              780-915-5471
+            </a>
+            <a
+              href="https://kr8tiv.io/start/"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
-              Explore JARVIS &rarr;
-            </a>
-            <a
-              href="mailto:hello@kr8tiv.ai"
-              className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 pointer-events-auto backdrop-blur-sm"
-            >
-              Custom Solutions &rarr;
+              Fill the intake &rarr;
             </a>
           </div>
 
@@ -393,9 +455,20 @@ export default function ScrollSections() {
             Anarcho-capitalist liberation tech. You&apos;re welcome.
           </div>
 
-          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase" style={{ textShadow }}>
+          <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase mb-3" style={{ textShadow }}>
             &copy; 2026 kr8tiv AI &mdash; All systems nominal
           </div>
+
+          {/* Sister-brand credit */}
+          <a
+            href="https://kr8tiv.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pointer-events-auto text-[9px] font-mono tracking-[0.2em] uppercase text-white/25 hover:text-[#d4a853]/80 transition-colors duration-300"
+            style={{ textShadow }}
+          >
+            Design by kr8tiv.io &mdash; the atelier side of the house
+          </a>
         </div>
       </section>
     </div>

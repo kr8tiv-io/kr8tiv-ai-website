@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 export type DeviceTier = 'high' | 'medium' | 'low'
 
@@ -10,9 +10,11 @@ export interface DeviceCapability {
 }
 
 const LOW_RENDERER_PATTERN = /(Mali|Adreno 5|SwiftShader)/i
-const MEDIUM_RENDERER_PATTERN = /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics)/i
+// Safari (and iPadOS in desktop mode) masks the GPU as "Apple GPU" — treat it
+// as medium so iPads never get the full desktop pipeline.
+const MEDIUM_RENDERER_PATTERN =
+  /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics|Apple GPU)/i
 const FIREFOX_PATTERN = /firefox/i
-const WINDOWS_PATTERN = /windows/i
 
 export function useDeviceCapability(): DeviceCapability {
   const [capability, setCapability] = useState<DeviceCapability>({
@@ -28,13 +30,18 @@ export function useDeviceCapability(): DeviceCapability {
       const height = window.innerHeight
       const isMobile = width < 768
       const userAgent = window.navigator.userAgent
-      const isFirefoxOnWindows = FIREFOX_PATTERN.test(userAgent) && WINDOWS_PATTERN.test(userAgent)
+      // Firefox's WebGL compositing path benefits from the conservative
+      // context on every OS, not just Windows.
+      const isFirefox = FIREFOX_PATTERN.test(userAgent)
+      // iPadOS 13+ reports "Macintosh" but is the only "Mac" with touch.
+      const isIPadOS =
+        /Macintosh/.test(userAgent) && window.navigator.maxTouchPoints > 1
 
       let tier: DeviceTier = 'high'
 
       if (isMobile) {
         tier = 'low'
-      } else if (width < 1100 || height < 700) {
+      } else if (isIPadOS || width < 1100 || height < 700) {
         tier = 'medium'
       }
 
@@ -52,13 +59,16 @@ export function useDeviceCapability(): DeviceCapability {
 
       if (isLowRenderer) {
         tier = 'low'
-      } else if (isFirefoxOnWindows || width < 1100 || height < 700 || isMediumRenderer) {
+      } else if (
+        tier !== 'low' &&
+        (isFirefox || isIPadOS || width < 1100 || height < 700 || isMediumRenderer)
+      ) {
         tier = 'medium'
       }
 
       const probeOptions = {
         alpha: false,
-        antialias: tier === 'high' && !isFirefoxOnWindows,
+        antialias: tier === 'high' && !isFirefox,
       }
       const startupCanvas = document.createElement('canvas')
       const startupGl =
@@ -68,7 +78,7 @@ export function useDeviceCapability(): DeviceCapability {
 
       setCapability({
         tier,
-        preferConservativeWebGL: isFirefoxOnWindows,
+        preferConservativeWebGL: isFirefox,
         supportsWebGL,
         webglChecked: true,
       })
