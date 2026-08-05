@@ -213,10 +213,10 @@ export default function Atmosphere({ tier }: AtmosphereProps) {
   // land in the same place visually.
   const profile =
     tier === 'high'
-      ? { banks: 6, ground: 2, opacity: 1.55, hole: 3.4, groundHole: 1.6 }
+      ? { banks: 7, ground: 3, opacity: 2.3, hole: 3.0, groundHole: 1.4 }
       : tier === 'medium'
-        ? { banks: 5, ground: 2, opacity: 1.6, hole: 3.2, groundHole: 1.5 }
-        : { banks: 5, ground: 2, opacity: 2.0, hole: 1.8, groundHole: 1.0 }
+        ? { banks: 6, ground: 2, opacity: 2.35, hole: 2.9, groundHole: 1.4 }
+        : { banks: 5, ground: 2, opacity: 2.4, hole: 1.8, groundHole: 1.0 }
 
   const haze = useMemo(() => new THREE.Color('#aab6d8'), [])
   const floor = useMemo(() => new THREE.Color('#6f79ab'), [])

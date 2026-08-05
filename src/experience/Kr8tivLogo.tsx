@@ -224,15 +224,30 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
         />
       </group>
 
-      {/* Emitter cone — ties the hologram to the machine it is projected from */}
+      {/* Emitter — a tight, faint shaft off the deck. Kept narrow and very low
+          opacity: at width it renders as two hard-edged triangles, which reads
+          as a modelling artifact rather than light. */}
       <mesh position={[0, (hoverY + DECK_TOP) / 2, 0]} renderOrder={2}>
-        <cylinderGeometry args={[width * 0.34, 0.16, hoverY - DECK_TOP, 16, 1, true]} />
+        <cylinderGeometry args={[width * 0.13, 0.075, hoverY - DECK_TOP, 20, 1, true]} />
         <meshBasicMaterial
           color="#cfd8ff"
           transparent
-          opacity={0.045}
+          opacity={0.018}
           depthWrite={false}
           side={THREE.DoubleSide}
+          blending={THREE.AdditiveBlending}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Light pool where the projection meets the deck */}
+      <mesh position={[0, DECK_TOP + 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={2}>
+        <circleGeometry args={[width * 0.2, 24]} />
+        <meshBasicMaterial
+          color="#dfe6ff"
+          transparent
+          opacity={0.05}
+          depthWrite={false}
           blending={THREE.AdditiveBlending}
           toneMapped={false}
         />

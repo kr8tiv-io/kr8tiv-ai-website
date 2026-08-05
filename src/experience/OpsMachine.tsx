@@ -1,7 +1,9 @@
 import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { RoundedBox } from '@react-three/drei'
 import * as THREE from 'three'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
+import { brushedRoughness, grimeMap, microNormal } from './surfaces'
 
 /* ─────────────────────────────────────────────────────────────
    OpsMachine — the back-office engine.
@@ -372,18 +374,59 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
     }
   })
 
+  // ── Surface detail ──────────────────────────────────────────
+  // Real machined metal never has a uniform highlight. These procedural maps
+  // (drawn once into a canvas, no downloads) give the light something to break
+  // on: brushed grain, wear patches, scratches.
+  const detail = useMemo(() => {
+    if (lowTier) {
+      return {
+        roughnessMap: brushedRoughness(256, 3),
+        normalMap: microNormal(256, 3, 1.2),
+        grime: grimeMap(128, 2),
+        normalScale: new THREE.Vector2(0.35, 0.35),
+      }
+    }
+    return {
+      roughnessMap: brushedRoughness(512, 3),
+      normalMap: microNormal(512, 3, 1.6),
+      grime: grimeMap(256, 2),
+      normalScale: new THREE.Vector2(0.55, 0.55),
+    }
+  }, [lowTier])
+
   // ── Shared arm materials ──
   const armBody = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
         color: '#0c0d13',
-        metalness: 0.92,
-        roughness: 0.26,
-        envMapIntensity: 1.6,
-        clearcoat: 0.4,
-        clearcoatRoughness: 0.2,
+        metalness: 0.94,
+        roughness: 0.32,
+        roughnessMap: detail.roughnessMap,
+        normalMap: detail.normalMap,
+        normalScale: detail.normalScale,
+        envMapIntensity: 2.1,
+        clearcoat: 0.55,
+        clearcoatRoughness: 0.22,
       }),
-    []
+    [detail]
+  )
+
+  // Lighter machined alloy for the hardware that catches the key light.
+  const armAccent = useMemo(
+    () =>
+      new THREE.MeshPhysicalMaterial({
+        color: '#1a1d26',
+        metalness: 1,
+        roughness: 0.19,
+        roughnessMap: detail.roughnessMap,
+        normalMap: detail.normalMap,
+        normalScale: detail.normalScale,
+        envMapIntensity: 2.6,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.14,
+      }),
+    [detail]
   )
   const jointRing = useMemo(
     () =>
@@ -398,31 +441,68 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
 
   return (
     <group position={[0, 0, 0]}>
-      {/* ═══ CHASSIS — the machine bed ═══ */}
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[4.2, 0.5, 2.2]} />
+      {/* ═══ CHASSIS — the machine bed ═══
+          Bevelled, not a raw box: the chamfer is what catches the key light and
+          separates "machined object" from "primitive". */}
+      <RoundedBox args={[4.2, 0.5, 2.2]} radius={0.035} smoothness={3} castShadow receiveShadow>
         <meshPhysicalMaterial
           color="#050508"
-          metalness={0.95}
-          roughness={0.08}
-          envMapIntensity={2}
-          clearcoat={0.5}
-          clearcoatRoughness={0.1}
+          metalness={0.96}
+          roughness={0.24}
+          roughnessMap={detail.roughnessMap}
+          normalMap={detail.normalMap}
+          normalScale={detail.normalScale}
+          envMapIntensity={2.4}
+          clearcoat={0.6}
+          clearcoatRoughness={0.14}
         />
-      </mesh>
+      </RoundedBox>
 
-      {/* Glossy top face */}
+      {/* Glossy top face — the working surface, kept sharper than the body */}
       <mesh position={[0, 0.251, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[4.14, 2.14]} />
         <meshPhysicalMaterial
           color="#07080e"
-          metalness={0.9}
-          roughness={0.12}
+          metalness={0.92}
+          roughness={0.16}
+          roughnessMap={detail.roughnessMap}
+          normalMap={detail.normalMap}
+          normalScale={new THREE.Vector2(0.25, 0.25)}
           clearcoat={1}
-          clearcoatRoughness={0.08}
-          envMapIntensity={1.4}
+          clearcoatRoughness={0.06}
+          envMapIntensity={1.9}
         />
       </mesh>
+
+      {/* ── Panel lines: shallow inset seams across the deck.
+             Cheap and readable at any size, so phones get them too. ── */}
+      {[-1.62, -0.55, 0.55, 1.62].map((x) => (
+          <mesh key={`seam-${x}`} position={[x, 0.2525, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[0.012, 2.06]} />
+            <meshStandardMaterial color="#000004" metalness={0.6} roughness={0.85} />
+          </mesh>
+      ))}
+
+      {/* ── Fastener rows along the chassis shoulders ── */}
+      {!lowTier &&
+        Array.from({ length: 14 }, (_, i) => {
+          const x = -1.95 + i * 0.3
+          return [0.92, -0.92].map((z) => (
+            <mesh key={`bolt-${i}-${z}`} position={[x, 0.2535, z]} material={armAccent}>
+              <cylinderGeometry args={[0.016, 0.016, 0.008, 8]} />
+            </mesh>
+          ))
+        })}
+
+      {/* ── Side vent slats — silhouette detail on the long faces ── */}
+      {Array.from({ length: 9 }, (_, i) => {
+          const x = -1.1 + i * 0.275
+          return [1.101, -1.101].map((z) => (
+            <mesh key={`vent-${i}-${z}`} position={[x, -0.06, z]} material={armAccent}>
+              <boxGeometry args={[0.16, 0.16, 0.012]} />
+            </mesh>
+          ))
+        })}
 
       {/* Amber brand strip — front */}
       <mesh ref={glowRef} position={[0, 0, 1.112]}>
@@ -430,7 +510,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         <meshStandardMaterial
           color="#d4a853"
           emissive="#d4a853"
-          emissiveIntensity={0.5}
+          emissiveIntensity={0.3}
           toneMapped={false}
         />
       </mesh>
@@ -440,18 +520,18 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         <meshStandardMaterial
           color="#d4a853"
           emissive="#d4a853"
-          emissiveIntensity={0.4}
+          emissiveIntensity={0.24}
           toneMapped={false}
         />
       </mesh>
       {/* White side strips */}
       <mesh position={[2.112, 0, 0]}>
         <boxGeometry args={[0.02, 0.04, 2.0]} />
-        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.25} toneMapped={false} />
+        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.11} toneMapped={false} />
       </mesh>
       <mesh position={[-2.112, 0, 0]}>
         <boxGeometry args={[0.02, 0.04, 2.0]} />
-        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.25} toneMapped={false} />
+        <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.11} toneMapped={false} />
       </mesh>
 
       {/* ═══ INTAKE TRAY (chaos) — subtle recessed rim ═══ */}
@@ -527,6 +607,26 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         <mesh position={[0, 0.07, 0]} material={armBody}>
           <cylinderGeometry args={[0.3, 0.34, 0.14, 32]} />
         </mesh>
+        {/* machined collar + fastener ring around the base */}
+        {!lowTier && (
+          <>
+            <mesh position={[0, 0.142, 0]} material={armAccent}>
+              <cylinderGeometry args={[0.285, 0.285, 0.014, 32]} />
+            </mesh>
+            {Array.from({ length: 10 }, (_, i) => {
+              const a = (i / 10) * Math.PI * 2
+              return (
+                <mesh
+                  key={`tbolt-${i}`}
+                  position={[Math.cos(a) * 0.255, 0.152, Math.sin(a) * 0.255]}
+                  material={armAccent}
+                >
+                  <cylinderGeometry args={[0.012, 0.012, 0.008, 6]} />
+                </mesh>
+              )
+            })}
+          </>
+        )}
         <mesh position={[0, 0.145, 0]} material={jointRing}>
           <torusGeometry args={[0.24, 0.012, 10, 40]} />
         </mesh>
@@ -534,12 +634,24 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         <mesh position={[0, 0.28, 0]} material={armBody}>
           <cylinderGeometry args={[0.11, 0.14, 0.3, 24]} />
         </mesh>
+        {/* cable conduit running up the column */}
+        {!lowTier && (
+          <mesh position={[0.13, 0.28, 0]} rotation={[0, 0, 0.06]} material={armAccent}>
+            <cylinderGeometry args={[0.018, 0.018, 0.3, 8]} />
+          </mesh>
+        )}
 
         {/* shoulder */}
         <group ref={shoulderRef} position={[0, 0.46, 0]}>
           <mesh rotation={[Math.PI / 2, 0, 0]} material={armBody}>
             <cylinderGeometry args={[0.11, 0.11, 0.22, 24]} />
           </mesh>
+          {/* shoulder housing plate */}
+          {!lowTier && (
+            <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.112]} material={armAccent}>
+              <cylinderGeometry args={[0.095, 0.095, 0.016, 20]} />
+            </mesh>
+          )}
           <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0.115]} material={jointRing}>
             <torusGeometry args={[0.08, 0.01, 8, 32]} />
           </mesh>

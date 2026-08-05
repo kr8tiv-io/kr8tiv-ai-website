@@ -189,12 +189,23 @@ export default function ScrollSections() {
         >
           {/* Phone-only scrim: the 3D scene now moves a lot more behind the
               copy, and a dark wash keeps the paragraph readable at every beat. */}
-          {isSmallMobile && (
+          {isSmallMobile ? (
             <div
               className="absolute inset-x-0 top-0 h-[78%] pointer-events-none"
               style={{
                 background:
                   'linear-gradient(to bottom, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.78) 55%, rgba(5,5,16,0) 100%)',
+              }}
+            />
+          ) : (
+            /* Desktop: a soft wash under the text column only — the lit machine
+               is much brighter now, and white-on-metal was losing contrast. */
+            <div
+              className="absolute inset-y-0 hidden md:block pointer-events-none"
+              style={{
+                [section.alignment === 'left' ? 'left' : 'right']: 0,
+                width: '58%',
+                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.82) 0%, rgba(5,5,16,0.55) 45%, rgba(5,5,16,0) 100%)`,
               }}
             />
           )}

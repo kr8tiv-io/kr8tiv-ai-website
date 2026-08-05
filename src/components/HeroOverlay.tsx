@@ -35,7 +35,7 @@ export default function HeroOverlay() {
         <p className="text-sm sm:text-base md:text-lg max-[379px]:text-[0.8rem] max-[379px]:leading-[1.45] text-white/75 max-w-[92vw] sm:max-w-xl leading-relaxed mb-5 sm:mb-9">
           We build AI operations systems for real businesses — quoting, receipts,
           dispatch, daily reporting — running around the clock on the tools you
-          already use. Built for you, handed over to you.
+          already use. No migration, and you keep the source.
         </p>
 
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-4 pointer-events-auto">

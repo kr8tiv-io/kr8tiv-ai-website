@@ -75,9 +75,9 @@ export default function Effects({ tier }: EffectsProps) {
   return (
     <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={highTier ? 0.6 : 0.72}
-        luminanceSmoothing={highTier ? 0.7 : 0.78}
-        intensity={highTier ? 0.5 : 0.32}
+        luminanceThreshold={highTier ? 0.74 : 0.8}
+        luminanceSmoothing={highTier ? 0.72 : 0.8}
+        intensity={highTier ? 0.42 : 0.28}
         mipmapBlur
         levels={highTier ? 5 : 4}
       />

@@ -1,4 +1,4 @@
-﻿import { Environment, Sparkles } from '@react-three/drei'
+﻿import { ContactShadows, Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
 import OpsMachine from './OpsMachine'
 import Atmosphere from './Atmosphere'
@@ -32,26 +32,48 @@ export default function Experience({ tier }: ExperienceProps) {
       {/* Local HDR avoids cross-origin fetch failures in Firefox/WebGL context churn. */}
       <Environment
         files={asset('/hdr/studio_small_03_1k.hdr')}
-        environmentIntensity={tier === 'high' ? 0.3 : 0.22}
+        environmentIntensity={tier === 'high' ? 0.5 : tier === 'medium' ? 0.45 : 0.62}
       />
 
       {/* Scene fog — pulled in and lifted off pure black so the haze reads. */}
       <fog attach="fog" args={['#070a16', 6, 30]} />
 
-      {/* Minimal fill - just enough to read the object. */}
-      <ambientLight intensity={0.05} />
-      <directionalLight position={[5, 8, 3]} intensity={0.25} castShadow />
+      {/* ── Lighting rig ──────────────────────────────────────────
+          A proper key / rim / kick setup instead of flat fill. The rim is what
+          draws the machined edges; the key is warm, the rim cool, so the metal
+          has two temperatures to reflect. */}
+      <ambientLight intensity={0.06} />
+
+      {/* KEY — warm, high and to the right, soft-edged */}
       <spotLight
-        position={[-3, 6, -3]}
-        angle={0.35}
-        penumbra={0.9}
-        intensity={0.25}
-        color="#ffd4a0"
+        position={[4.5, 7.5, 4]}
+        angle={0.78}
+        penumbra={1}
+        intensity={tier === 'low' ? 38 : 32}
+        distance={26}
+        decay={2}
+        color="#ffe2bd"
+        castShadow={tier === 'high'}
+        shadow-mapSize={[1024, 1024]}
+        shadow-bias={-0.0006}
       />
 
-      {/* Subtle accent lights - feel, not illuminate. */}
-      <pointLight position={[5, 2, 3]} intensity={0.06} color="#ffffff" distance={12} />
-      <pointLight position={[-5, 2, -3]} intensity={0.04} color="#ffffff" distance={12} />
+      {/* RIM — cool, low and behind: separates the silhouette from the fog */}
+      <spotLight
+        position={[-5, 2.6, -6]}
+        angle={1.05}
+        penumbra={1}
+        intensity={tier === 'low' ? 28 : 26}
+        distance={24}
+        decay={2}
+        color="#9db8ff"
+      />
+
+      {/* KICK — tight amber bounce off the deck, sells the brand colour */}
+      <pointLight position={[1.4, 1.1, 1.9]} intensity={2.6} color="#d4a853" distance={7} decay={2} />
+
+      {/* Deep fill so the dark side never goes fully black */}
+      <pointLight position={[-4, 1.4, 3]} intensity={1.1} color="#7f8cc0" distance={13} decay={2} />
 
       <CameraRig />
       <OpsMachine tier={tier} />
@@ -75,6 +97,21 @@ export default function Experience({ tier }: ExperienceProps) {
         position={[0, 0.5, 0]}
         noise={[0.5, 0.3, 0.5]}
       />
+
+      {/* Contact shadow — the single strongest grounding cue. Rendered at low
+          resolution and only where there is budget for it. */}
+      {tier !== 'low' && (
+        <ContactShadows
+          position={[0, -0.255, 0]}
+          scale={12}
+          resolution={tier === 'high' ? 512 : 256}
+          blur={2.6}
+          opacity={0.55}
+          far={4}
+          frames={tier === 'high' ? Infinity : 1}
+          color="#000008"
+        />
+      )}
 
       <MouseLight />
       <MouseTracers />
