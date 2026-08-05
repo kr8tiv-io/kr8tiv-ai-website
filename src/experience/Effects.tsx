@@ -1,4 +1,4 @@
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import {
   EffectComposer,
   Bloom,
@@ -35,6 +35,13 @@ interface EffectsProps {
 
 export default function Effects({ tier }: EffectsProps) {
   const highTier = tier === 'high'
+  const lowTier = tier === 'low'
+  const gl = useThree((s) => s.gl)
+
+  // Phones get bloom ONLY — it is what makes the additive haze read as light
+  // rather than a grey wash — and only on a WebGL2 context, so we never push
+  // a post pipeline onto an old WebGL1 mobile driver.
+  const leanPost = lowTier && gl.capabilities.isWebGL2
 
   useFrame(() => {
     const vel = Math.min(Math.abs((window as any).__kr8tiv_scrollVel ?? 0), 1500)
@@ -48,6 +55,22 @@ export default function Effects({ tier }: EffectsProps) {
     )
     _offsetVec.lerp(_targetOffset, 0.12)
   })
+
+  if (lowTier) {
+    if (!leanPost) return null
+    return (
+      <EffectComposer multisampling={0}>
+        <Bloom
+          luminanceThreshold={0.68}
+          luminanceSmoothing={0.8}
+          intensity={0.42}
+          mipmapBlur
+          levels={3}
+        />
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      </EffectComposer>
+    )
+  }
 
   return (
     <EffectComposer multisampling={0}>

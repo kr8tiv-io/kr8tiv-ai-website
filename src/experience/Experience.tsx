@@ -1,7 +1,7 @@
 ﻿import { Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
 import OpsMachine from './OpsMachine'
-import VolumetricSmoke from './VolumetricSmoke'
+import Atmosphere from './Atmosphere'
 import SmokeStream from './SmokeStream'
 import Ground from './Ground'
 import Effects from './Effects'
@@ -17,25 +17,15 @@ interface ExperienceProps {
 }
 
 export default function Experience({ tier }: ExperienceProps) {
+  // Atmosphere now carries the fog, so the old stacked-plane stream is only a
+  // light accent — and the raymarched VolumetricSmoke is retired entirely: it
+  // cost more than everything else combined and you could not see it.
   const smokeProfile =
     tier === 'high'
-      ? {
-          stream: { layerCount: 20, opacityMultiplier: 1.15, centerFloor: 0.18 as const },
-          volume: {
-            densityMultiplier: 0.22,
-            absorption: 0.38,
-            lightIntensity: 1.45,
-            densityThreshold: 0.34,
-            volumeScale: [10, 4.8, 10] as [number, number, number],
-            volumePos: [0, 1.0, 0] as [number, number, number],
-          },
-        }
+      ? { stream: { layerCount: 10, opacityMultiplier: 1.5, centerFloor: 0.3 as const } }
       : tier === 'medium'
-        ? {
-            stream: { layerCount: 18, opacityMultiplier: 1.05, centerFloor: 0.14 as const },
-            volume: null,
-          }
-        : null
+        ? { stream: { layerCount: 8, opacityMultiplier: 1.5, centerFloor: 0.28 as const } }
+        : { stream: { layerCount: 6, opacityMultiplier: 1.8, centerFloor: 0.3 as const } }
 
   return (
     <>
@@ -45,8 +35,8 @@ export default function Experience({ tier }: ExperienceProps) {
         environmentIntensity={tier === 'high' ? 0.3 : 0.22}
       />
 
-      {/* Scene fog - deep, heavy, objects dissolve into darkness. */}
-      <fog attach="fog" args={['#030308', 5, 22]} />
+      {/* Scene fog — pulled in and lifted off pure black so the haze reads. */}
+      <fog attach="fog" args={['#070a16', 6, 30]} />
 
       {/* Minimal fill - just enough to read the object. */}
       <ambientLight intensity={0.05} />
@@ -65,11 +55,13 @@ export default function Experience({ tier }: ExperienceProps) {
 
       <CameraRig />
       <OpsMachine tier={tier} />
-      {/* Holographic wordmark — desktop/tablet only; on phones it collides with the HTML hero */}
-      {tier !== 'low' && <Kr8tivLogo />}
+      {/* Wordmark on the piece: hologram above the deck + livery etched on it.
+          On every tier now — phones get the compact mark. */}
+      <Kr8tivLogo compact={tier === 'low'} />
 
-      {tier !== 'low' && smokeProfile && <SmokeStream {...smokeProfile.stream} />}
-      {tier === 'high' && smokeProfile?.volume && <VolumetricSmoke {...smokeProfile.volume} />}
+      {/* Atmosphere runs everywhere, including phones — fewer layers, same look. */}
+      <Atmosphere tier={tier} />
+      <SmokeStream {...smokeProfile.stream} />
 
       <HudRing />
 
@@ -88,7 +80,8 @@ export default function Experience({ tier }: ExperienceProps) {
       <MouseTracers />
       <Ground tier={tier} />
 
-      {tier !== 'low' && <Effects tier={tier} />}
+      {/* Phones get a bloom-only pass (see Effects) so the fog reads there too. */}
+      <Effects tier={tier} />
     </>
   )
 }

@@ -102,17 +102,28 @@ void main() {
 
 // ── Positioning ─────────────────────────────────────────────
 
-const LOGO_Y = 2.0
-const FLOAT_AMPLITUDE = 0.04
+const LOGO_Y = 2.05
+const FLOAT_AMPLITUDE = 0.05
 const FLOAT_SPEED = 0.4
 
 // Logo is 800×300 → ~2.67:1 aspect ratio
-const LOGO_WIDTH = 2.8
+const LOGO_WIDTH = 3.3
 const LOGO_HEIGHT = LOGO_WIDTH / 2.67
+
+// The machine bed: 4.2 × 0.5 × 2.2, top face at y = 0.25.
+const DECK_TOP = 0.2555
+const DECAL_WIDTH = 1.55
+const DECAL_HEIGHT = DECAL_WIDTH / 2.67
+const DECAL_Z = 0.78
 
 // ── Component ───────────────────────────────────────────────
 
-export default function Kr8tivLogo() {
+interface Kr8tivLogoProps {
+  /** Phones get a smaller mark so it never crowds the HTML hero copy. */
+  compact?: boolean
+}
+
+export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
   const groupRef = useRef<THREE.Group>(null)
   const matRef = useRef<THREE.ShaderMaterial>(null)
   const yawRef = useRef(0)
@@ -131,7 +142,26 @@ export default function Kr8tivLogo() {
     uniforms: {
       uTime: { value: 0 },
       uLogoTexture: { value: logoTexture },
-      uIntensity: { value: 2.2 },
+      // Quieter on phones: portrait copy sits over the scene, so the mark
+      // reads as a background projection instead of competing headline.
+      uIntensity: { value: compact ? 0.95 : 1.75 },
+    },
+    vertexShader: logoVertexShader,
+    fragmentShader: logoFragmentShader,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    toneMapped: false,
+  }), [logoTexture, compact])
+
+  // The same mark, etched into the machine's deck plate — dimmer, no flicker
+  // sweep needed, it just sits there like screen-printed livery.
+  const decalArgs = useMemo(() => ({
+    uniforms: {
+      uTime: { value: 0 },
+      uLogoTexture: { value: logoTexture },
+      uIntensity: { value: 0.85 },
     },
     vertexShader: logoVertexShader,
     fragmentShader: logoFragmentShader,
@@ -141,6 +171,7 @@ export default function Kr8tivLogo() {
     blending: THREE.AdditiveBlending,
     toneMapped: false,
   }), [logoTexture])
+  const decalMatRef = useRef<THREE.ShaderMaterial>(null)
 
   useFrame((state) => {
     const t = state.clock.elapsedTime
@@ -148,7 +179,8 @@ export default function Kr8tivLogo() {
     // Gentle floating + soft billboard: the hologram slowly turns to face the
     // camera so the wordmark never reads mirrored from the back orbit angles.
     if (groupRef.current) {
-      groupRef.current.position.y = LOGO_Y + Math.sin(t * FLOAT_SPEED) * FLOAT_AMPLITUDE
+      groupRef.current.position.y =
+        (compact ? 1.0 : LOGO_Y) + Math.sin(t * FLOAT_SPEED) * FLOAT_AMPLITUDE
 
       const cam = state.camera.position
       const targetYaw = Math.atan2(cam.x, cam.z)
@@ -162,24 +194,56 @@ export default function Kr8tivLogo() {
     if (matRef.current) {
       matRef.current.uniforms.uTime.value = t
     }
+    if (decalMatRef.current) {
+      decalMatRef.current.uniforms.uTime.value = t
+    }
   })
 
+  const width = compact ? LOGO_WIDTH * 0.62 : LOGO_WIDTH
+  const height = compact ? LOGO_HEIGHT * 0.62 : LOGO_HEIGHT
+  // On phones the hologram sits low, just off the deck: the HTML hero copy owns
+  // the upper half of a portrait screen, and a mark floating up there fights it.
+  const hoverY = compact ? 1.0 : LOGO_Y
+
   return (
-    <group ref={groupRef} position={[0, LOGO_Y, 0]}>
-      {/* Main logo — holographic projection */}
-      <mesh>
-        <planeGeometry args={[LOGO_WIDTH, LOGO_HEIGHT]} />
-        <shaderMaterial ref={matRef} args={[shaderArgs]} />
+    <>
+      <group ref={groupRef} position={[0, hoverY, 0]}>
+        {/* Main logo — holographic projection above the machine */}
+        <mesh>
+          <planeGeometry args={[width, height]} />
+          <shaderMaterial ref={matRef} args={[shaderArgs]} />
+        </mesh>
+
+        {/* Projection light spilling back down onto the deck */}
+        <pointLight
+          position={[0, -0.5, 0.2]}
+          color="#ffffff"
+          intensity={0.22}
+          distance={3.4}
+          decay={2}
+        />
+      </group>
+
+      {/* Emitter cone — ties the hologram to the machine it is projected from */}
+      <mesh position={[0, (hoverY + DECK_TOP) / 2, 0]} renderOrder={2}>
+        <cylinderGeometry args={[width * 0.34, 0.16, hoverY - DECK_TOP, 16, 1, true]} />
+        <meshBasicMaterial
+          color="#cfd8ff"
+          transparent
+          opacity={0.045}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+          blending={THREE.AdditiveBlending}
+          toneMapped={false}
+        />
       </mesh>
 
-      {/* Subtle ground-projected light cone */}
-      <pointLight
-        position={[0, -0.5, 0.2]}
-        color="#ffffff"
-        intensity={0.15}
-        distance={3}
-        decay={2}
-      />
-    </group>
+      {/* Livery — the mark sitting ON the deck plate itself.
+          The Z flip makes it read the right way up from the front of the machine. */}
+      <mesh position={[0, DECK_TOP, DECAL_Z]} rotation={[-Math.PI / 2, 0, Math.PI]} renderOrder={2}>
+        <planeGeometry args={[DECAL_WIDTH, DECAL_HEIGHT]} />
+        <shaderMaterial ref={decalMatRef} args={[decalArgs]} />
+      </mesh>
+    </>
   )
 }
