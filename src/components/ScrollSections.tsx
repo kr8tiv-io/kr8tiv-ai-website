@@ -187,6 +187,18 @@ export default function ScrollSections() {
             isSmallMobile ? 'pt-12' : isCompactDesktop ? 'pt-14 md:pt-16' : 'pt-16 md:pt-20'
           }`}
         >
+          {/* Phone-only scrim: the 3D scene now moves a lot more behind the
+              copy, and a dark wash keeps the paragraph readable at every beat. */}
+          {isSmallMobile && (
+            <div
+              className="absolute inset-x-0 top-0 h-[78%] pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(to bottom, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.78) 55%, rgba(5,5,16,0) 100%)',
+              }}
+            />
+          )}
+
           {/* Text content side */}
           <div
             className={`section-inner opacity-0 flex flex-col xl:flex-row items-start ${

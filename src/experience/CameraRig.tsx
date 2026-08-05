@@ -279,7 +279,10 @@ export default function CameraRig() {
       radius * Math.sin(phi) * Math.cos(theta)
     )
 
-    lookTarget.current.set(a.tx, a.ty, a.tz)
+    // Portrait phones: the copy owns the top of the screen, so aim ABOVE the
+    // machine — that drops the subject into the lower third, clear of the text.
+    const lift = mobile.current ? 1.0 : 0
+    lookTarget.current.set(a.tx, a.ty + lift, a.tz)
     camera.lookAt(lookTarget.current)
 
     const roll = a.roll + handRoll + velRoll.current
