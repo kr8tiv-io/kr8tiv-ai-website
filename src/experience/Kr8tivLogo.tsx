@@ -144,7 +144,8 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
       uLogoTexture: { value: logoTexture },
       // Quieter on phones: portrait copy sits over the scene, so the mark
       // reads as a background projection instead of competing headline.
-      uIntensity: { value: compact ? 0.95 : 1.75 },
+      // Desktop was washing the top of frame on the wide camera beats.
+      uIntensity: { value: compact ? 0.95 : 1.35 },
     },
     vertexShader: logoVertexShader,
     fragmentShader: logoFragmentShader,

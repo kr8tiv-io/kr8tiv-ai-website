@@ -206,8 +206,8 @@ export default function ScrollSections() {
               className="absolute inset-y-0 hidden md:block pointer-events-none"
               style={{
                 [section.alignment === 'left' ? 'left' : 'right']: 0,
-                width: '66%',
-                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.74) 38%, rgba(5,5,16,0.36) 72%, rgba(5,5,16,0) 100%)`,
+                width: '72%',
+                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.94) 0%, rgba(5,5,16,0.8) 40%, rgba(5,5,16,0.4) 74%, rgba(5,5,16,0) 100%)`,
               }}
             />
           )}
