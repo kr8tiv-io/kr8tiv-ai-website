@@ -47,6 +47,7 @@ uniform float uCore;      // brightness of the lit core
 uniform vec3  uColor;
 uniform vec3  uCamPos;
 uniform float uNearFade;  // metres of fade-out as the camera enters the sheet
+uniform float uFarFade;   // distance at which the sheet dissolves again
 uniform float uHoleRadius; // keeps the machine readable through the haze
 
 // -- value noise + fbm (cheap: no permutation tables) --
@@ -92,9 +93,13 @@ void main() {
   float centreDist = length(vWorldPos.xz);
   shape *= mix(0.35, 1.0, smoothstep(uHoleRadius, uHoleRadius + 5.0, centreDist));
 
-  // Fade as the camera pushes through a sheet
+  // Fade as the camera pushes through a sheet…
   float camDist = distance(vWorldPos, uCamPos);
   shape *= smoothstep(0.6, uNearFade, camDist);
+
+  // …and again as it pulls far back. Billboards stop overlapping at distance
+  // and start reading as separate blobs instead of one body of air.
+  shape *= 1.0 - smoothstep(uFarFade, uFarFade + 9.0, camDist);
 
   if (shape * uOpacity < 0.004) discard;
 
@@ -123,6 +128,7 @@ interface SheetProps {
   edge?: number
   core?: number
   nearFade?: number
+  farFade?: number
   holeRadius?: number
   spin?: number
 }
@@ -141,6 +147,7 @@ function FogSheet({
   edge = 0.25,
   core = 0.6,
   nearFade = 4.5,
+  farFade = 17,
   holeRadius = 2.4,
   spin = 0,
 }: SheetProps) {
@@ -159,9 +166,10 @@ function FogSheet({
       uColor: { value: color },
       uCamPos: { value: new THREE.Vector3() },
       uNearFade: { value: nearFade },
+      uFarFade: { value: farFade },
       uHoleRadius: { value: holeRadius },
     }),
-    [seed, opacity, scale, speed, color, edge, core, nearFade, holeRadius]
+    [seed, opacity, scale, speed, color, edge, core, nearFade, farFade, holeRadius]
   )
 
   useFrame((state, delta) => {
