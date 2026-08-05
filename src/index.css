@@ -15,6 +15,17 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
+  /* Floating vibes toggle — tucked tighter into the corner on SE-class phones
+     so it clears the full-width CTA buttons. */
+  --vibes-bottom: 1.5rem;
+  --vibes-right: 1.5rem;
+}
+
+@media (max-width: 379px) {
+  :root {
+    --vibes-bottom: 0.85rem;
+    --vibes-right: 0.6rem;
+  }
 }
 
 html, body {

@@ -55,15 +55,15 @@ export default function VibesButton() {
       `}</style>
       <button
         onClick={toggle}
-        className="fixed z-50 flex flex-col items-center gap-1.5 group cursor-pointer"
+        className="fixed z-50 flex flex-col items-center gap-1.5 group cursor-pointer max-[379px]:gap-0.5"
         style={{
           bottom: 'calc(var(--vibes-bottom, 1.5rem) + var(--safe-bottom, 0px))',
-          right: 'calc(1.5rem + var(--safe-right, 0px))',
+          right: 'calc(var(--vibes-right, 1.5rem) + var(--safe-right, 0px))',
         }}
         title={playing ? 'Pause vibes' : 'Play vibes'}
       >
         <div
-          className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full border flex items-center justify-center transition-all duration-500 backdrop-blur-md ${
+          className={`w-10 h-10 sm:w-11 sm:h-11 max-[379px]:w-8 max-[379px]:h-8 rounded-full border flex items-center justify-center transition-all duration-500 backdrop-blur-md ${
             playing
               ? 'border-[#d4a853]/50 bg-[#d4a853]/15'
               : 'border-white/20 bg-white/8 hover:border-white/35 hover:bg-white/15'
@@ -110,7 +110,7 @@ export default function VibesButton() {
           </div>
         </div>
         <span
-          className={`text-[9px] tracking-[0.25em] uppercase font-mono transition-colors duration-300 ${
+          className={`text-[9px] tracking-[0.25em] uppercase font-mono transition-colors duration-300 max-[379px]:hidden ${
             playing ? 'text-[#d4a853]/70' : 'text-white/35 group-hover:text-white/55'
           }`}
         >

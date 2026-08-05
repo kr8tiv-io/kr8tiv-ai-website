@@ -425,8 +425,8 @@ export default function ScrollSections() {
             ))}
           </div>
 
-          {/* Social icons */}
-          <div className="flex items-center justify-center gap-6 pointer-events-auto mb-12">
+          {/* Social icons — wraps instead of running off both edges at 320px */}
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-5 sm:gap-6 pointer-events-auto mb-12">
             <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
                className="group flex flex-col items-center gap-2">
               <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
