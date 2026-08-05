@@ -190,11 +190,13 @@ export default function ScrollSections() {
           {/* Phone-only scrim: the 3D scene now moves a lot more behind the
               copy, and a dark wash keeps the paragraph readable at every beat. */}
           {isSmallMobile ? (
+            /* Full-height on phones: the CTA cluster sits low in the section and
+               the lit deck was showing straight through the buttons. */
             <div
-              className="absolute inset-x-0 top-0 h-[78%] pointer-events-none"
+              className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(to bottom, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.78) 55%, rgba(5,5,16,0) 100%)',
+                  'linear-gradient(to bottom, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.86) 45%, rgba(5,5,16,0.66) 78%, rgba(5,5,16,0.42) 100%)',
               }}
             />
           ) : (
@@ -204,8 +206,8 @@ export default function ScrollSections() {
               className="absolute inset-y-0 hidden md:block pointer-events-none"
               style={{
                 [section.alignment === 'left' ? 'left' : 'right']: 0,
-                width: '58%',
-                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.82) 0%, rgba(5,5,16,0.55) 45%, rgba(5,5,16,0) 100%)`,
+                width: '66%',
+                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.9) 0%, rgba(5,5,16,0.74) 38%, rgba(5,5,16,0.36) 72%, rgba(5,5,16,0) 100%)`,
               }}
             />
           )}
