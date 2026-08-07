@@ -206,6 +206,12 @@ export default function App() {
         </div>
       )}
 
+      {/* Keyboard users land here first: the scene is decorative and the nav is
+          visually last in the DOM, so offer a jump straight to the content. */}
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+
       {/* Layer 2: Scrollable HTML overlay */}
       {tier === 'low' || prefersReducedMotion ? (
         <div>

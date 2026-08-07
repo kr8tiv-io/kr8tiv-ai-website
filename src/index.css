@@ -42,6 +42,33 @@ html, body {
 body { cursor: crosshair; }
 a, button, [role="button"] { cursor: pointer; }
 
+/* Keyboard focus must be visible over a dark, busy 3D backdrop — a browser
+   default outline disappears against the scene. */
+:focus-visible {
+  outline: 2px solid var(--color-accent-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link: hidden until focused, then parked over the hero. */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: -9999px;
+  z-index: 200;
+  padding: 0.7rem 1.1rem;
+  background: var(--color-accent);
+  color: #08080f;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0.75rem;
+}
+
 #root {
   overflow-x: clip;
 }

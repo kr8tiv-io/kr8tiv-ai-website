@@ -61,6 +61,8 @@ export default function VibesButton() {
           right: 'calc(var(--vibes-right, 1.5rem) + var(--safe-right, 0px))',
         }}
         title={playing ? 'Pause vibes' : 'Play vibes'}
+        aria-label={playing ? 'Pause background music' : 'Play background music'}
+        aria-pressed={playing}
       >
         <div
           className={`w-10 h-10 sm:w-11 sm:h-11 max-[379px]:w-8 max-[379px]:h-8 rounded-full border flex items-center justify-center transition-all duration-500 backdrop-blur-md ${

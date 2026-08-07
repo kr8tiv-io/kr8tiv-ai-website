@@ -173,7 +173,7 @@ export default function ScrollSections() {
   }, [isCompactDesktop, isSmallMobile])
 
   return (
-    <div ref={containerRef} className="scroll-container relative z-10">
+    <div ref={containerRef} id="main-content" className="scroll-container relative z-10">
       {/* Hero section — empty (content in HeroOverlay) */}
       <section className="content-section h-screen" />
 

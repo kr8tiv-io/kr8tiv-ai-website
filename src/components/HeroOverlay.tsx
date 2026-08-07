@@ -12,6 +12,17 @@ export default function HeroOverlay() {
         }}
       />
 
+      {/* Desktop scrim — the sections got one when the machine was lit; the hero
+          is the most-viewed frame on the site and still had the headline sitting
+          straight over the deck. */}
+      <div
+        className="absolute inset-y-0 left-0 w-[62%] hidden md:block"
+        style={{
+          background:
+            'linear-gradient(to right, rgba(5,5,16,0.88) 0%, rgba(5,5,16,0.7) 42%, rgba(5,5,16,0.3) 76%, rgba(5,5,16,0) 100%)',
+        }}
+      />
+
       {/* Hero copy — editorial bottom-left on desktop, centered-bottom on mobile.
           The max-[379px] / max-height overrides are for the small iPhones
           (SE 1st gen 320x568, SE 2-3 and 13 mini 375x667), where the full-size
