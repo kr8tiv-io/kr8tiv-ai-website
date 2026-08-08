@@ -79,14 +79,20 @@ export default function App() {
     document.getElementById('static-content')?.remove()
   }, [])
 
-  // Reduced motion: skip the cinematic intro entirely (the camera still
-  // settles, driven by the same event, just without the theatre).
+  // Skip the cinematic intro when it would cost more than it gives:
+  //  - prefers-reduced-motion, obviously
+  //  - phones, where the curtain was the single biggest thing delaying the
+  //    hero copy. Measured: the hero paragraph was the LCP element at 5.0s on
+  //    a 4x-throttled phone purely because it sat behind the loader + intro,
+  //    while the HTML itself had painted at ~600ms.
+  // The camera still settles: it listens for the same 'intro-complete' event.
+  const skipIntro = prefersReducedMotion || tier === 'low'
   useEffect(() => {
-    if (prefersReducedMotion && loadingDone && !introComplete) {
+    if (skipIntro && loadingDone && !introComplete) {
       window.dispatchEvent(new CustomEvent('intro-complete'))
       handleIntroComplete()
     }
-  }, [prefersReducedMotion, loadingDone, introComplete, handleIntroComplete])
+  }, [skipIntro, loadingDone, introComplete, handleIntroComplete])
 
   // iOS: pinned full-screen sections + native touch scroll jitter without
   // normalized scroll. Only applied where Lenis smoothing is off (low tier).
@@ -171,13 +177,24 @@ export default function App() {
 
   return (
     <>
-      {/* Layer 0: static rendered scene for browsers without WebGL */}
-      {showStaticFallback && (
-        <div className="fixed inset-0 z-0 pointer-events-none">
+      {/* Layer 0: poster frame.
+          Shown immediately — not only when WebGL fails — for two reasons: it
+          replaces a black screen with the actual scene while three.js streams
+          in, and it gives the browser a large element to paint early. Before
+          this the canvas itself was the LCP candidate and only appeared once
+          the whole 3D stack had booted (live mobile LCP 3.8s). It cross-fades
+          out the moment the real canvas is ready. */}
+      {(showStaticFallback || !canvasReady) && (
+        <div
+          className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-700"
+          style={{ opacity: canvasReady ? 0 : 1 }}
+          aria-hidden="true"
+        >
           <img
             src={asset('/fallback-scene.jpg')}
             alt=""
-            aria-hidden="true"
+            fetchPriority="high"
+            decoding="async"
             className="w-full h-full object-cover opacity-70"
           />
           <div
@@ -242,7 +259,7 @@ export default function App() {
       <TransitionFlash />
 
       {/* Intro sequence — plays after loading (skipped for reduced motion) */}
-      {!prefersReducedMotion && loadingDone && !introComplete && (
+      {!skipIntro && loadingDone && !introComplete && (
         <IntroSequence onComplete={handleIntroComplete} />
       )}
 
@@ -250,7 +267,9 @@ export default function App() {
       <LoadingScreen
         progress={sceneProgress.progress}
         active={sceneProgress.active}
-        forceComplete={webglChecked && (!supportsWebGL || canvasFailed)}
+        /* Lift the curtain as soon as there is a canvas to look at — waiting for
+           every last asset kept the hero copy hidden long after it was ready. */
+        forceComplete={canvasReady || (webglChecked && (!supportsWebGL || canvasFailed))}
         onDone={() => {
           document.body.style.overflow = 'hidden'
           setTimeout(() => setLoadingDone(true), 300)
