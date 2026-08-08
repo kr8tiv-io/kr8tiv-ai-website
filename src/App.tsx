@@ -87,12 +87,20 @@ export default function App() {
   //    while the HTML itself had painted at ~600ms.
   // The camera still settles: it listens for the same 'intro-complete' event.
   const skipIntro = prefersReducedMotion || tier === 'low'
+  const hideCurtain = skipIntro
   useEffect(() => {
     if (skipIntro && loadingDone && !introComplete) {
       window.dispatchEvent(new CustomEvent('intro-complete'))
       handleIntroComplete()
     }
   }, [skipIntro, loadingDone, introComplete, handleIntroComplete])
+
+  // With no curtain there is nothing to report "done", so drive the same
+  // sequence directly once the capability probe has run.
+  useEffect(() => {
+    if (!hideCurtain || !webglChecked || loadingDone) return
+    setLoadingDone(true)
+  }, [hideCurtain, webglChecked, loadingDone])
 
   // iOS: pinned full-screen sections + native touch scroll jitter without
   // normalized scroll. Only applied where Lenis smoothing is off (low tier).
@@ -263,18 +271,25 @@ export default function App() {
         <IntroSequence onComplete={handleIntroComplete} />
       )}
 
-      {/* Loading overlay */}
-      <LoadingScreen
-        progress={sceneProgress.progress}
-        active={sceneProgress.active}
-        /* Lift the curtain as soon as there is a canvas to look at — waiting for
-           every last asset kept the hero copy hidden long after it was ready. */
-        forceComplete={canvasReady || (webglChecked && (!supportsWebGL || canvasFailed))}
-        onDone={() => {
-          document.body.style.overflow = 'hidden'
-          setTimeout(() => setLoadingDone(true), 300)
-        }}
-      />
+      {/* Loading overlay — desktop only.
+          On phones there is no curtain at all: the poster frame gives something
+          to look at while the scene streams in, and an opaque overlay was the
+          last thing holding the hero copy back (it kept LCP at 3.6s even after
+          the code-splitting work, because copy behind a full-screen layer does
+          not count as painted). */}
+      {!hideCurtain && (
+        <LoadingScreen
+          progress={sceneProgress.progress}
+          active={sceneProgress.active}
+          /* Lift as soon as there is a canvas to look at — waiting for every
+             last asset kept the hero copy hidden long after it was ready. */
+          forceComplete={canvasReady || (webglChecked && (!supportsWebGL || canvasFailed))}
+          onDone={() => {
+            document.body.style.overflow = 'hidden'
+            setTimeout(() => setLoadingDone(true), 300)
+          }}
+        />
+      )}
     </>
   )
 }
