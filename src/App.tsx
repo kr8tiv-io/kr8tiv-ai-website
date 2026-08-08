@@ -1,6 +1,4 @@
 import { Suspense, lazy, useState, useCallback, useEffect, useMemo, type ReactNode } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Preload } from '@react-three/drei'
 import { ReactLenis } from 'lenis/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -18,7 +16,9 @@ import { asset } from './lib/asset'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const Experience = lazy(() => import('./experience/Experience'))
+// The entire WebGL stack (r3f + drei + three) lives behind this boundary so it
+// is never in the first chunk — the hero paints before any of it arrives.
+const Scene3D = lazy(() => import('./experience/Scene3D'))
 
 function LenisWrapper({ children }: { children: ReactNode }) {
   useGSAPSync()
@@ -52,6 +52,13 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false)
   const [canvasReady, setCanvasReady] = useState(false)
   const [canvasFailed, setCanvasFailed] = useState(false)
+  // Asset-loading progress, reported up from inside the lazy 3D chunk so the
+  // loading screen itself stays free of any three.js import.
+  const [sceneProgress, setSceneProgress] = useState({ progress: 0, active: false })
+  const handleSceneProgress = useCallback(
+    (progress: number, active: boolean) => setSceneProgress({ progress, active }),
+    []
+  )
 
   const isIOS = useMemo(
     () =>
@@ -183,27 +190,17 @@ export default function App() {
         </div>
       )}
 
-      {/* Layer 1: Fixed 3D Canvas */}
+      {/* Layer 1: Fixed 3D canvas — streamed in after the overlay has painted */}
       {shouldRenderCanvas && (
-        <div className="fixed inset-0 z-0">
-          <Canvas
-            camera={{ position: [0, 1.5, 5], fov: tier === 'low' ? 50 : 35 }}
-            gl={{
-              antialias: !preferConservativeWebGL && tier !== 'low',
-              powerPreference: preferConservativeWebGL ? 'default' : 'high-performance',
-              alpha: false,
-              stencil: !preferConservativeWebGL,
-            }}
+        <Suspense fallback={null}>
+          <Scene3D
+            tier={tier}
             dpr={canvasDpr}
+            conservative={preferConservativeWebGL}
             onCreated={() => setCanvasReady(true)}
-          >
-            <color attach="background" args={['#050510']} />
-            <Suspense fallback={null}>
-              <Experience tier={tier} />
-              <Preload all />
-            </Suspense>
-          </Canvas>
-        </div>
+            onProgress={handleSceneProgress}
+          />
+        </Suspense>
       )}
 
       {/* Keyboard users land here first: the scene is decorative and the nav is
@@ -251,6 +248,8 @@ export default function App() {
 
       {/* Loading overlay */}
       <LoadingScreen
+        progress={sceneProgress.progress}
+        active={sceneProgress.active}
         forceComplete={webglChecked && (!supportsWebGL || canvasFailed)}
         onDone={() => {
           document.body.style.overflow = 'hidden'

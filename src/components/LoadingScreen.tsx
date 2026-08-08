@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { useProgress } from '@react-three/drei'
 
 interface LoadingScreenProps {
+  /** Reported up from inside the lazy 3D chunk — importing drei's useProgress
+   *  here would drag the whole three.js graph into the first bundle. */
+  progress?: number
+  active?: boolean
   forceComplete?: boolean
   onDone?: () => void
 }
@@ -9,8 +12,12 @@ interface LoadingScreenProps {
 /** Dead-man switch: lift the curtain even if the loader never reports 100%. */
 const MAX_HOLD_MS = 12000
 
-export default function LoadingScreen({ forceComplete = false, onDone }: LoadingScreenProps) {
-  const { progress, active } = useProgress()
+export default function LoadingScreen({
+  progress = 0,
+  active = false,
+  forceComplete = false,
+  onDone,
+}: LoadingScreenProps) {
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
   const startedRef = useRef(false)
