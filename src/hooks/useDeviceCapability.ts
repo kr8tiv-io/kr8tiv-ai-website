@@ -16,13 +16,22 @@ const MEDIUM_RENDERER_PATTERN =
   /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics|Apple GPU)/i
 const FIREFOX_PATTERN = /firefox/i
 
+/** Viewport width alone is enough to know we are on a phone, and it is known
+ *  synchronously. Starting at 'high' and downgrading in an effect meant phones
+ *  rendered the desktop path — including the full-screen loading curtain — for
+ *  a frame or two before being corrected, which delayed the hero paint. */
+function initialTier(): DeviceTier {
+  if (typeof window === 'undefined') return 'high'
+  return window.innerWidth < 768 ? 'low' : 'high'
+}
+
 export function useDeviceCapability(): DeviceCapability {
-  const [capability, setCapability] = useState<DeviceCapability>({
-    tier: 'high',
+  const [capability, setCapability] = useState<DeviceCapability>(() => ({
+    tier: initialTier(),
     preferConservativeWebGL: false,
     supportsWebGL: false,
     webglChecked: false,
-  })
+  }))
 
   useEffect(() => {
     const detectTier = () => {
