@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import {
   EffectComposer,
@@ -5,6 +6,7 @@ import {
   Vignette,
   ChromaticAberration,
   ToneMapping,
+  FXAA,
 } from '@react-three/postprocessing'
 import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import * as THREE from 'three'
@@ -13,14 +15,11 @@ import type { DeviceTier } from '../hooks/useDeviceCapability'
 /**
  * Effects — Optimized post-processing stack.
  *
- * Changes from original:
- * - Removed N8AO (2nd most expensive effect, barely visible in dark scene)
- * - Dropped multisampling from 4 → 0 (redundant with post-processing)
- * - Added Bloom level cap (limits blur pyramid, saves GPU)
- * - Removed Noise (0.012 opacity was invisible)
- * - Chromatic aberration now reacts to scroll velocity for a kinetic feel
- *
- * Net result: ~35-40% faster frame times with identical perceived quality.
+ * The composer renders the scene into its own target, so the canvas
+ * `antialias` flag does not smooth geometry once this pass is mounted.
+ * Multisampling here is the MSAA that actually reaches the picture.
+ * Firefox keeps samples at 0 (conservative context) and gets an FXAA pass
+ * instead, which is what takes the stair-steps off that path.
  */
 
 // Scroll-velocity-reactive chromatic aberration offset.
@@ -37,11 +36,16 @@ export default function Effects({ tier }: EffectsProps) {
   const highTier = tier === 'high'
   const lowTier = tier === 'low'
   const gl = useThree((s) => s.gl)
+  const conservative =
+    typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent)
 
   // Phones get bloom ONLY — it is what makes the additive haze read as light
   // rather than a grey wash — and only on a WebGL2 context, so we never push
   // a post pipeline onto an old WebGL1 mobile driver.
   const leanPost = lowTier && gl.capabilities.isWebGL2
+  const maxSamples = gl.capabilities.isWebGL2 ? gl.capabilities.maxSamples || 0 : 0
+  const wantedSamples = conservative ? 0 : lowTier ? 2 : highTier ? 4 : 2
+  const samples = Math.min(wantedSamples, maxSamples)
 
   useFrame(() => {
     const vel = Math.min(Math.abs((window as any).__kr8tiv_scrollVel ?? 0), 1500)
@@ -58,37 +62,41 @@ export default function Effects({ tier }: EffectsProps) {
 
   if (lowTier) {
     if (!leanPost) return null
-    return (
-      <EffectComposer multisampling={0}>
-        <Bloom
-          luminanceThreshold={0.68}
-          luminanceSmoothing={0.8}
-          intensity={0.42}
-          mipmapBlur
-          levels={3}
-        />
-        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      </EffectComposer>
-    )
+    const lean: ReactElement[] = [
+      <Bloom
+        key="bloom"
+        luminanceThreshold={0.68}
+        luminanceSmoothing={0.8}
+        intensity={0.42}
+        mipmapBlur
+        levels={3}
+      />,
+      <ToneMapping key="tone" mode={ToneMappingMode.ACES_FILMIC} />,
+    ]
+    if (samples === 0) lean.push(<FXAA key="fxaa" />)
+    return <EffectComposer multisampling={samples}>{lean}</EffectComposer>
   }
 
-  return (
-    <EffectComposer multisampling={0}>
-      <Bloom
-        luminanceThreshold={highTier ? 0.74 : 0.8}
-        luminanceSmoothing={highTier ? 0.72 : 0.8}
-        intensity={highTier ? 0.42 : 0.28}
-        mipmapBlur
-        levels={highTier ? 5 : 4}
-      />
-      <ChromaticAberration
-        blendFunction={BlendFunction.NORMAL}
-        offset={_offsetVec}
-        radialModulation={highTier}
-        modulationOffset={highTier ? 0.5 : 0.2}
-      />
-      <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette darkness={highTier ? 0.7 : 0.55} offset={highTier ? 0.2 : 0.24} />
-    </EffectComposer>
-  )
+  const passes: ReactElement[] = [
+    <Bloom
+      key="bloom"
+      luminanceThreshold={highTier ? 0.74 : 0.8}
+      luminanceSmoothing={highTier ? 0.72 : 0.8}
+      intensity={highTier ? 0.42 : 0.28}
+      mipmapBlur
+      levels={highTier ? 5 : 4}
+    />,
+    <ChromaticAberration
+      key="chroma"
+      blendFunction={BlendFunction.NORMAL}
+      offset={_offsetVec}
+      radialModulation={highTier}
+      modulationOffset={highTier ? 0.5 : 0.2}
+    />,
+    <ToneMapping key="tone" mode={ToneMappingMode.ACES_FILMIC} />,
+    <Vignette key="vignette" darkness={highTier ? 0.7 : 0.55} offset={highTier ? 0.2 : 0.24} />,
+  ]
+  if (samples === 0) passes.push(<FXAA key="fxaa" />)
+
+  return <EffectComposer multisampling={samples}>{passes}</EffectComposer>
 }

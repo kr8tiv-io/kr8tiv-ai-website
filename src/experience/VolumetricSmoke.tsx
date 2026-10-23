@@ -302,6 +302,9 @@ void main() {
   scattered += mix(warmAmb, coolAmb, 0.5) * ambientDensity * 0.7;
 
   gl_FragColor = vec4(scattered, 1.0 - transmittance);
+  // Screen-space dither on the accumulated colour. The ray jitter above
+  // hides march steps; this breaks 8-bit banding in the lit gradient.
+  gl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 }
 `
 

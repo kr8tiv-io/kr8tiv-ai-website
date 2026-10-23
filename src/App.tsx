@@ -180,8 +180,16 @@ export default function App() {
 
   const shouldRenderCanvas = webglChecked && supportsWebGL && !canvasFailed
   const showStaticFallback = webglChecked && (!supportsWebGL || canvasFailed)
-  const canvasDpr: [number, number] =
-    tier === 'low' ? [1, 1] : preferConservativeWebGL ? [1, 1.25] : [1, 1.5]
+  const deviceRatio = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1
+  // Low tier holds at least 1.5 when the panel can deliver it. Tablets and
+  // desktops follow the device up to 2. Firefox stays at 1.5 (its WebGL
+  // compositing path is the conservative one). AdaptiveDpr scales this down
+  // if the frame rate slips — the prop here is the ceiling, not a lock.
+  const dprCeiling = tier !== 'low' && !preferConservativeWebGL ? 2 : 1.5
+  const canvasDpr = useMemo<[number, number]>(
+    () => [1, Math.min(deviceRatio, dprCeiling)],
+    [deviceRatio, dprCeiling]
+  )
 
   return (
     <>

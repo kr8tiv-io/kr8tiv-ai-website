@@ -100,6 +100,7 @@ void main() {
   alpha *= endFade;
 
   gl_FragColor = vec4(color, alpha);
+  gl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 }
 `
 

@@ -1,7 +1,29 @@
-import { useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
+
+/* PerformanceMonitor (Scene3D) calls this when the frame rate cannot hold.
+   The sheets are pure overdraw, so they are the first thing to drop. */
+let fogSuppressed = false
+const fogListeners = new Set<(suppressed: boolean) => void>()
+
+export function setFogSuppressed(suppressed: boolean) {
+  if (fogSuppressed === suppressed) return
+  fogSuppressed = suppressed
+  fogListeners.forEach((listener) => listener(suppressed))
+}
+
+function useFogSuppressed() {
+  const [suppressed, setSuppressed] = useState(fogSuppressed)
+  useEffect(() => {
+    fogListeners.add(setSuppressed)
+    return () => {
+      fogListeners.delete(setSuppressed)
+    }
+  }, [])
+  return suppressed
+}
 
 /* ─────────────────────────────────────────────────────────────
    Atmosphere — the fog you can actually see.
@@ -32,7 +54,7 @@ void main() {
 `
 
 const fogFragment = /* glsl */ `
-precision mediump float;
+precision highp float;
 
 varying vec2 vUv;
 varying vec3 vWorldPos;
@@ -111,6 +133,7 @@ void main() {
   if (alpha < 0.003) discard;
 
   gl_FragColor = vec4(uColor * (1.0 + n * uCore), alpha);
+  gl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 }
 `
 
@@ -216,15 +239,17 @@ interface AtmosphereProps {
 }
 
 export default function Atmosphere({ tier }: AtmosphereProps) {
-  // Phones render without the bloom pass, which is what makes additive haze
-  // read on desktop — so the low tier gets denser, tighter-hugging fog to
-  // land in the same place visually.
+  const declined = useFogSuppressed()
+  // Phones render without the full post stack, which is what makes additive
+  // haze read on desktop — so the low tier gets denser, tighter-hugging fog.
+  // Medium and low are capped below the desktop sheet count: each sheet is
+  // the same brightness, there are just fewer of them.
   const profile =
     tier === 'high'
       ? { banks: 7, ground: 3, opacity: 2.3, hole: 3.0, groundHole: 1.4 }
       : tier === 'medium'
-        ? { banks: 6, ground: 2, opacity: 2.35, hole: 2.9, groundHole: 1.4 }
-        : { banks: 5, ground: 2, opacity: 2.4, hole: 1.8, groundHole: 1.0 }
+        ? { banks: 4, ground: 2, opacity: 2.35, hole: 2.9, groundHole: 1.4 }
+        : { banks: 3, ground: 1, opacity: 2.4, hole: 1.8, groundHole: 1.0 }
 
   const haze = useMemo(() => new THREE.Color('#aab6d8'), [])
   const floor = useMemo(() => new THREE.Color('#6f79ab'), [])
@@ -261,6 +286,8 @@ export default function Atmosphere({ tier }: AtmosphereProps) {
       })),
     [profile.ground, profile.opacity]
   )
+
+  if (declined) return null
 
   return (
     <group>

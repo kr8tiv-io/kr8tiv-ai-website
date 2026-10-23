@@ -12,8 +12,7 @@ import { asset } from '../lib/asset'
 
    - Logo texture used as shape mask (alpha channel)
    - Bright white core with soft bloom-ready glow
-   - Subtle scan-line interference pattern
-   - Gentle flicker (not cheesy — just enough to feel alive)
+   - Slow horizontal sweep
    - Edge-glow halo effect
    - Additive blending so it naturally interacts with the
      smoke trails flowing past it
@@ -50,24 +49,10 @@ void main() {
   // ── Core brightness — clean white ──
   float core = logoAlpha;
 
-  // ── Subtle scan-line interference ──
-  float scanFreq = 300.0;
-  float scanSpeed = 8.0;
-  float scan = sin(vUv.y * scanFreq + uTime * scanSpeed) * 0.5 + 0.5;
-  scan = smoothstep(0.3, 0.7, scan);
-  float scanEffect = 0.92 + scan * 0.08;
-
-  // ── Slow horizontal sweep ──
+  // ── Slow horizontal sweep (one soft pass, no high-frequency scan) ──
   float sweep = sin(vUv.x * 3.14159 + uTime * 0.5) * 0.5 + 0.5;
   sweep = pow(sweep, 3.0);
   float sweepBrightness = 1.0 + sweep * 0.15;
-
-  // ── Gentle flicker ──
-  float flicker = 1.0;
-  flicker *= 0.97 + sin(uTime * 1.2) * 0.03;
-  flicker *= 0.98 + sin(uTime * 3.7) * 0.02;
-  float glitch = step(0.995, sin(uTime * 50.0 + vUv.x * 100.0) * 0.5 + 0.5);
-  flicker *= 1.0 - glitch * 0.15;
 
   // ── Edge glow halo ──
   float offset = 0.008;
@@ -91,12 +76,13 @@ void main() {
   float halo = haloAlpha * 0.15;
 
   // ── Compose ──
-  float intensity = (core * scanEffect * sweepBrightness + edgeGlow + halo) * flicker * uIntensity;
+  float intensity = (core * sweepBrightness + edgeGlow + halo) * uIntensity;
 
   vec3 color = vec3(1.0);
   color = mix(color, vec3(0.9, 0.92, 1.0), edgeDetect * 0.3);
 
   gl_FragColor = vec4(color * intensity, intensity);
+  gl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 }
 `
 
@@ -156,8 +142,8 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
     toneMapped: false,
   }), [logoTexture, compact])
 
-  // The same mark, etched into the machine's deck plate — dimmer, no flicker
-  // sweep needed, it just sits there like screen-printed livery.
+  // The same mark, etched into the machine's deck plate — dimmer, it just
+  // sits there like screen-printed livery.
   const decalArgs = useMemo(() => ({
     uniforms: {
       uTime: { value: 0 },

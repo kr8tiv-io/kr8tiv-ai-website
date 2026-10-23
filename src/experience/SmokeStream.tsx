@@ -135,11 +135,10 @@ void main() {
   float distFromCenter = abs(vUv.y - 0.5) * 2.0;
   float gauss = exp(-distFromCenter * distFromCenter * 2.5);
 
-  // ── Internal fiber texture — subtle contour lines ──
-  // This creates the "layered light painting" look from the reference
-  float fiber = sin(vUv.y * 40.0 + uLayerOffset * 8.0 + uTime * 0.5) * 0.5 + 0.5;
-  fiber = smoothstep(0.3, 0.7, fiber);
-  float fiberEffect = 0.7 + fiber * 0.3;
+  // Broad shading only. A high-frequency fiber (dozens of cycles across
+  // the sheet) quantises into visible bands once the gradient is 8-bit.
+  float fiber = sin(vUv.y * 1.25 + uLayerOffset * 0.2 + uTime * 0.15) * 0.5 + 0.5;
+  float fiberEffect = 0.94 + fiber * 0.06;
 
   // ── Very slow brightness variation along length ──
   float lengthVar = sin(vUv.x * 4.0 - uTime * 0.8 + uPhase) * 0.5 + 0.5;
@@ -170,6 +169,9 @@ void main() {
   float alpha = intensity * uOpacity;
 
   gl_FragColor = vec4(vec3(1.0), alpha);
+  // Screen-space dither: ±½ LSB breaks the remaining smooth falloff into
+  // noise instead of contour lines. Mean-zero, so brightness is unchanged.
+  gl_FragColor.rgb += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
 }
 `
 
