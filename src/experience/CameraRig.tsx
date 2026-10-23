@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { sections } from '../config/sections'
+import { SCENE_LAYOUT, sections } from '../config/sections'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -105,12 +105,87 @@ const HERO: Move = { theta: -30 * D, phi: 76 * D, radius: 8.6, ty: 0.35, fov: 35
 // Way up and far back — where the intro starts.
 const INTRO: Move = { theta: -52 * D, phi: 40 * D, radius: 30, ty: 1.6, fov: 46 }
 
+const _up = new THREE.Vector3(0, 1, 0)
+const _z = new THREE.Vector3()
+const _right = new THREE.Vector3()
+const _camUp = new THREE.Vector3()
+
+type Band = 'mobile' | 'tablet' | 'desktop'
+
+function viewportBand(): Band {
+  const w = window.innerWidth
+  if (w >= SCENE_LAYOUT.desktopMin) return 'desktop'
+  if (w >= SCENE_LAYOUT.tabletMin) return 'tablet'
+  return 'mobile'
+}
+
+/** Which side the copy occupies. Holds the previous side across the spacer beats. */
+function readTextSide(prev: 'left' | 'right'): 'left' | 'right' {
+  const vh = window.innerHeight
+  let best = 0
+  let side: 'left' | 'right' | null = null
+
+  const consider = (el: Element | null, next: 'left' | 'right', opacity = 1) => {
+    if (!el || opacity < 0.08) return
+    const r = el.getBoundingClientRect()
+    const vis = Math.min(r.bottom, vh) - Math.max(r.top, 0)
+    if (vis <= 8) return
+    const score = vis * opacity
+    if (score > best) {
+      best = score
+      side = next
+    }
+  }
+
+  const hero = document.querySelector('[data-hero]')
+  if (hero) {
+    const r = hero.getBoundingClientRect()
+    const vis = Math.min(r.bottom, vh) - Math.max(r.top, 0)
+    if (vis > vh * 0.4) consider(hero, 'left', 1)
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-text-side]').forEach((el) => {
+    const next = el.getAttribute('data-text-side') === 'right' ? 'right' : 'left'
+    const inner = el.querySelector('.section-inner')
+    const opacity = inner ? Number.parseFloat(getComputedStyle(inner).opacity || '0') : 1
+    consider(el, next, opacity)
+  })
+
+  return side ?? prev
+}
+
+function readFooterFade() {
+  const footer = document.querySelector('[data-scene-slot="footer"]')
+  if (!footer) return 0
+  const top = footer.getBoundingClientRect().top
+  const start = window.innerHeight * 1.02
+  const end = window.innerHeight * 0.7
+  return THREE.MathUtils.clamp((start - top) / (start - end), 0, 1)
+}
+
+function applySceneVeil(band: Band, side: number, footerFade: number) {
+  const root = document.querySelector<HTMLElement>('[data-scene-veil]')
+  if (!root) return
+  const set = (name: string, value: number) => {
+    const el = root.querySelector<HTMLElement>(`[data-veil="${name}"]`)
+    if (el) el.style.opacity = value.toFixed(3)
+  }
+  const desktop = band === 'desktop'
+  set('left', desktop ? THREE.MathUtils.clamp(side, 0, 1) : 0)
+  set('right', desktop ? THREE.MathUtils.clamp(-side, 0, 1) : 0)
+  // Tablet and phone: the copy sits in the lower band, so that band goes
+  // opaque. Phones keep the authored camera; the veil is what keeps the
+  // hero card off the machine (prompt 004 replaces the phone scene).
+  set('lower', desktop ? 0 : 1)
+  set('footer', footerFade)
+}
+
 function isMobileViewport() {
   return typeof window !== 'undefined' && window.innerWidth < 768
 }
 
 export default function CameraRig() {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
 
   // Phones need the whole machine in frame: pull back and widen the lens.
   const mobile = useRef(isMobileViewport())
@@ -138,6 +213,10 @@ export default function CameraRig() {
   const lookTarget = useRef(new THREE.Vector3())
   const velRadius = useRef(0)
   const velRoll = useRef(0)
+  // +1 = copy on the left (subject on the right). Lerped so section changes don't pop.
+  const sideLerp = useRef(1)
+  const footerLerp = useRef(0)
+  const heldSide = useRef<'left' | 'right'>('left')
 
   const toVars = (m: Move) => ({
     theta: m.theta,
@@ -270,8 +349,48 @@ export default function CameraRig() {
     const handRoll = Math.sin(t * 0.47 + 1.7) * 0.35 * D * live
 
     const theta = a.theta + driftTheta + handTheta
-    const phi = THREE.MathUtils.clamp(a.phi + driftPhi + handPhi, 0.16, Math.PI - 0.16)
-    const radius = Math.max(2.2, a.radius + driftRadius + velRadius.current)
+    let phi = THREE.MathUtils.clamp(a.phi + driftPhi + handPhi, 0.16, Math.PI - 0.16)
+    let radius = Math.max(2.2, a.radius + driftRadius + velRadius.current)
+
+    const band = viewportBand()
+    const k = 1 - Math.exp(-delta * 7)
+    heldSide.current = readTextSide(heldSide.current)
+    const sideTarget = heldSide.current === 'left' ? 1 : -1
+    sideLerp.current += (sideTarget - sideLerp.current) * k
+    const footerFade = readFooterFade()
+    footerLerp.current += (footerFade - footerLerp.current) * k
+    applySceneVeil(band, sideLerp.current, footerLerp.current)
+
+    // Desktop / tablet: keep the shot level and far enough back that the dome
+    // fits the free region. Phones keep the authored orbit (prompt 004 replaces
+    // that view with a poster).
+    const subjectScale = band === 'desktop' ? SCENE_LAYOUT.desktopScale : SCENE_LAYOUT.tabletScale
+    // How far above screen-center to park the subject, in units of half the
+    // vertical view. Desktop derives this from the band between the header
+    // and the stat card so a short window cannot drop the dome onto either.
+    let verticalLift = 0.66
+    if (band !== 'mobile') {
+      phi = THREE.MathUtils.clamp(phi, 58 * D, 84 * D)
+      const tanV = Math.tan(THREE.MathUtils.degToRad(a.fov) / 2)
+      const aspect = size.width / Math.max(1, size.height)
+      if (band === 'desktop') {
+        const h = Math.max(1, size.height)
+        const topBand = SCENE_LAYOUT.headerReserve / h
+        const hudBand = SCENE_LAYOUT.hudReserve / h
+        const avail = Math.max(0.3, 1 - topBand - hudBand)
+        const span = SCENE_LAYOUT.subjectWidth * subjectScale
+        const fitW =
+          span / (2 * SCENE_LAYOUT.desktopWidthFrac * tanV * Math.max(aspect, 0.8))
+        const fitH = span / (2 * avail * tanV)
+        radius = Math.max(radius, fitW, fitH)
+        verticalLift = 1 - 2 * (topBand + avail / 2)
+      } else {
+        const fit =
+          (SCENE_LAYOUT.subjectHeight * subjectScale) /
+          (2 * SCENE_LAYOUT.tabletHeightFrac * tanV)
+        radius = Math.max(radius, fit)
+      }
+    }
 
     camera.position.set(
       radius * Math.sin(phi) * Math.sin(theta),
@@ -279,14 +398,38 @@ export default function CameraRig() {
       radius * Math.sin(phi) * Math.cos(theta)
     )
 
-    // Portrait phones: the copy owns the top of the screen, so aim ABOVE the
-    // machine — that drops the subject into the lower third, clear of the text.
-    const lift = mobile.current ? 1.0 : 0
-    lookTarget.current.set(a.tx, a.ty + lift, a.tz)
-    camera.lookAt(lookTarget.current)
-
-    const roll = a.roll + handRoll + velRoll.current
-    if (roll !== 0) camera.rotateZ(roll)
+    if (band === 'mobile') {
+      // Phones keep the authored orbit. The lower veil covers the hero card,
+      // which sits along the bottom; section copy on a short phone starts
+      // under the header, above this lower-third framing.
+      lookTarget.current.set(a.tx, a.ty + (mobile.current ? 1.0 : 0), a.tz)
+      camera.lookAt(lookTarget.current)
+      const roll = a.roll + handRoll + velRoll.current
+      if (roll !== 0) camera.rotateZ(roll)
+    } else {
+      // Aim at the wire dome's center (local y 0.3, parent scale). Aiming
+      // higher dropped the dome onto the stat card.
+      lookTarget.current.set(0, 0.3 * subjectScale, 0)
+      _z.subVectors(camera.position, lookTarget.current)
+      if (_z.lengthSq() > 1e-6) {
+        _z.normalize()
+        _right.crossVectors(_up, _z)
+        if (_right.lengthSq() > 1e-6) {
+          _right.normalize()
+          _camUp.crossVectors(_z, _right).normalize()
+          const halfH = radius * Math.tan(THREE.MathUtils.degToRad(a.fov) / 2)
+          if (band === 'desktop') {
+            const aspect = size.width / Math.max(1, size.height)
+            const shift = halfH * aspect * 0.58 * sideLerp.current
+            lookTarget.current.addScaledVector(_right, -shift)
+            lookTarget.current.addScaledVector(_camUp, -halfH * verticalLift)
+          } else {
+            lookTarget.current.addScaledVector(_camUp, -halfH * verticalLift)
+          }
+        }
+      }
+      camera.lookAt(lookTarget.current)
+    }
 
     const persp = camera as THREE.PerspectiveCamera
     const targetFov = a.fov + velRadius.current * 1.5

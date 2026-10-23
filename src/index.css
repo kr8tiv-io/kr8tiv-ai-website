@@ -321,6 +321,137 @@ a, button, [role="button"] { cursor: pointer; }
   scroll-margin-top: 56px;
 }
 
+/* Section shells stay transparent so a pinned wash can't draw a hard band
+   across the scene. The copy sits on its own scrim; the fixed veil below
+   only feathers the viewport half the type occupies. */
+.content-section {
+  background-color: transparent;
+}
+
+[data-scrim] {
+  background-color: rgba(5, 5, 16, 0.88);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 16px 48px rgba(5, 5, 16, 0.45),
+    0 0 28px rgba(5, 5, 16, 0.35);
+  padding: 1.05rem 1.1rem 1.15rem;
+}
+
+@media (min-width: 768px) {
+  [data-scrim] {
+    padding: 1.25rem 1.35rem 1.3rem;
+  }
+}
+
+@media (max-height: 800px) {
+  [data-scrim] {
+    padding: 0.75rem 0.95rem 0.85rem;
+  }
+}
+
+/* Full-screen curtains (intro, loader) are already a solid field. They need
+   the scrim hook for the contrast check without the copy-card chrome. */
+[data-scrim][data-scrim-plain] {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #050510;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Stat cards stay in the free column at desktop widths. Below 1024 they
+   would sit on the copy, so they leave the layout without losing their markup. */
+.hud-panel {
+  width: min(280px, 26vw);
+}
+
+.hud-dock {
+  position: absolute;
+  z-index: 20;
+  bottom: 8rem;
+}
+
+.hud-dock-left {
+  left: max(1.25rem, 3vw);
+}
+
+.hud-dock-right {
+  right: max(1.25rem, 3vw);
+}
+
+@media (max-width: 1023px) {
+  .hud-panel {
+    display: none !important;
+  }
+}
+
+[data-scene-veil] {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+[data-veil] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+[data-veil='left'] {
+  background: linear-gradient(
+    to right,
+    #050510 0%,
+    #050510 40%,
+    rgba(5, 5, 16, 0.78) 48%,
+    rgba(5, 5, 16, 0.28) 56%,
+    rgba(5, 5, 16, 0) 66%
+  );
+}
+
+[data-veil='right'] {
+  background: linear-gradient(
+    to left,
+    #050510 0%,
+    #050510 40%,
+    rgba(5, 5, 16, 0.78) 48%,
+    rgba(5, 5, 16, 0.28) 56%,
+    rgba(5, 5, 16, 0) 66%
+  );
+}
+
+[data-veil='lower'] {
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 16, 0) 0%,
+    rgba(5, 5, 16, 0) 20%,
+    rgba(5, 5, 16, 0.4) 32%,
+    #050510 46%,
+    #050510 100%
+  );
+}
+
+[data-veil='footer'] {
+  background: #050510;
+}
+
+@media (min-width: 1024px) {
+  [data-veil='left'] {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1023px) {
+  [data-veil='lower'] {
+    opacity: 1;
+  }
+}
+
 .site-header {
   --site-bar: 56px;
   position: fixed;

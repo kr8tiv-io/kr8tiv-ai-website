@@ -2,32 +2,18 @@ import { AUDIT_MAILTO, PHONE_DISPLAY, PHONE_HREF } from '../config/sections'
 
 export default function HeroOverlay() {
   return (
-    <section className="h-screen relative pointer-events-none z-10">
-      {/* Mobile scrim — keeps hero copy legible over the 3D scene */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[70%] md:hidden"
-        style={{
-          background:
-            'linear-gradient(to top, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.72) 45%, rgba(5,5,16,0) 100%)',
-        }}
-      />
-
-      {/* Desktop scrim — the sections got one when the machine was lit; the hero
-          is the most-viewed frame on the site and still had the headline sitting
-          straight over the deck. */}
-      <div
-        className="absolute inset-y-0 left-0 w-[62%] hidden md:block"
-        style={{
-          background:
-            'linear-gradient(to right, rgba(5,5,16,0.88) 0%, rgba(5,5,16,0.7) 42%, rgba(5,5,16,0.3) 76%, rgba(5,5,16,0) 100%)',
-        }}
-      />
-
-      {/* Hero copy — editorial bottom-left on desktop, centered-bottom on mobile.
-          The max-[379px] / max-height overrides are for the small iPhones
-          (SE 1st gen 320x568, SE 2-3 and 13 mini 375x667), where the full-size
-          stack is taller than the viewport and rides up under the nav bar. */}
-      <div className="absolute inset-x-0 bottom-0 px-4 sm:px-10 lg:px-[6vw] pb-[7vh] sm:pb-[12vh] md:pb-[10vh] flex flex-col items-center md:items-start text-center md:text-left">
+    <section data-hero className="h-screen relative pointer-events-none z-10">
+      {/* Hero copy — bottom-left on desktop so the machine can hold the right
+          half, and a card along the bottom on tablet/phone. The type size steps
+          down at >=1024 so "Your back office," stays inside that column.
+          The max-[379px] override is for the small iPhones (SE 1st gen 320x568,
+          SE 2-3 and 13 mini 375x667), where the full-size stack is taller than
+          the viewport and rides up under the nav bar. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-[5vh] sm:px-6 sm:pb-[7vh] md:justify-start md:px-8 md:pb-[6vh] lg:px-[3.5vw]">
+        <div
+          data-scrim
+          className="flex w-full max-w-[min(40rem,92vw)] flex-col items-center text-center md:items-start md:text-left lg:max-w-[min(36rem,46vw)]"
+        >
         <div
           className="text-[9px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.4em] uppercase text-white/40 font-mono mb-3 sm:mb-5"
         >
@@ -35,7 +21,7 @@ export default function HeroOverlay() {
         </div>
 
         <h1
-          className="title-glow text-[clamp(2.4rem,7.5vw,5.5rem)] max-[379px]:text-[clamp(1.8rem,8.8vw,2.3rem)] font-bold tracking-[-0.03em] leading-[1.02] text-white mb-3 sm:mb-6 pointer-events-auto max-w-[92vw] md:max-w-[14em]"
+          className="title-glow text-[clamp(2.4rem,7.5vw,5.5rem)] max-[379px]:text-[clamp(1.8rem,8.8vw,2.3rem)] lg:text-[clamp(2.15rem,3.5vw,3.9rem)] font-bold tracking-[-0.03em] leading-[1.02] text-white mb-3 sm:mb-6 pointer-events-auto max-w-full"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Your back office,
@@ -66,11 +52,12 @@ export default function HeroOverlay() {
 
         {/* Scroll indicator — dropped on short viewports (SE-class phones), where
             the hero stack has no room to spare. */}
-        <div className="mt-10 sm:mt-12 flex-col items-center md:items-start gap-2 hidden [@media(min-height:701px)]:flex">
-          <div className="w-px h-14 bg-gradient-to-b from-transparent via-white/25 to-transparent md:ml-6" />
+        <div className="mt-8 sm:mt-10 flex-col items-center md:items-start gap-2 hidden [@media(min-height:760px)]:flex">
+          <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/25 to-transparent md:ml-6" />
           <span className="text-[8px] tracking-[0.3em] uppercase text-white/25 font-mono">
             Scroll — watch it work
           </span>
+        </div>
         </div>
       </div>
 

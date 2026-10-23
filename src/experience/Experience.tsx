@@ -1,4 +1,6 @@
-﻿import { ContactShadows, Environment, Sparkles } from '@react-three/drei'
+﻿import { useLayoutEffect, useRef, type ReactNode } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { ContactShadows, Environment, Sparkles } from '@react-three/drei'
 import CameraRig from './CameraRig'
 import OpsMachine from './OpsMachine'
 import Atmosphere from './Atmosphere'
@@ -10,7 +12,33 @@ import Kr8tivLogo from './Kr8tivLogo'
 import MouseLight from './MouseLight'
 import MouseTracers from './MouseTracers'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
+import { SCENE_LAYOUT } from '../config/sections'
 import { asset } from '../lib/asset'
+
+function subjectScaleForWidth(width: number) {
+  if (width >= SCENE_LAYOUT.desktopMin) return SCENE_LAYOUT.desktopScale
+  if (width >= SCENE_LAYOUT.tabletMin) return SCENE_LAYOUT.tabletScale
+  return 1
+}
+
+/** Scales the machine and the wordmark together so the dome fits beside the copy. */
+function SubjectFrame({ children }: { children: ReactNode }) {
+  const ref = useRef<import('three').Group>(null)
+
+  useLayoutEffect(() => {
+    ref.current?.scale.setScalar(subjectScaleForWidth(window.innerWidth))
+  }, [])
+
+  useFrame((_, delta) => {
+    const group = ref.current
+    if (!group) return
+    const target = subjectScaleForWidth(window.innerWidth)
+    const next = group.scale.x + (target - group.scale.x) * (1 - Math.exp(-delta * 5))
+    if (Math.abs(next - group.scale.x) > 0.0004) group.scale.setScalar(next)
+  })
+
+  return <group ref={ref}>{children}</group>
+}
 
 interface ExperienceProps {
   tier: DeviceTier
@@ -76,10 +104,14 @@ export default function Experience({ tier }: ExperienceProps) {
       <pointLight position={[-4, 1.4, 3]} intensity={1.1} color="#7f8cc0" distance={13} decay={2} />
 
       <CameraRig />
-      <OpsMachine tier={tier} />
-      {/* Wordmark on the piece: hologram above the deck + livery etched on it.
-          On every tier now — phones get the compact mark. */}
-      <Kr8tivLogo compact={tier === 'low'} />
+      {/* Machine + wordmark share one scale so the camera fit math and the
+          mesh stay in agreement. Phones stay at 1. */}
+      <SubjectFrame>
+        <OpsMachine tier={tier} />
+        {/* Wordmark on the piece: hologram above the deck + livery etched on it.
+            On every tier now — phones get the compact mark. */}
+        <Kr8tivLogo compact={tier === 'low'} />
+      </SubjectFrame>
 
       {/* Atmosphere runs everywhere, including phones — fewer layers, same look. */}
       <Atmosphere tier={tier} />

@@ -5,6 +5,7 @@ interface HudPanelProps {
   section: Section
   index: number
   compact?: boolean
+  className?: string
 }
 
 function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
@@ -59,10 +60,10 @@ function AnimatedValue({ target, unit }: { target: string; unit?: string }) {
   )
 }
 
-export default function HudPanel({ section, index, compact = false }: HudPanelProps) {
+export default function HudPanel({ section, index, compact = false, className = '' }: HudPanelProps) {
   return (
     <div
-      className="hud-panel opacity-0 flex-shrink-0 w-full xl:w-[320px] max-w-[min(94vw,420px)] relative"
+      className={`hud-panel opacity-0 ${className}`}
       style={{
         ['--hud-color' as string]: section.hudColor,
       }}
@@ -80,7 +81,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
         className={`relative rounded-sm ${compact ? 'p-3 sm:p-3.5' : 'p-4 sm:p-5'}`}
         style={{
           background:
-            'linear-gradient(145deg, rgba(8, 12, 20, 0.76) 0%, rgba(7, 10, 18, 0.62) 55%, rgba(6, 9, 16, 0.48) 100%)',
+            'linear-gradient(145deg, rgba(5, 5, 16, 0.94) 0%, rgba(5, 5, 16, 0.9) 100%)',
           border: `1px solid ${section.hudColor}20`,
           boxShadow: `0 0 24px ${section.hudColor}08, inset 0 0 24px ${section.hudColor}03`,
           backdropFilter: 'none',

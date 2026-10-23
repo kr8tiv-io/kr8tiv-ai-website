@@ -60,6 +60,8 @@ export default function LoadingScreen({
 
   return (
     <div
+      data-scrim
+      data-scrim-plain
       className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#050510] transition-opacity duration-1000 ${
         fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}

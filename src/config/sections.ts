@@ -22,9 +22,36 @@ export interface Section {
   hudData: HudDataPoint[]
   hudColor: string
   alignment: 'left' | 'right'
+  /** Viewport half the 3D subject occupies at >= 1024px. Opposite of `alignment`. */
+  modelSide: 'left' | 'right'
   cta?: SectionCta
   ctas?: SectionCta[]
 }
+
+/**
+ * Viewport framing for the 3D subject. Copy stays on each section;
+ * these numbers keep the plinth, arm, wire dome and wordmark out of the
+ * text column. `subjectWidth` is the dome's diameter plus a little
+ * perspective slack, so a close shot cannot spill into the text half.
+ * Tablet still fits the shorter chassis height into the top band.
+ * Scroll length is unchanged.
+ */
+export const SCENE_LAYOUT = {
+  desktopMin: 1024,
+  tabletMin: 768,
+  desktopScale: 0.74,
+  tabletScale: 0.62,
+  subjectWidth: 6.2,
+  subjectHeight: 3.9,
+  desktopWidthFrac: 0.34,
+  tabletHeightFrac: 0.32,
+  /** Pixels kept clear above the canvas for the site header. */
+  headerReserve: 64,
+  /** Pixels kept clear at the bottom of the free column for the stat card.
+   *  Includes the card, the 8rem dock, and slack so the near rim of the
+   *  dome does not land on the card at a short desktop height. */
+  hudReserve: 470,
+} as const
 
 import { asset } from '../lib/asset'
 
@@ -58,6 +85,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'left',
+    modelSide: 'right',
   },
   {
     angle: Math.PI * 0.92,
@@ -78,6 +106,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'right',
+    modelSide: 'left',
     ctas: [
       { text: 'Read the full case study →', href: PAGE_EVOLVE },
       { text: 'Book an AI Ops Audit →', href: AUDIT_MAILTO },
@@ -103,6 +132,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'left',
+    modelSide: 'right',
     cta: { text: 'See it running at Evolve →', href: PAGE_EVOLVE },
   },
   {
@@ -123,6 +153,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'right',
+    modelSide: 'left',
     ctas: [
       { text: 'JARVIS — the context engine →', href: PAGE_JARVIS },
       { text: 'KIN — the AI front desk →', href: PAGE_KIN },
@@ -147,6 +178,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'left',
+    modelSide: 'right',
     ctas: [
       { text: 'Book an AI Ops Audit →', href: AUDIT_MAILTO },
       { text: `Call ${PHONE_DISPLAY} →`, href: PHONE_HREF },
@@ -170,5 +202,6 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'right',
+    modelSide: 'left',
   },
 ]

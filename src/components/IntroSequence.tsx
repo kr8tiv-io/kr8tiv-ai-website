@@ -74,6 +74,8 @@ export default function IntroSequence({ onComplete, startAnimation = true }: Int
   return (
     <div
       ref={containerRef}
+      data-scrim
+      data-scrim-plain
       className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#050510]"
     >
       <h1

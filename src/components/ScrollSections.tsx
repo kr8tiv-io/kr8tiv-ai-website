@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -19,16 +20,18 @@ const titleShadow = '0 0 30px rgba(5,5,16,0.95), 0 0 60px rgba(5,5,16,0.8), 0 2p
 
 function getViewportFlags() {
   if (typeof window === 'undefined') {
-    return { isCompactDesktop: false, isSmallMobile: false }
+    return { isCompactDesktop: false, isSmallMobile: false, band: 'desktop' as const }
   }
 
   const width = window.innerWidth
   const height = window.innerHeight
+  const band = width >= 1024 ? 'desktop' : width >= 768 ? 'tablet' : 'mobile'
 
   return {
     isCompactDesktop: width <= 1366 || height <= 800,
     isSmallMobile: width <= 390 || height <= 700,
-  }
+    band,
+  } as const
 }
 
 /** Off-site links open in a new tab; our own static pages stay in this one. */
@@ -46,7 +49,7 @@ const DENSITY_DWELL_BOOST: Record<Section['density'], number> = {
 
 export default function ScrollSections() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [{ isCompactDesktop, isSmallMobile }, setViewportFlags] = useState(getViewportFlags)
+  const [{ isCompactDesktop, isSmallMobile, band }, setViewportFlags] = useState(getViewportFlags)
 
   useEffect(() => {
     const onResize = () => setViewportFlags(getViewportFlags())
@@ -172,8 +175,30 @@ export default function ScrollSections() {
     })
   }, [isCompactDesktop, isSmallMobile])
 
+  const place =
+    band === 'tablet'
+      ? 'items-end pb-[4vh]'
+      : band === 'mobile'
+        ? isSmallMobile
+          ? 'items-start pt-12'
+          : 'items-center pt-16'
+        : isCompactDesktop
+          ? 'items-center pt-14'
+          : 'items-center pt-16'
+
   return (
     <div ref={containerRef} id="main-content" className="scroll-container relative z-10">
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <div data-scene-veil aria-hidden="true">
+            <div data-veil="left" />
+            <div data-veil="right" />
+            <div data-veil="lower" />
+            <div data-veil="footer" />
+          </div>,
+          document.body,
+        )}
+
       {/* Hero section — empty (content in HeroOverlay) */}
       <section className="content-section h-screen" />
 
@@ -181,59 +206,32 @@ export default function ScrollSections() {
       {sections.map((section, i) => (
         <section
           key={i}
-          className={`content-section h-screen flex ${
-            isSmallMobile ? 'items-start' : 'items-center'
-          } pointer-events-none relative ${
-            isSmallMobile ? 'pt-12' : isCompactDesktop ? 'pt-14 md:pt-16' : 'pt-16 md:pt-20'
-          }`}
+          data-text-side={section.alignment}
+          className={`content-section h-screen flex pointer-events-none relative z-10 ${place}`}
         >
-          {/* Phone-only scrim: the 3D scene now moves a lot more behind the
-              copy, and a dark wash keeps the paragraph readable at every beat. */}
-          {isSmallMobile ? (
-            /* Full-height on phones: the CTA cluster sits low in the section and
-               the lit deck was showing straight through the buttons. */
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  'linear-gradient(to bottom, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.86) 45%, rgba(5,5,16,0.66) 78%, rgba(5,5,16,0.42) 100%)',
-              }}
-            />
-          ) : (
-            /* Desktop: a soft wash under the text column only — the lit machine
-               is much brighter now, and white-on-metal was losing contrast. */
-            <div
-              className="absolute inset-y-0 hidden md:block pointer-events-none"
-              style={{
-                [section.alignment === 'left' ? 'left' : 'right']: 0,
-                width: '72%',
-                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.94) 0%, rgba(5,5,16,0.8) 40%, rgba(5,5,16,0.4) 74%, rgba(5,5,16,0) 100%)`,
-              }}
-            />
-          )}
-
-          {/* Text content side */}
+          {/* Text column. Desktop: the alignment side, opposite the model.
+              Tablet: a panel in the lower part of the viewport. */}
           <div
-            className={`section-inner opacity-0 flex flex-col xl:flex-row items-start ${
-              isSmallMobile ? 'gap-3 sm:gap-4 xl:gap-5' : isCompactDesktop ? 'gap-4 xl:gap-6' : 'gap-6 xl:gap-8'
-            } w-full ${
-              isSmallMobile ? 'px-4 sm:px-5' : 'px-5 sm:px-7 lg:px-8'
-            } relative z-10 ${
-              section.alignment === 'left'
-                ? 'xl:ml-[6vw] xl:mr-auto xl:max-w-[85vw]'
-                : 'xl:ml-auto xl:mr-[6vw] xl:max-w-[85vw] xl:flex-row-reverse'
+            className={`section-inner opacity-0 relative z-10 flex w-full ${
+              band === 'desktop'
+                ? section.alignment === 'left'
+                  ? 'justify-start pl-[max(1.15rem,3.5vw)] pr-6'
+                  : 'justify-end pr-[max(1.15rem,3.5vw)] pl-6'
+                : 'justify-center px-4 sm:px-6'
             }`}
             data-testid={`section-inner-${i}`}
             data-density={section.density}
           >
-            {/* Text block */}
-            <div className={`section-text flex-shrink-0 ${
-              section.density === 'dense' && (isCompactDesktop || isSmallMobile)
-                ? isSmallMobile
-                  ? 'max-w-[min(96vw,31rem)]'
-                  : 'max-w-[min(95vw,34rem)]'
-                : 'max-w-[min(94vw,30rem)]'
-            }`}>
+            <div
+              data-scrim
+              className={`section-text w-full ${
+                band === 'desktop'
+                  ? 'max-w-[min(34rem,44vw)]'
+                  : band === 'tablet'
+                    ? 'max-w-[min(42rem,92vw)]'
+                    : 'max-w-full'
+              }`}
+            >
               <span
                 className={`uppercase tracking-[0.32em] font-medium block font-mono ${
                   isSmallMobile ? 'text-[9px] mb-2.5' : isCompactDesktop ? 'text-[9.5px] mb-3' : 'text-[10px] mb-4'
@@ -301,7 +299,7 @@ export default function ScrollSections() {
 
               {/* Multiple CTAs — uniform width grid */}
               {section.ctas && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto max-w-[min(95vw,480px)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto w-full max-w-[480px]">
                   {section.ctas.map((cta, j) => (
                     <a
                       key={j}
@@ -320,19 +318,31 @@ export default function ScrollSections() {
                 </div>
               )}
             </div>
-
-            {/* HUD Panel */}
-            <HudPanel section={section} index={i} compact={isSmallMobile} />
           </div>
+
+          {/* Stat card in the free column — the half the model occupies.
+              Hidden below 1024 so it cannot sit on the copy or the buttons. */}
+          <HudPanel
+            section={section}
+            index={i}
+            compact={isSmallMobile}
+            className={`hud-dock ${section.modelSide === 'right' ? 'hud-dock-right' : 'hud-dock-left'}`}
+          />
         </section>
       ))}
 
       {/* Footer / CTA — min-h so the tagline and credit stay reachable when the
           content is taller than the viewport (it is, on phones). */}
-      <section className="content-section min-h-screen py-20 sm:py-24 flex items-center justify-center relative">
-        <div className={`section-inner opacity-0 text-center max-w-[min(94vw,52rem)] relative z-10 ${
-          isSmallMobile ? 'px-4' : 'px-5 sm:px-6'
-        }`}>
+      <section
+        data-scene-slot="footer"
+        className="content-section min-h-screen py-20 sm:py-24 flex items-center justify-center relative z-10"
+      >
+        <div
+          data-scrim
+          className={`section-inner opacity-0 text-center max-w-[min(94vw,52rem)] relative z-10 ${
+            isSmallMobile ? 'mx-4' : 'mx-5 sm:mx-6'
+          }`}
+        >
           <h2
             className={`title-glow font-light text-white pointer-events-auto ${
               isSmallMobile
