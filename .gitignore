@@ -34,3 +34,12 @@ playwright-report/
 
 # Ad-hoc verification scripts
 *.tmp.mjs
+
+# Grok Build driver runtime files (improve-2026-10)
+build-plan/run.log
+build-plan/state.json
+build-plan/logs/
+build-plan/driver.pid
+build-plan/PAUSE
+build-plan/STOP
+
