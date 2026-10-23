@@ -228,16 +228,16 @@ export default function App() {
         </Suspense>
       )}
 
-      {/* Keyboard users land here first: the scene is decorative and the nav is
-          visually last in the DOM, so offer a jump straight to the content. */}
+      {/* Skip link first in tab order, then the site header. The header is
+          fixed and painted above the canvas, the loading curtain, and the HUD. */}
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
+      <NavigationBar />
 
       {/* Layer 2: Scrollable HTML overlay */}
       {tier === 'low' || prefersReducedMotion ? (
         <div>
-          <NavigationBar />
           <HeroOverlay />
           <ScrollSections />
         </div>
@@ -253,7 +253,6 @@ export default function App() {
           }}
         >
           <LenisWrapper>
-            <NavigationBar />
             <HeroOverlay />
             <ScrollSections />
           </LenisWrapper>
