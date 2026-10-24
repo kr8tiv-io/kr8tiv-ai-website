@@ -49,6 +49,7 @@ uniform vec3  uCamPos;
 uniform float uNearFade;  // metres of fade-out as the camera enters the sheet
 uniform float uFarFade;   // distance at which the sheet dissolves again
 uniform float uHoleRadius; // keeps the machine readable through the haze
+uniform float uFloorFade;  // 1 = fade standing sheets out before they meet the floor
 
 // -- value noise + fbm (cheap: no permutation tables) --
 float hash(vec3 p) {
@@ -101,6 +102,10 @@ void main() {
   // and start reading as separate blobs instead of one body of air.
   shape *= 1.0 - smoothstep(uFarFade, uFarFade + 9.0, camDist);
 
+  // Standing sheets used to slice through the opaque floor plane (y = -0.6)
+  // with a crisp intersection line; fade them out just above it instead.
+  shape *= mix(1.0, smoothstep(-0.6, 0.4, vWorldPos.y), uFloorFade);
+
   if (shape * uOpacity < 0.004) discard;
 
   float t = uTime * uSpeed;
@@ -152,6 +157,10 @@ function FogSheet({
   spin = 0,
 }: SheetProps) {
   const meshRef = useRef<THREE.Mesh>(null)
+  const reduceMotion = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    []
+  )
   const matRef = useRef<THREE.ShaderMaterial>(null)
 
   const uniforms = useMemo(
@@ -168,13 +177,14 @@ function FogSheet({
       uNearFade: { value: nearFade },
       uFarFade: { value: farFade },
       uHoleRadius: { value: holeRadius },
+      uFloorFade: { value: flat ? 0 : 1 },
     }),
-    [seed, opacity, scale, speed, color, edge, core, nearFade, farFade, holeRadius]
+    [seed, opacity, scale, speed, color, edge, core, nearFade, farFade, holeRadius, flat]
   )
 
   useFrame((state, delta) => {
     if (matRef.current) {
-      matRef.current.uniforms.uTime.value += delta
+      if (!reduceMotion) matRef.current.uniforms.uTime.value += delta
       matRef.current.uniforms.uCamPos.value.copy(state.camera.position)
     }
     if (!meshRef.current) return
@@ -221,10 +231,10 @@ export default function Atmosphere({ tier }: AtmosphereProps) {
   // land in the same place visually.
   const profile =
     tier === 'high'
-      ? { banks: 7, ground: 3, opacity: 2.3, hole: 3.0, groundHole: 1.4 }
+      ? { banks: 7, ground: 3, opacity: 1.3, hole: 3.0, groundHole: 1.4 }
       : tier === 'medium'
-        ? { banks: 6, ground: 2, opacity: 2.35, hole: 2.9, groundHole: 1.4 }
-        : { banks: 5, ground: 2, opacity: 2.4, hole: 1.8, groundHole: 1.0 }
+        ? { banks: 6, ground: 2, opacity: 1.35, hole: 2.9, groundHole: 1.4 }
+        : { banks: 5, ground: 2, opacity: 1.4, hole: 1.8, groundHole: 1.0 }
 
   const haze = useMemo(() => new THREE.Color('#aab6d8'), [])
   const floor = useMemo(() => new THREE.Color('#6f79ab'), [])

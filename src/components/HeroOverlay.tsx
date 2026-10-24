@@ -3,25 +3,8 @@ import { AUDIT_MAILTO, PHONE_DISPLAY, PHONE_HREF } from '../config/sections'
 export default function HeroOverlay() {
   return (
     <section className="h-screen relative pointer-events-none z-10">
-      {/* Mobile scrim — keeps hero copy legible over the 3D scene */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[70%] md:hidden"
-        style={{
-          background:
-            'linear-gradient(to top, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.72) 45%, rgba(5,5,16,0) 100%)',
-        }}
-      />
-
-      {/* Desktop scrim — the sections got one when the machine was lit; the hero
-          is the most-viewed frame on the site and still had the headline sitting
-          straight over the deck. */}
-      <div
-        className="absolute inset-y-0 left-0 w-[62%] hidden md:block"
-        style={{
-          background:
-            'linear-gradient(to right, rgba(5,5,16,0.88) 0%, rgba(5,5,16,0.7) 42%, rgba(5,5,16,0.3) 76%, rgba(5,5,16,0) 100%)',
-        }}
-      />
+      {/* Feathered hero wash: radial, fades to 0 on every edge so it never ends in a line. */}
+      <div className="absolute inset-0 hero-wash" aria-hidden="true" />
 
       {/* Hero copy — editorial bottom-left on desktop, centered-bottom on mobile.
           The max-[379px] / max-height overrides are for the small iPhones
