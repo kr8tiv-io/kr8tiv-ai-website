@@ -315,3 +315,33 @@ a, button, [role="button"] { cursor: pointer; }
     letter-spacing: 0.001em;
   }
 }
+
+/* ── Feathered scrims ────────────────────────────────────────────
+   Replaces the old full-height rectangles. Every edge fades to 0 alpha,
+   so nothing ever reads as a line over the 3D background. */
+.text-scrim { position: relative; isolation: isolate; }
+.text-scrim::before {
+  content: '';
+  position: absolute;
+  inset: -20% -18%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(5,5,16,0.6) 0%, rgba(5,5,16,0.4) 40%, rgba(5,5,16,0) 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 45%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, #000 45%, transparent 72%);
+}
+@media (max-width: 767px) {
+  .text-scrim::before {
+    inset: -12% -10%;
+    background: radial-gradient(ellipse at center, rgba(5,5,16,0.7) 0%, rgba(5,5,16,0.5) 45%, rgba(5,5,16,0) 74%);
+  }
+}
+.hero-wash {
+  pointer-events: none;
+  background: radial-gradient(ellipse 55% 45% at 22% 72%, rgba(5,5,16,0.6) 0%, rgba(5,5,16,0.3) 50%, rgba(5,5,16,0) 100%);
+}
+@media (max-width: 767px) {
+  .hero-wash {
+    background: radial-gradient(ellipse 90% 40% at 50% 80%, rgba(5,5,16,0.7) 0%, rgba(5,5,16,0.35) 55%, rgba(5,5,16,0) 100%);
+  }
+}

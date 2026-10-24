@@ -188,30 +188,9 @@ export default function ScrollSections() {
             isSmallMobile ? 'pt-12' : isCompactDesktop ? 'pt-14 md:pt-16' : 'pt-16 md:pt-20'
           }`}
         >
-          {/* Phone-only scrim: the 3D scene now moves a lot more behind the
-              copy, and a dark wash keeps the paragraph readable at every beat. */}
-          {isSmallMobile ? (
-            /* Full-height on phones: the CTA cluster sits low in the section and
-               the lit deck was showing straight through the buttons. */
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  'linear-gradient(to bottom, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.86) 45%, rgba(5,5,16,0.66) 78%, rgba(5,5,16,0.42) 100%)',
-              }}
-            />
-          ) : (
-            /* Desktop: a soft wash under the text column only — the lit machine
-               is much brighter now, and white-on-metal was losing contrast. */
-            <div
-              className="absolute inset-y-0 hidden md:block pointer-events-none"
-              style={{
-                [section.alignment === 'left' ? 'left' : 'right']: 0,
-                width: '72%',
-                background: `linear-gradient(to ${section.alignment === 'left' ? 'right' : 'left'}, rgba(5,5,16,0.94) 0%, rgba(5,5,16,0.8) 40%, rgba(5,5,16,0.4) 74%, rgba(5,5,16,0) 100%)`,
-              }}
-            />
-          )}
+          {/* No full-section scrim: those rectangles had hard top/bottom edges
+              that read as lines across the 3D scene. Readability now comes from
+              a feathered .text-scrim behind the copy only (see index.css). */}
 
           {/* Text content side */}
           <div
@@ -228,7 +207,7 @@ export default function ScrollSections() {
             data-density={section.density}
           >
             {/* Text block */}
-            <div className={`section-text flex-shrink-0 ${
+            <div className={`section-text text-scrim flex-shrink-0 ${
               section.density === 'dense' && (isCompactDesktop || isSmallMobile)
                 ? isSmallMobile
                   ? 'max-w-[min(96vw,31rem)]'
