@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/png" href="../favicon.png" />
+
+    <title>Start an AI Ops Audit — 3-minute intake | kr8tiv AI</title>
+    <meta name="description" content="Tell us what eats your week. A 3-minute intake for the kr8tiv AI Ops Audit: we map your manual work and tell you what an AI back-office could take off your plate." />
+    <link rel="canonical" href="https://kr8tiv.ai/start/" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#050510" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Start an AI Ops Audit | kr8tiv AI" />
+    <meta
+      property="og:description"
+      content="One place that holds what your business knows, so every agent acts on current facts instead of guessing."
+    />
+    <meta property="og:url" content="https://kr8tiv.ai/start/" />
+    <meta property="og:image" content="https://kr8tiv.ai/og-card.png" />
+    <meta property="og:site_name" content="kr8tiv AI" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@kr8tivai" />
+    <meta name="twitter:title" content="Start an AI Ops Audit | kr8tiv AI" />
+    <meta
+      name="twitter:description"
+      content="The context engine behind every kr8tiv AI back-office build."
+    />
+    <meta name="twitter:image" content="https://kr8tiv.ai/og-card.png" />
+
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles/page.css" />
+    <style>
+      .intake { max-width: 44rem; }
+      .intake fieldset { border: 0; padding: 0; margin: 0 0 2.2rem; }
+      .intake legend { font-family: var(--font-mono); font-size: .7rem; letter-spacing: .28em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
+      .row { display: grid; gap: 1rem 1.25rem; grid-template-columns: 1fr 1fr; }
+      @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+      .f { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+      .f label, .f .lab { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-70); }
+      .req { color: var(--amber); }
+      .f input, .f select, .f textarea {
+        font: 400 1rem/1.4 var(--font-body); color: var(--ink); background: rgba(255,255,255,.03);
+        border: 1px solid var(--line); border-radius: 2px; padding: .8rem .9rem; width: 100%; box-sizing: border-box;
+      }
+      .f select { appearance: none; background-image: linear-gradient(45deg,transparent 50%,var(--amber) 50%),linear-gradient(135deg,var(--amber) 50%,transparent 50%); background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+      .f select option { background: #0a0a18; color: #fff; }
+      .f textarea { min-height: 7rem; resize: vertical; }
+      .f input:focus, .f select:focus, .f textarea:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+      .f input::placeholder, .f textarea::placeholder { color: var(--ink-40); }
+      .hint { font-size: .8rem; color: var(--ink-55); }
+      [aria-invalid="true"] { border-color: #ff6b6b !important; box-shadow: 0 0 0 1px #ff6b6b !important; }
+      .err { font-family: var(--font-mono); font-size: .72rem; color: #ff8a8a; }
+      .errbox { border: 1px solid #ff6b6b; background: rgba(255,107,107,.07); padding: 1rem 1.2rem; margin-bottom: 2rem; color: var(--ink); font-size: .92rem; }
+      .errbox ul { margin: .5rem 0 0; padding-left: 1.1rem; } .errbox a { color: #ffb3b3; }
+      .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+      .status { min-height: 1.4em; margin-top: 1rem; font-size: .9rem; color: var(--ink-70); }
+      .status.is-error { color: #ff8a8a; }
+      .done { border: 1px solid rgba(212,168,83,.5); background: rgba(212,168,83,.06); padding: 2rem; }
+      .done h2 { margin-top: 0; }
+      .consent { display: flex; gap: .7rem; align-items: flex-start; font-size: .9rem; color: var(--ink-70); }
+      .consent input { margin-top: .25rem; accent-color: var(--amber); width: 1.05rem; height: 1.05rem; }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href="../">kr8tiv AI <span>Back offices, automated</span></a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="../">Home</a>
+          <a href="../work/evolve/">Case study</a>
+          <a href="../jarvis/">JARVIS</a>
+          <a href="../kin/">KIN</a>
+          <a class="btn btn--sm" href="./" aria-current="page">Book audit</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div class="wrap">
+          <p class="eyebrow">AI Ops Audit · 3-minute intake</p>
+          <h1>Tell us what eats your week.</h1>
+          <p class="lede">Ten quick questions. We read every one and come back within one business day with what an AI back-office could take off your plate. Rather talk? Call <a href="tel:+17809155471">780-915-5471</a>.</p>
+        </div>
+      </section>
+      <section class="band">
+        <div class="wrap">
+          <form id="ai-intake" class="intake" novalidate>
+            <div class="errbox" id="ai-errors" role="alert" hidden></div>
+            <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label></div>
+
+            <fieldset>
+              <legend>01 · You</legend>
+              <div class="row">
+                <div class="f"><label for="name">Name <span class="req">*</span></label><input id="name" name="name" autocomplete="name" required /></div>
+                <div class="f"><label for="business">Business <span class="req">*</span></label><input id="business" name="business" autocomplete="organization" required /></div>
+              </div>
+              <div class="row">
+                <div class="f"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required /></div>
+                <div class="f"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" /></div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>02 · Your operation</legend>
+              <div class="row">
+                <div class="f"><label for="industry">Industry <span class="req">*</span></label>
+                  <select id="industry" name="industry" required>
+                    <option value="">Choose one</option>
+                    <option>Trades &amp; field services</option><option>Construction</option><option>Real estate</option>
+                    <option>Professional services</option><option>Health &amp; wellness</option><option>Retail &amp; e-commerce</option>
+                    <option>Hospitality</option><option>Logistics</option><option>Other</option>
+                  </select></div>
+                <div class="f"><label for="team_size">Team size <span class="req">*</span></label>
+                  <select id="team_size" name="team_size" required>
+                    <option value="">Choose one</option><option>Just me</option><option>2–5</option><option>6–20</option><option>21–50</option><option>51+</option>
+                  </select></div>
+              </div>
+              <div class="f"><label for="pain_points">Top manual tasks / pain points <span class="req">*</span></label>
+                <textarea id="pain_points" name="pain_points" required placeholder="Quotes typed by hand, chasing invoices, re-entering job details into three systems…"></textarea>
+                <span class="hint">The jobs that eat the most hours. Rough is fine.</span></div>
+              <div class="f"><label for="tools">Tools you use today</label>
+                <input id="tools" name="tools" placeholder="Google Sheets, QuickBooks, Jobber, Gmail, HubSpot…" /></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>03 · Scope</legend>
+              <div class="row">
+                <div class="f"><label for="budget">Budget range <span class="req">*</span></label>
+                  <select id="budget" name="budget" required>
+                    <option value="">Choose one</option><option>Under $2.5k</option><option>$2.5k – $10k</option><option>$10k – $25k</option><option>$25k+</option><option>Not sure yet</option>
+                  </select></div>
+                <div class="f"><label for="timeline">Timeline <span class="req">*</span></label>
+                  <select id="timeline" name="timeline" required>
+                    <option value="">Choose one</option><option>ASAP</option><option>Within a month</option><option>1–3 months</option><option>Just exploring</option>
+                  </select></div>
+              </div>
+              <label class="consent"><input type="checkbox" name="consent" value="yes" required /> <span>OK to contact me about this request. We don't sell or share your details. <span class="req">*</span></span></label>
+            </fieldset>
+
+            <button class="btn" type="submit" id="ai-submit">Send intake &rarr;</button>
+            <p class="status" id="ai-status" role="status" aria-live="polite"></p>
+          </form>
+          <div class="done intake" id="ai-done" hidden tabindex="-1">
+            <p class="eyebrow">Received</p>
+            <h2>Got it. We'll be in touch within one business day.</h2>
+            <p>Your intake is with Matt. If it's urgent, call <a href="tel:+17809155471">780-915-5471</a>.</p>
+            <a class="btn btn--ghost" href="../">Back to kr8tiv.ai &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap">
+        <nav class="footlinks" aria-label="Footer">
+          <a href="../">Home</a><a href="../work/evolve/">Evolve case study</a><a href="../kin/">KIN</a>
+          <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a>
+          <a href="https://kr8tiv.io" target="_blank" rel="noopener noreferrer">kr8tiv.io — design studio</a>
+        </nav>
+        <p class="legal">&copy; 2026 kr8tiv AI &mdash; Edmonton, Alberta &rarr; everywhere</p>
+      </div>
+    </footer>
+    <script>
+    (function () {
+      // Same route as kr8tiv.io/start: FormSubmit AJAX to the KR8TIV primary inbox.
+      // After FormSubmit activation, replace FORM_ID with the random alias it emails you.
+      // CC to Matt's Gmail: preferred via a Hostinger mail forwarder (keeps it out of this page);
+      // otherwise set CC below.
+      var FORM_ID = 'matt@kr8tiv.io';
+      var CC = '';
+      var ENDPOINT = 'https://formsubmit.co/ajax/' + FORM_ID;
+      var MIN_FILL_MS = 4000;
+      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      var form = document.getElementById('ai-intake');
+      var box = document.getElementById('ai-errors');
+      var status = document.getElementById('ai-status');
+      var btn = document.getElementById('ai-submit');
+      var started = Date.now();
+
+      function label(el) { var l = form.querySelector('label[for="' + el.id + '"]'); return l ? l.textContent.replace('*', '').trim() : 'This field'; }
+      function clear() {
+        form.querySelectorAll('.err').forEach(function (n) { n.remove(); });
+        form.querySelectorAll('[aria-invalid]').forEach(function (n) { n.removeAttribute('aria-invalid'); n.removeAttribute('aria-describedby'); });
+        box.hidden = true; box.innerHTML = '';
+      }
+      function flag(el, msg) {
+        el.setAttribute('aria-invalid', 'true');
+        var s = document.createElement('span'); s.className = 'err'; s.id = 'err-' + el.name; s.textContent = msg;
+        (el.type === 'checkbox' ? el.closest('label') : el).insertAdjacentElement('afterend', s);
+        el.setAttribute('aria-describedby', s.id);
+      }
+      function validate() {
+        clear(); var errs = [];
+        form.querySelectorAll('[required]').forEach(function (el) {
+          var v = el.type === 'checkbox' ? (el.checked ? 'y' : '') : (el.value || '').trim();
+          var msg = null;
+          if (!v) msg = el.type === 'checkbox' ? 'Please tick to confirm.' : label(el) + ' is required.';
+          else if (el.type === 'email' && !EMAIL_RE.test(v)) msg = 'Enter a valid email address.';
+          if (msg) { flag(el, msg); errs.push({ el: el, msg: msg }); }
+        });
+        if (errs.length) {
+          box.hidden = false;
+          box.innerHTML = '<strong>' + errs.length + ' thing' + (errs.length > 1 ? 's' : '') + ' to fix before sending:</strong><ul></ul>';
+          var ul = box.querySelector('ul');
+          errs.forEach(function (e) { var li = document.createElement('li'), a = document.createElement('a'); a.href = '#' + e.el.id; a.textContent = e.msg;
+            a.addEventListener('click', function (ev) { ev.preventDefault(); e.el.focus(); }); li.appendChild(a); ul.appendChild(li); });
+        }
+        return errs;
+      }
+      form.addEventListener('input', function (ev) { var t = ev.target; if (t.getAttribute('aria-invalid')) { t.removeAttribute('aria-invalid'); var e = document.getElementById('err-' + t.name); if (e) e.remove(); } });
+      form.addEventListener('submit', async function (ev) {
+        ev.preventDefault();
+        var errs = validate();
+        if (errs.length) { errs[0].el.focus(); status.textContent = 'Not sent yet. Fix the highlighted fields.'; status.className = 'status is-error'; return; }
+        var fd = new FormData(form);
+        if ((fd.get('_honey') || '').toString().trim() || Date.now() - started < MIN_FILL_MS) {
+          status.textContent = 'Hmm, that was fast. Give it a second and try again.'; status.className = 'status is-error'; return;
+        }
+        var body = {};
+        fd.forEach(function (v, k) { if (k !== '_honey') body[k] = String(v); });
+        body._subject = 'kr8tiv AI intake · ' + body.name + ' · ' + body.business;
+        body._replyto = body.email; body._template = 'table'; body._captcha = 'false'; body._source = 'kr8tiv.ai/start';
+        if (CC) body._cc = CC;
+        btn.disabled = true; btn.textContent = 'Sending…'; status.textContent = 'Sending…'; status.className = 'status';
+        var ok = false, reason = '';
+        try {
+          var r = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
+          var j = r.ok ? await r.json().catch(function () { return null; }) : null;
+          ok = !!j && String(j.success) === 'true'; reason = ok ? '' : (j && j.message) || ('HTTP ' + r.status);
+        } catch (e) { reason = e && e.message; }
+        if (ok) {
+          form.hidden = true; var d = document.getElementById('ai-done'); d.hidden = false; d.focus();
+        } else {
+          console.error('[intake] delivery failed:', reason);
+          btn.disabled = false; btn.innerHTML = 'Try again &rarr;';
+          var mail = 'mailto:hello@kr8tiv.ai?subject=' + encodeURIComponent(body._subject) + '&body=' + encodeURIComponent(Object.keys(body).filter(function (k) { return k[0] !== '_'; }).map(function (k) { return k + ': ' + body[k]; }).join('\n'));
+          status.innerHTML = 'Couldn\u2019t send. Try again, <a href="' + mail + '">email it to us</a>, or call 780-915-5471.'; status.className = 'status is-error';
+        }
+      });
+    })();
+    </script>
+  </body>
+</html>
