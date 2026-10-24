@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
+  AUDIT_MAILTO,
   PAGE_EVOLVE,
   PAGE_JARVIS,
   PAGE_KIN,
@@ -409,7 +410,7 @@ export default function ScrollSections() {
           {/* Primary CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-10 pointer-events-auto">
             <a
-              href="mailto:hello@kr8tiv.ai?subject=AI%20Ops%20Audit"
+              href={AUDIT_MAILTO}
               className="px-8 py-3 bg-[#d4a853]/10 border border-[#d4a853]/50 text-white text-xs tracking-[0.2em] uppercase hover:border-[#d4a853] hover:bg-[#d4a853]/20 transition-all duration-300 backdrop-blur-sm"
             >
               Book an AI Ops Audit &rarr;
@@ -421,12 +422,10 @@ export default function ScrollSections() {
               780-915-5471
             </a>
             <a
-              href="https://kr8tiv.io/start/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:hello@kr8tiv.ai?subject=AI%20Ops%20Audit"
               className="px-8 py-3 bg-black/60 border border-white/20 text-white text-xs tracking-[0.2em] uppercase hover:border-white/40 hover:bg-black/80 transition-all duration-300 backdrop-blur-sm"
             >
-              Fill the intake &rarr;
+              Email us &rarr;
             </a>
           </div>
 

@@ -38,13 +38,7 @@
   ExpiresDefault "access plus 1 day"
 </IfModule>
 
-# SPA fallback — real files and directories (/work/evolve/, /jarvis/, /kin/,
-# /assets/…) are served directly; everything else falls through to the app.
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
+# No client-side router: the app is a single page at /. Real files and
+# directories (/start/, /work/evolve/, /jarvis/, /kin/, /assets/…) are served
+# directly; anything else is a genuine 404 (was a soft-404 to index.html).
+ErrorDocument 404 /404.html

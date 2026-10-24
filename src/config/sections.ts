@@ -1,3 +1,4 @@
+import { asset } from '../lib/asset'
 export interface HudDataPoint {
   label: string
   value: string
@@ -26,12 +27,10 @@ export interface Section {
   ctas?: SectionCta[]
 }
 
-import { asset } from '../lib/asset'
-
 export const PHONE_DISPLAY = '780-915-5471'
 export const PHONE_HREF = 'tel:+17809155471'
-export const AUDIT_MAILTO =
-  'mailto:hello@kr8tiv.ai?subject=AI%20Ops%20Audit&body=Tell%20us%20what%20eats%20your%20week%20%E2%80%94%20we%27ll%20tell%20you%20what%20an%20agent%20could%20take%20off%20your%20plate.'
+/** Audit CTAs open the on-site automation intake (public/start/). Name kept for existing imports. */
+export const AUDIT_MAILTO = asset('/start/')
 
 /** Static sub-pages (real HTML, base-URL aware so subpath previews work). */
 export const PAGE_EVOLVE = asset('/work/evolve/')

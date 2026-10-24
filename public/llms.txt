@@ -2,7 +2,7 @@
 
 > kr8tiv AI is a professional AI automation company. We build AI back-office and operations systems for businesses — receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and MCP-native watchdog agents — wired into the tools a business already uses (spreadsheets, drive, email). Fixed-scope engagements; the source code for everything we build for a client is handed over to that client. Based in Edmonton, Alberta; working everywhere.
 
-Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.io/start/
+Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.ai/start/
 
 ## What we build
 
