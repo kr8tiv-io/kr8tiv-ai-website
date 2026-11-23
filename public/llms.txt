@@ -1,30 +1,39 @@
 # kr8tiv AI
 
-> kr8tiv AI is a professional AI automation company. We build AI back-office and operations systems for businesses — receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and MCP-native watchdog agents — wired into the tools a business already uses (spreadsheets, drive, email). Fixed-scope engagements; the source code for everything we build for a client is handed over to that client. Based in Edmonton, Alberta; working everywhere.
+> kr8tiv AI is a professional AI automation company in Edmonton, Alberta, Canada. We build AI back-office and operations systems for businesses: receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and watchdog agents, wired into the tools a business already uses (spreadsheets, drive, email). Fixed-scope engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
 
-Contact: hello@kr8tiv.ai · +1-780-915-5471 · intake at https://kr8tiv.ai/start/
+Last updated: 23 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
+
+## Contact
+
+- Website: https://kr8tiv.ai/
+- Phone: (780) 915-5471 (+1-780-915-5471)
+- Email: hello@kr8tiv.ai
+- Intake: https://kr8tiv.ai/start/
+- LinkedIn: https://www.linkedin.com/company/kr8tivai
+
+## Service area
+
+Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely.
 
 ## What we build
 
 - AI Ops Audit: one week inside an operation, mapping where the hours go; deliverable is a written automation plan the client keeps either way.
-- Back-Office Build: agents wired into the client's existing stack — automated receipt filing (photo → logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, watchdog agents that flag unpaid invoices and unscheduled deposits.
-- Care: ongoing tuning and new automations, month to month. No lock-in — the client owns the data, the documents, and the source code we wrote for them.
+- Back-Office Build: agents wired into the client's existing stack. Automated receipt filing (photo to logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, and watchdog agents that flag unpaid invoices and unscheduled deposits.
+- Care: ongoing tuning and new automations, month to month. No lock-in: the client owns the data, the documents, and the source code we wrote for them.
+
+## The system: Evolved
+
+Evolved is the business system kr8tiv AI built for Evolve Eco Blasting. Four parts share one Google Sheet: a field app the crew uses on their phones, a workbook that holds jobs, quotes, customers and money, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. Anything that moves money waits for a person to approve it.
 
 ## Proof
 
-- Case study: Evolve Eco Blasting (Edmonton industrial surface restoration, https://evolveecoblasting.com) — one crew, zero office staff. kr8tiv AI built their complete operations layer on the spreadsheets and drive they already owned. Nothing was replaced. Full write-up: https://kr8tiv.ai/work/evolve/
-
-## Products
-
-- JARVIS — the context engine behind every build: one place that holds what a business knows, so each agent acts on current facts instead of guessing. https://kr8tiv.ai/jarvis/
-- KIN — the AI front desk: a bespoke assistant on voice, Telegram, and WhatsApp, configured end to end for non-technical staff. https://kr8tiv.ai/kin/
+- Case study: Evolve Eco Blasting (Edmonton industrial surface restoration, https://evolveecoblasting.com). One crew, zero office staff. kr8tiv AI built their complete operations layer on the spreadsheets and drive they already owned. Nothing was replaced. Full write-up: https://kr8tiv.ai/work/evolve/
 
 ## Links
 
 - Site: https://kr8tiv.ai
 - Case study: https://kr8tiv.ai/work/evolve/
-- JARVIS: https://kr8tiv.ai/jarvis/
-- KIN: https://kr8tiv.ai/kin/
-- X: https://x.com/kr8tivai
+- Intake: https://kr8tiv.ai/start/
 - LinkedIn: https://www.linkedin.com/company/kr8tivai
 - Design sister studio: https://kr8tiv.io

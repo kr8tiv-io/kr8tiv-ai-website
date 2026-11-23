@@ -6,7 +6,7 @@ import type { DeviceTier } from '../hooks/useDeviceCapability'
 import { brushedRoughness, grimeMap, microNormal } from './surfaces'
 
 /* ─────────────────────────────────────────────────────────────
-   OpsMachine — the back-office engine.
+   OpsMachine - the back-office engine.
 
    A robotic arm endlessly picks glowing paper chits (receipts,
    quotes, invoices) out of a chaotic intake pile and files them
@@ -101,7 +101,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
   const chitRefs = useRef<Array<THREE.Mesh | null>>([])
   const cellRefs = useRef<Array<THREE.Mesh | null>>([])
 
-  // ── Sim state (all refs — zero React re-renders) ──
+  // ── Sim state (all refs - zero React re-renders) ──
   const phaseRef = useRef(0) // accumulated loop time (speed-modulated)
   const chitState = useRef<Array<'pile' | 'carried' | 'placed'>>(
     new Array(CHIT_COUNT).fill('pile')
@@ -441,7 +441,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
 
   return (
     <group position={[0, 0, 0]}>
-      {/* ═══ CHASSIS — the machine bed ═══
+      {/* ═══ CHASSIS - the machine bed ═══
           Bevelled, not a raw box: the chamfer is what catches the key light and
           separates "machined object" from "primitive". */}
       <RoundedBox args={[4.2, 0.5, 2.2]} radius={0.035} smoothness={3} castShadow receiveShadow>
@@ -458,7 +458,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         />
       </RoundedBox>
 
-      {/* Glossy top face — the working surface, kept sharper than the body */}
+      {/* Glossy top face - the working surface, kept sharper than the body */}
       <mesh position={[0, 0.251, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[4.14, 2.14]} />
         <meshPhysicalMaterial
@@ -494,7 +494,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
           ))
         })}
 
-      {/* ── Side vent slats — silhouette detail on the long faces ── */}
+      {/* ── Side vent slats - silhouette detail on the long faces ── */}
       {Array.from({ length: 9 }, (_, i) => {
           const x = -1.1 + i * 0.275
           return [1.101, -1.101].map((z) => (
@@ -504,7 +504,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
           ))
         })}
 
-      {/* Amber brand strip — front */}
+      {/* Amber brand strip - front */}
       <mesh ref={glowRef} position={[0, 0, 1.112]}>
         <boxGeometry args={[4.0, 0.06, 0.02]} />
         <meshStandardMaterial
@@ -534,7 +534,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.11} toneMapped={false} />
       </mesh>
 
-      {/* ═══ INTAKE TRAY (chaos) — subtle recessed rim ═══ */}
+      {/* ═══ INTAKE TRAY (chaos) - subtle recessed rim ═══ */}
       <mesh position={[PILE_CENTER.x, CHASSIS_TOP + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[0.52, 0.55, 40]} />
         <meshStandardMaterial
@@ -547,7 +547,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         />
       </mesh>
 
-      {/* ═══ OUTPUT GRID (order) — 3×3 cells ═══ */}
+      {/* ═══ OUTPUT GRID (order) - 3×3 cells ═══ */}
       {Array.from({ length: CHIT_COUNT }, (_, i) => {
         const p = gridPos(i)
         return (
@@ -577,7 +577,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         )
       })}
 
-      {/* ═══ CHITS — the paperwork ═══ */}
+      {/* ═══ CHITS - the paperwork ═══ */}
       {Array.from({ length: CHIT_COUNT }, (_, i) => (
         <mesh
           key={`chit-${i}`}
@@ -708,7 +708,7 @@ export default function OpsMachine({ tier }: OpsMachineProps) {
         />
       </mesh>
 
-      {/* ═══ NEURAL SHELLS — kept, enlarged to enclose the machine ═══ */}
+      {/* ═══ NEURAL SHELLS - kept, enlarged to enclose the machine ═══ */}
       <mesh
         ref={shellRef}
         geometry={outerGeo}

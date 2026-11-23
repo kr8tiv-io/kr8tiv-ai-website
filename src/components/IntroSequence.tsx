@@ -8,7 +8,7 @@ interface IntroSequenceProps {
 
 export default function IntroSequence({ onComplete, startAnimation = true }: IntroSequenceProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
@@ -76,13 +76,15 @@ export default function IntroSequence({ onComplete, startAnimation = true }: Int
       ref={containerRef}
       className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#050510]"
     >
-      <h1
+      {/* Decorative intro wordmark: a div, not an h1, so the page keeps one H1 (the hero). */}
+      <div
+        aria-hidden="true"
         ref={titleRef}
         className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-[-0.03em] text-white opacity-0"
         style={{ fontFamily: "'Syne', system-ui, sans-serif" }}
       >
         kr8tiv
-      </h1>
+      </div>
       <p
         ref={taglineRef}
         className="mt-6 text-sm sm:text-base text-white/40 max-w-lg text-center leading-relaxed px-4 opacity-0"

@@ -1,5 +1,5 @@
 /**
- * Ground — nearly invisible void floor.
+ * Ground - nearly invisible void floor.
  * Ultra-dark with barely-there reflection. No visible pattern.
  * The ground should feel like you're floating over a dark abyss.
  */

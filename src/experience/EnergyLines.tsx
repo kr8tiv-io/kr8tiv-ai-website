@@ -4,17 +4,17 @@ import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Energy Lines — Animated neural network energy pulses.
+   Energy Lines - Animated neural network energy pulses.
 
    Extracts edges from icosahedron and dodecahedron geometry,
    then renders them with a custom shader that sends bright
-   pulses traveling along each edge — like data flowing through
+   pulses traveling along each edge - like data flowing through
    a living neural network.
 
    Multiple pulse waves at different speeds create a complex,
    organic pattern. On hover, pulse speed and brightness increase.
 
-   This is the single highest-impact visual upgrade — it turns
+   This is the single highest-impact visual upgrade - it turns
    the static wireframe from "geometric wrapper" into something
    that looks alive and electric.
    ──────────────────────────────────────────────────────────── */
@@ -22,7 +22,7 @@ import * as THREE from 'three'
 // ── Shader ──────────────────────────────────────────────────
 
 const energyVertexShader = /* glsl */ `
-attribute float aEdgeProgress;   // 0–1 along each edge segment
+attribute float aEdgeProgress;   // 0-1 along each edge segment
 attribute float aEdgeIndex;      // unique per edge for phase offset
 attribute float aEdgeLength;     // world-space edge length
 
@@ -59,15 +59,15 @@ uniform vec3 uMouseWorld;
 void main() {
   // ── Multiple pulse waves at different speeds ──
 
-  // Primary pulse — slow, wide, majestic
+  // Primary pulse - slow, wide, majestic
   float wave1 = sin(vProgress * PI * 3.0 - uTime * 1.8 + vEdgeIndex * 1.7);
   wave1 = smoothstep(0.3, 1.0, wave1); // Only the peaks survive
 
-  // Secondary pulse — faster, sharper, different phase
+  // Secondary pulse - faster, sharper, different phase
   float wave2 = sin(vProgress * PI * 5.0 + uTime * 2.8 - vEdgeIndex * 2.3);
   wave2 = smoothstep(0.6, 1.0, wave2) * 0.6; // Sharper, dimmer
 
-  // Tertiary pulse — very fast, sparking
+  // Tertiary pulse - very fast, sparking
   float wave3 = sin(vProgress * PI * 9.0 - uTime * 5.5 + vEdgeIndex * 0.9);
   wave3 = smoothstep(0.85, 1.0, wave3) * 0.35; // Very sharp sparks
 

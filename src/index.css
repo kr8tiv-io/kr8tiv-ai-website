@@ -15,7 +15,7 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-  /* Floating vibes toggle — tucked tighter into the corner on SE-class phones
+  /* Floating vibes toggle - tucked tighter into the corner on SE-class phones
      so it clears the full-width CTA buttons. */
   --vibes-bottom: 1.5rem;
   --vibes-right: 1.5rem;
@@ -42,7 +42,7 @@ html, body {
 body { cursor: crosshair; }
 a, button, [role="button"] { cursor: pointer; }
 
-/* Keyboard focus must be visible over a dark, busy 3D backdrop — a browser
+/* Keyboard focus must be visible over a dark, busy 3D backdrop - a browser
    default outline disappears against the scene. */
 :focus-visible {
   outline: 2px solid var(--color-accent-bright);
@@ -82,7 +82,7 @@ a, button, [role="button"] { cursor: pointer; }
   height: 100svh;
 }
 
-/* Motion is decorative here — honor the request to calm it down.
+/* Motion is decorative here - honor the request to calm it down.
    Scroll-scrubbed movement stays (it is user-driven); autonomous
    loops (tracers, pulses, flicker) stop. */
 @media (prefers-reduced-motion: reduce) {
@@ -153,7 +153,7 @@ a, button, [role="button"] { cursor: pointer; }
   90% { opacity: 0.95; }
 }
 
-/* HUD panel tracer — glowing star that orbits the border */
+/* HUD panel tracer - glowing star that orbits the border */
 .hud-tracer-container {
   position: absolute;
   inset: -1px;
@@ -210,7 +210,7 @@ a, button, [role="button"] { cursor: pointer; }
   }
 }
 
-/* Title hover glow — pulsing shader-like glow on mouseover */
+/* Title hover glow - pulsing shader-like glow on mouseover */
 .title-glow {
   transition: text-shadow 0.4s ease, color 0.4s ease;
   cursor: default;

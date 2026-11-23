@@ -261,11 +261,11 @@ for (const viewport of VIEWPORTS) {
         }
       }
 
-      await focusSectionByHeading(page, 'Bespoke AI.')
-      await expect(page.locator('.section-inner h2', { hasText: 'Bespoke AI.' }).first()).toBeVisible()
-      await expect(page.getByText('even your grandmother can use it', { exact: false })).toBeVisible()
-      await expect(page.locator('a[href="https://meetyourkin.com"]').first()).toBeVisible()
-      await expect(page.locator('a[href="https://x.com/meetyourkin"]').first()).toBeVisible()
+      await focusSectionByHeading(page, 'Meet Evolved.')
+      await expect(page.locator('.section-inner h2', { hasText: 'Meet Evolved.' }).first()).toBeVisible()
+      await expect(page.getByText('Four parts share one Google Sheet', { exact: false })).toBeVisible()
+      // Retired products and channels must never come back.
+      await expect(page.locator('a[href*="/kin/"], a[href*="/jarvis/"], a[href*="meetyourkin"], a[href*="x.com/"], a[href*="t.me/"]')).toHaveCount(0)
 
       await assertNoTransitionOverlay(page)
       await assertNoSlidingReadabilityLayers(page, 'final')
@@ -294,8 +294,8 @@ for (const viewport of VIEWPORTS) {
       await stepScroll(page, 1700, 700)
       await page.screenshot({ path: path.join(dir, 'section-mid.png'), fullPage: false })
 
-      await focusSectionByHeading(page, 'Bespoke AI.')
-      await page.screenshot({ path: path.join(dir, 'section-kin.png'), fullPage: false })
+      await focusSectionByHeading(page, 'Meet Evolved.')
+      await page.screenshot({ path: path.join(dir, 'section-evolved.png'), fullPage: false })
 
       await stepScroll(page, 2600, 800)
       await page.screenshot({ path: path.join(dir, 'footer.png'), fullPage: false })

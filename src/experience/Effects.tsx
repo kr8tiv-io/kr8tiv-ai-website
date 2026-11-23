@@ -11,7 +11,7 @@ import * as THREE from 'three'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
 
 /**
- * Effects — Optimized post-processing stack.
+ * Effects - Optimized post-processing stack.
  *
  * Changes from original:
  * - Removed N8AO (2nd most expensive effect, barely visible in dark scene)
@@ -24,7 +24,7 @@ import type { DeviceTier } from '../hooks/useDeviceCapability'
  */
 
 // Scroll-velocity-reactive chromatic aberration offset.
-// Passed by reference — mutating in useFrame updates the effect directly.
+// Passed by reference - mutating in useFrame updates the effect directly.
 // (refs on postprocessing wrappers crash JSON.stringify in React 19)
 const _offsetVec = new THREE.Vector2(0.00015, 0.00015)
 const _targetOffset = new THREE.Vector2(0.00015, 0.00015)
@@ -38,8 +38,8 @@ export default function Effects({ tier }: EffectsProps) {
   const lowTier = tier === 'low'
   const gl = useThree((s) => s.gl)
 
-  // Phones get bloom ONLY — it is what makes the additive haze read as light
-  // rather than a grey wash — and only on a WebGL2 context, so we never push
+  // Phones get bloom ONLY - it is what makes the additive haze read as light
+  // rather than a grey wash - and only on a WebGL2 context, so we never push
   // a post pipeline onto an old WebGL1 mobile driver.
   const leanPost = lowTier && gl.capabilities.isWebGL2
 

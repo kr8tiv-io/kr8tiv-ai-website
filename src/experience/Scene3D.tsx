@@ -4,12 +4,12 @@ import { Preload, useProgress } from '@react-three/drei'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
 
 /* ─────────────────────────────────────────────────────────────
-   Scene3D — the whole WebGL stack behind ONE lazy boundary.
+   Scene3D - the whole WebGL stack behind ONE lazy boundary.
 
    This file exists purely so that `@react-three/fiber`, `@react-three/drei`
    and `three` are never in the initial module graph. Before it, App imported
    <Canvas> and useProgress at the top level, which pulled ~376KB of 3D into
-   the first chunk — so on a mid-range phone the hero text could not paint
+   the first chunk - so on a mid-range phone the hero text could not paint
    until all of it had been fetched, parsed and executed (measured LCP 5.9s
    on the live site at 4x CPU throttle).
 

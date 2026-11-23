@@ -18,7 +18,7 @@ interface ExperienceProps {
 
 export default function Experience({ tier }: ExperienceProps) {
   // Atmosphere now carries the fog, so the old stacked-plane stream is only a
-  // light accent — and the raymarched VolumetricSmoke is retired entirely: it
+  // light accent - and the raymarched VolumetricSmoke is retired entirely: it
   // cost more than everything else combined and you could not see it.
   const smokeProfile =
     tier === 'high'
@@ -35,7 +35,7 @@ export default function Experience({ tier }: ExperienceProps) {
         environmentIntensity={tier === 'high' ? 0.5 : tier === 'medium' ? 0.45 : 0.62}
       />
 
-      {/* Scene fog — pulled in and lifted off pure black so the haze reads. */}
+      {/* Scene fog - pulled in and lifted off pure black so the haze reads. */}
       <fog attach="fog" args={['#070a16', 6, 30]} />
 
       {/* ── Lighting rig ──────────────────────────────────────────
@@ -44,7 +44,7 @@ export default function Experience({ tier }: ExperienceProps) {
           has two temperatures to reflect. */}
       <ambientLight intensity={0.06} />
 
-      {/* KEY — warm, high and to the right, soft-edged */}
+      {/* KEY - warm, high and to the right, soft-edged */}
       <spotLight
         position={[4.5, 7.5, 4]}
         angle={0.78}
@@ -58,7 +58,7 @@ export default function Experience({ tier }: ExperienceProps) {
         shadow-bias={-0.0006}
       />
 
-      {/* RIM — cool, low and behind: separates the silhouette from the fog */}
+      {/* RIM - cool, low and behind: separates the silhouette from the fog */}
       <spotLight
         position={[-5, 2.6, -6]}
         angle={1.05}
@@ -69,7 +69,7 @@ export default function Experience({ tier }: ExperienceProps) {
         color="#9db8ff"
       />
 
-      {/* KICK — tight amber bounce off the deck, sells the brand colour */}
+      {/* KICK - tight amber bounce off the deck, sells the brand colour */}
       <pointLight position={[1.4, 1.1, 1.9]} intensity={2.6} color="#d4a853" distance={7} decay={2} />
 
       {/* Deep fill so the dark side never goes fully black */}
@@ -78,10 +78,10 @@ export default function Experience({ tier }: ExperienceProps) {
       <CameraRig />
       <OpsMachine tier={tier} />
       {/* Wordmark on the piece: hologram above the deck + livery etched on it.
-          On every tier now — phones get the compact mark. */}
+          On every tier now - phones get the compact mark. */}
       <Kr8tivLogo compact={tier === 'low'} />
 
-      {/* Atmosphere runs everywhere, including phones — fewer layers, same look. */}
+      {/* Atmosphere runs everywhere, including phones - fewer layers, same look. */}
       <Atmosphere tier={tier} />
       <SmokeStream {...smokeProfile.stream} />
 
@@ -98,7 +98,7 @@ export default function Experience({ tier }: ExperienceProps) {
         noise={[0.5, 0.3, 0.5]}
       />
 
-      {/* Contact shadow — the single strongest grounding cue. Rendered at low
+      {/* Contact shadow - the single strongest grounding cue. Rendered at low
           resolution and only where there is budget for it. */}
       {tier !== 'low' && (
         <ContactShadows

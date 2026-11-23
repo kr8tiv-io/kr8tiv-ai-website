@@ -2,27 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kr8tiv.ai/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://kr8tiv.ai/work/evolve/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kr8tiv.ai/jarvis/</loc>
-    <lastmod>2026-08-04</lastmod>
+    <loc>https://kr8tiv.ai/start/</loc>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://kr8tiv.ai/kin/</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url><loc>https://kr8tiv.ai/start/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

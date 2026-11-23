@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/stamp-assets.mjs",
+    "build": "node scripts/sync-static-content.mjs && tsc -b && vite build && node scripts/stamp-assets.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:visual": "playwright test --config=playwright.config.ts --grep-invert @screens",
-    "capture:screens": "playwright test --config=playwright.config.ts --grep @screens"
+    "capture:screens": "playwright test --config=playwright.config.ts --grep @screens",
+    "test:content": "node scripts/sync-static-content.mjs --check && python3 scripts/check-content.py"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

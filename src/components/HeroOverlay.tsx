@@ -6,7 +6,7 @@ export default function HeroOverlay() {
       {/* Feathered hero wash: radial, fades to 0 on every edge so it never ends in a line. */}
       <div className="absolute inset-0 hero-wash" aria-hidden="true" />
 
-      {/* Hero copy — editorial bottom-left on desktop, centered-bottom on mobile.
+      {/* Hero copy - editorial bottom-left on desktop, centered-bottom on mobile.
           The max-[379px] / max-height overrides are for the small iPhones
           (SE 1st gen 320x568, SE 2-3 and 13 mini 375x667), where the full-size
           stack is taller than the viewport and rides up under the nav bar. */}
@@ -27,8 +27,8 @@ export default function HeroOverlay() {
         </h1>
 
         <p className="text-sm sm:text-base md:text-lg max-[379px]:text-[0.8rem] max-[379px]:leading-[1.45] text-white/75 max-w-[92vw] sm:max-w-xl leading-relaxed mb-5 sm:mb-9">
-          We build AI operations systems for real businesses — quoting, receipts,
-          dispatch, daily reporting — running around the clock on the tools you
+          We build AI operations systems for real businesses: quoting, receipts,
+          dispatch and daily reporting, running around the clock on the tools you
           already use. No migration, and you keep the source.
         </p>
 
@@ -47,17 +47,17 @@ export default function HeroOverlay() {
           </a>
         </div>
 
-        {/* Scroll indicator — dropped on short viewports (SE-class phones), where
+        {/* Scroll indicator - dropped on short viewports (SE-class phones), where
             the hero stack has no room to spare. */}
         <div className="mt-10 sm:mt-12 flex-col items-center md:items-start gap-2 hidden [@media(min-height:701px)]:flex">
           <div className="w-px h-14 bg-gradient-to-b from-transparent via-white/25 to-transparent md:ml-6" />
           <span className="text-[8px] tracking-[0.3em] uppercase text-white/25 font-mono">
-            Scroll — watch it work
+            Scroll · watch it work
           </span>
         </div>
       </div>
 
-      {/* Corner telemetry — desktop only */}
+      {/* Corner telemetry - desktop only */}
       <div className="absolute top-24 left-8 text-[8px] font-mono text-white/10 hidden lg:block">
         <div>STATUS: SHIPPING</div>
         <div className="mt-0.5">BACK OFFICES: RUNNING</div>

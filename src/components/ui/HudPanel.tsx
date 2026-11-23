@@ -67,7 +67,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
         ['--hud-color' as string]: section.hudColor,
       }}
     >
-      {/* Tracer animation — glowing star orbiting the border */}
+      {/* Tracer animation - glowing star orbiting the border */}
       {!compact && (
         <div className="hud-tracer-container">
           <div className="hud-tracer" />
@@ -87,7 +87,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
           WebkitBackdropFilter: 'none',
         }}
       >
-        {/* Corner brackets — top-left */}
+        {/* Corner brackets - top-left */}
         <div
           className="absolute top-0 left-0 w-4 h-4"
           style={{
@@ -95,7 +95,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
             borderLeft: `1px solid ${section.hudColor}60`,
           }}
         />
-        {/* Corner brackets — top-right */}
+        {/* Corner brackets - top-right */}
         <div
           className="absolute top-0 right-0 w-4 h-4"
           style={{
@@ -103,7 +103,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
             borderRight: `1px solid ${section.hudColor}60`,
           }}
         />
-        {/* Corner brackets — bottom-left */}
+        {/* Corner brackets - bottom-left */}
         <div
           className="absolute bottom-0 left-0 w-4 h-4"
           style={{
@@ -111,7 +111,7 @@ export default function HudPanel({ section, index, compact = false }: HudPanelPr
             borderLeft: `1px solid ${section.hudColor}60`,
           }}
         />
-        {/* Corner brackets — bottom-right */}
+        {/* Corner brackets - bottom-right */}
         <div
           className="absolute bottom-0 right-0 w-4 h-4"
           style={{

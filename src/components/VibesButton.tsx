@@ -89,7 +89,7 @@ export default function VibesButton() {
             >
               {/* Speaker body */}
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
-              {/* Sound waves — only show when playing */}
+              {/* Sound waves - only show when playing */}
               {playing && (
                 <>
                   <path

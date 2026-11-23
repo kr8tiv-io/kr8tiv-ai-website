@@ -5,15 +5,15 @@ import * as THREE from 'three'
 import { asset } from '../lib/asset'
 
 /* ─────────────────────────────────────────────────────────────
-   Kr8tiv Logo — Holographic Projection Above Device
+   Kr8tiv Logo - Holographic Projection Above Device
 
-   The logo appears as a hyper-clean holographic projection —
+   The logo appears as a hyper-clean holographic projection  - 
    like light being projected through smoke. Features:
 
    - Logo texture used as shape mask (alpha channel)
    - Bright white core with soft bloom-ready glow
    - Subtle scan-line interference pattern
-   - Gentle flicker (not cheesy — just enough to feel alive)
+   - Gentle flicker (not cheesy - just enough to feel alive)
    - Edge-glow halo effect
    - Additive blending so it naturally interacts with the
      smoke trails flowing past it
@@ -47,7 +47,7 @@ void main() {
   // Early discard for fully transparent areas
   if (logoAlpha < 0.02) discard;
 
-  // ── Core brightness — clean white ──
+  // ── Core brightness - clean white ──
   float core = logoAlpha;
 
   // ── Subtle scan-line interference ──
@@ -156,7 +156,7 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
     toneMapped: false,
   }), [logoTexture, compact])
 
-  // The same mark, etched into the machine's deck plate — dimmer, no flicker
+  // The same mark, etched into the machine's deck plate - dimmer, no flicker
   // sweep needed, it just sits there like screen-printed livery.
   const decalArgs = useMemo(() => ({
     uniforms: {
@@ -209,7 +209,7 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
   return (
     <>
       <group ref={groupRef} position={[0, hoverY, 0]}>
-        {/* Main logo — holographic projection above the machine */}
+        {/* Main logo - holographic projection above the machine */}
         <mesh>
           <planeGeometry args={[width, height]} />
           <shaderMaterial ref={matRef} args={[shaderArgs]} />
@@ -225,7 +225,7 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
         />
       </group>
 
-      {/* Emitter — a tight, faint shaft off the deck. Kept narrow and very low
+      {/* Emitter - a tight, faint shaft off the deck. Kept narrow and very low
           opacity: at width it renders as two hard-edged triangles, which reads
           as a modelling artifact rather than light. */}
       <mesh position={[0, (hoverY + DECK_TOP) / 2, 0]} renderOrder={2}>
@@ -254,7 +254,7 @@ export default function Kr8tivLogo({ compact = false }: Kr8tivLogoProps) {
         />
       </mesh>
 
-      {/* Livery — the mark sitting ON the deck plate itself.
+      {/* Livery - the mark sitting ON the deck plate itself.
           The Z flip makes it read the right way up from the front of the machine. */}
       <mesh position={[0, DECK_TOP, DECAL_Z]} rotation={[-Math.PI / 2, 0, Math.PI]} renderOrder={2}>
         <planeGeometry args={[DECAL_WIDTH, DECAL_HEIGHT]} />
