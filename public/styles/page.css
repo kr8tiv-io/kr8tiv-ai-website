@@ -667,3 +667,113 @@ footer {
 .legal a:hover {
   color: var(--amber);
 }
+
+/* ---------- service pages ---------- */
+
+.kicker-line {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 1.1rem 0 0;
+}
+
+.prices {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  margin-top: 2rem;
+}
+
+.price {
+  border: 1px solid rgba(212, 168, 83, 0.35);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.15rem 1.3rem;
+}
+
+.price p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-70);
+}
+
+.price .price-name {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-55);
+  margin-bottom: 0.4rem;
+}
+
+.price .price-amount {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.45rem;
+}
+
+.price .price-amount small {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-55);
+}
+
+.price-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-55);
+}
+
+.card h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.card h3 a:hover {
+  color: var(--amber);
+}
+
+.faq {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.faq details {
+  border-bottom: 1px solid var(--line);
+  padding: 1rem 0;
+}
+
+.faq summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--ink);
+  list-style: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: '+';
+  float: right;
+  color: var(--amber);
+  font-family: var(--font-mono);
+}
+
+.faq details[open] summary::after {
+  content: '\2212';
+}
+
+.faq details p {
+  margin: 0.75rem 0 0;
+  color: var(--ink-70);
+  max-width: 44rem;
+}

@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   AUDIT_MAILTO,
   PAGE_EVOLVE,
+  PAGE_SERVICES,
   sections,
   type Section,
 } from '../config/sections'
@@ -409,6 +410,7 @@ export default function ScrollSections() {
           {/* Deeper reading - static pages, available at every breakpoint */}
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 pointer-events-auto mb-10">
             {[
+              { label: 'Services', href: PAGE_SERVICES },
               { label: 'Evolve case study', href: PAGE_EVOLVE },
               { label: 'kr8tiv.io design studio', href: 'https://kr8tiv.io' },
             ].map((link) => (

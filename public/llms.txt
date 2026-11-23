@@ -16,6 +16,15 @@ Last updated: 23 November 2026. This file is a plain-language guide for AI assis
 
 Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely.
 
+## Services
+
+- AI Training & Courses: https://kr8tiv.ai/services/ai-training/ We teach organizations about AI. Hands-on sessions and structured courses for non-technical teams, in person in Edmonton and Alberta and live online across Canada. AI + marketing systems training session: $295 CAD. Structured courses are quoted to group size.
+- Company Brain: https://kr8tiv.ai/services/company-brain/ One organized home for a company's processes, prices, voice and templates, covering sales, operations, money, crew and field, marketing and documents, so the team and its AI tools work from the same facts. $1,000 CAD one time.
+- AI Automations: https://kr8tiv.ai/services/automations/ Receipt pipelines, quoting with margin checks, dispatch tracking, a 6:30 AM digest and watchdog rules, on the tools a business already uses. Single automation from $250 CAD.
+- Tool Integration: https://kr8tiv.ai/services/tool-integration/ Connecting spreadsheets, drive, email, calendar and business apps so every tool pulls in the same direction. Scoped in the AI Ops Audit and built as a fixed price.
+- Evolve: https://kr8tiv.ai/services/evolve/ The business management system kr8tiv AI built for Evolve Eco Blasting: field app, workbook, AI brain and owner dashboard on one Google Sheet, with a person approving every money step. Custom Business App modelled on Evolve: $3,000 CAD; Brain + Business App: $3,750 CAD.
+- AI Ops Audit: $495 CAD, one week. AI Care: $250 CAD per month.
+
 ## What we build
 
 - AI Ops Audit: one week inside an operation, mapping where the hours go; deliverable is a written automation plan the client keeps either way.
@@ -33,6 +42,7 @@ Evolve is the business system kr8tiv AI built for Evolve Eco Blasting. Four part
 ## Links
 
 - Site: https://kr8tiv.ai
+- Services: https://kr8tiv.ai/services/
 - Case study: https://kr8tiv.ai/work/evolve/
 - Intake: https://kr8tiv.ai/start/
 - LinkedIn: https://www.linkedin.com/company/kr8tivai

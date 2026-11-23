@@ -1,11 +1,13 @@
 import {
   AUDIT_MAILTO,
   PAGE_EVOLVE,
+  PAGE_SERVICES,
   PHONE_DISPLAY,
   PHONE_HREF,
 } from '../config/sections'
 
 const PAGE_LINKS = [
+  { label: 'Services', href: PAGE_SERVICES },
   { label: 'Case study', href: PAGE_EVOLVE },
 ]
 
