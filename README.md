@@ -1,6 +1,6 @@
 # kr8tiv AI
 
-**The official website for [kr8tiv AI](https://kr8tiv.ai)** — a professional AI automation company. We build AI back-office and operational systems for businesses.
+**The official website for [kr8tiv AI](https://kr8tiv.ai)**: a professional AI automation company. We build AI back-office and operational systems for businesses.
 
 > **Note:** kr8tiv AI is an artificial intelligence and software company. We are not affiliated with any marketing or creative agencies that may share a similar name. We build AI.
 
@@ -8,7 +8,7 @@
 
 ## About kr8tiv AI
 
-kr8tiv AI builds the operational layer businesses actually run on: receipts that file themselves, quoting engines with profitability checks, dispatch tracking from lead to invoice, morning digests, and watchdog agents that catch dropped balls. The agents are wired into the tools a client already uses — spreadsheets, drive, email, calendar — so there is no migration and no retraining.
+kr8tiv AI builds the operational layer businesses actually run on: receipts that file themselves, quoting engines with profitability checks, dispatch tracking from lead to invoice, morning digests, and watchdog agents that catch dropped balls. The agents are wired into the tools a client already uses: spreadsheets, drive, email, calendar: so there is no migration and no retraining.
 
 **How we engage:**
 
@@ -20,12 +20,11 @@ kr8tiv AI builds the operational layer businesses actually run on: receipts that
 
 The source code for everything we build for a client is handed over to that client, and their data stays in their own accounts.
 
-**Case study:** [Evolve Eco Blasting](https://kr8tiv.ai/work/evolve/) — Edmonton industrial surface restoration. One crew, zero office staff, a complete AI operations layer running on the spreadsheets and drive they already owned.
+**Case study:** [Evolve Eco Blasting](https://kr8tiv.ai/work/evolve/): Edmonton industrial surface restoration. One crew, zero office staff, a complete AI operations layer running on the spreadsheets and drive they already owned.
 
 ## Products
 
-- **JARVIS** — the context engine behind every build: one place that holds what a business knows, so each agent acts on current facts instead of guessing. [/jarvis/](https://kr8tiv.ai/jarvis/)
-- **KIN** — the AI front desk: a bespoke assistant on voice, Telegram, and WhatsApp, configured end to end for non-technical staff. [/kin/](https://kr8tiv.ai/kin/)
+- **Evolve**: the business system built for Evolve Eco Blasting. A field app for the crew, one Google Sheet as the workbook, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. [Case study](https://kr8tiv.ai/work/evolve/)
 
 ## Tech Stack
 
@@ -35,12 +34,12 @@ The source code for everything we build for a client is handed over to that clie
 - **Lenis** for smooth scrolling
 - **Tailwind CSS v4** for styling
 - **Vite** for builds
-- **Firebase Hosting** for deployment
+- **Hostinger** Git auto-deploy from `master` (a merge publishes)
 
 ### Site structure
 
-- `/` — single-page 3D scroll experience (React + R3F). The centerpiece is the **OpsMachine**: a procedural robotic arm that sorts a chaos-pile of paperwork into a lit grid as you scroll.
-- `/work/evolve/`, `/jarvis/`, `/kin/` — static HTML sub-pages in `public/`. No JavaScript, no 3D: fast, crawlable, and unaffected by the SPA build.
+- `/`: single-page 3D scroll experience (React + R3F). The centerpiece is the **OpsMachine**: a procedural robotic arm that sorts a chaos-pile of paperwork into a lit grid as you scroll.
+- `/work/evolve/` and `/start/`: static HTML sub-pages in `public/`. `/kin/` and `/jarvis/` are retired and 301 to `/`. No JavaScript, no 3D: fast, crawlable, and unaffected by the SPA build.
 
 ## Development
 
@@ -78,4 +77,4 @@ npm run test:visual
 
 ---
 
-Built by kr8tiv AI — Edmonton, Alberta.
+Built by kr8tiv AI: Edmonton, Alberta.

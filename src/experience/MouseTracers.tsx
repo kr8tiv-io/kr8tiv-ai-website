@@ -3,9 +3,9 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 /**
- * Mouse-following energy particles — soft glowing orbs that
+ * Mouse-following energy particles - soft glowing orbs that
  * drift between the 3D box and the mouse cursor position.
- * No lines, no strings — just ethereal light particles.
+ * No lines, no strings - just ethereal light particles.
  */
 
 const PARTICLE_COUNT = 12
@@ -81,13 +81,13 @@ export default function MouseTracers() {
       // Each particle oscillates between box origin and mouse
       const progress = (Math.sin(t * speed + phase) + 1) / 2 // 0 to 1
 
-      // Origin — near the box surface
+      // Origin - near the box surface
       const originRadius = 0.6 + Math.sin(t * 0.3 + phase) * 0.2
       const ox = Math.cos(originAngle + t * 0.05) * originRadius
       const oy = 0.3 + Math.sin(t * 0.4 + phase) * 0.15
       const oz = Math.sin(originAngle + t * 0.05) * originRadius
 
-      // Target — toward mouse but not all the way (30% toward mouse)
+      // Target - toward mouse but not all the way (30% toward mouse)
       const tx = mouseWorld.current.x * 0.3
       const ty = mouseWorld.current.y * 0.3
       const tz = mouseWorld.current.z * 0.2

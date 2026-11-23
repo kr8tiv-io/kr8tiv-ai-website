@@ -15,13 +15,13 @@ export default defineConfig({
         // through a dynamic import stay async and are fetched after first paint.
         manualChunks(id) {
           // Vite's dynamic-import preload helper is a shared virtual module.
-          // Left alone, Rollup parks it in the r3f chunk — and then the entry
+          // Left alone, Rollup parks it in the r3f chunk - and then the entry
           // statically imports r3f purely to get the helper, which pulls three
           // back into the initial graph. Pin it next to React instead.
           if (id.includes('vite/preload-helper')) return 'react'
           if (!id.includes('node_modules')) return
           // React must be named FIRST. It is shared by the entry and by r3f, and
-          // if it is left unnamed Rollup hoists it into the r3f chunk — which
+          // if it is left unnamed Rollup hoists it into the r3f chunk - which
           // makes the entry statically import r3f, undoing the whole split.
           if (
             id.includes('/react/') ||

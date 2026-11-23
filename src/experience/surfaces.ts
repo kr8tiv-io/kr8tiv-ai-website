@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Surfaces — procedural PBR detail for the Ops Engine.
+   Surfaces - procedural PBR detail for the Ops Engine.
 
    The reference craft bar (threejspunk) gets its realism from real
    albedo/normal/roughness maps: light breaks up across a surface instead
    of sliding over it. We get the same effect without shipping a single
-   texture byte — every map here is drawn into a canvas once at startup
+   texture byte - every map here is drawn into a canvas once at startup
    and cached, so it costs a few milliseconds and zero network.
 
    Three maps, all tileable:
@@ -73,7 +73,7 @@ export function brushedRoughness(size = 512, repeat = 3): THREE.Texture {
     ctx.stroke()
   }
 
-  // wear patches — where a machine gets touched, it gets shinier
+  // wear patches - where a machine gets touched, it gets shinier
   ctx.globalAlpha = 0.5
   for (let i = 0; i < 26; i++) {
     const x = rng() * size

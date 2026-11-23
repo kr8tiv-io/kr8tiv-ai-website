@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 interface LoadingScreenProps {
-  /** Reported up from inside the lazy 3D chunk — importing drei's useProgress
+  /** Reported up from inside the lazy 3D chunk - importing drei's useProgress
    *  here would drag the whole three.js graph into the first bundle. */
   progress?: number
   active?: boolean
@@ -26,7 +26,7 @@ export default function LoadingScreen({
 
   // The dismiss timer lives in a ref, NOT in effect cleanup. Previously the
   // setFadeOut() re-render re-ran this effect, whose cleanup cancelled the very
-  // timeout that unmounts the overlay — so it stayed mounted at opacity 0,
+  // timeout that unmounts the overlay - so it stayed mounted at opacity 0,
   // fixed inset-0 z-100, swallowing every click on the site.
   useEffect(() => {
     if (startedRef.current) return

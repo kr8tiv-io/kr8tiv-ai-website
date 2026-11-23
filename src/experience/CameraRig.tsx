@@ -8,11 +8,11 @@ import { sections } from '../config/sections'
 gsap.registerPlugin(ScrollTrigger)
 
 /* ─────────────────────────────────────────────────────────────
-   CameraRig — the shot list.
+   CameraRig - the shot list.
 
    Every section is a DIFFERENT SHOT, not the same orbit nudged a
    few degrees: each one has its own angle, height, lens and framing,
-   and each is played as two moves — an APPROACH that travels
+   and each is played as two moves - an APPROACH that travels
    (swing wide, crane down, whip round, pull back) and a HOLD that
    keeps drifting while the copy is on screen, so the frame is never
    locked off.
@@ -31,7 +31,7 @@ interface Move {
   theta: number // orbit angle
   phi: number // polar angle: small = above, ~PI/2 = level
   radius: number // dolly distance
-  tx?: number // look-at offsets — reframes the subject off-centre
+  tx?: number // look-at offsets - reframes the subject off-centre
   ty?: number
   tz?: number
   fov?: number // real lens zoom, independent of the dolly
@@ -50,7 +50,7 @@ const D = Math.PI / 180
 
 /* One entry per section in src/config/sections.ts. */
 const SHOTS: Shot[] = [
-  // 1 · What we automate — swing in from wide and push to a tight 3/4.
+  // 1 · What we automate - swing in from wide and push to a tight 3/4.
   {
     approach: { theta: 62 * D, phi: 62 * D, radius: 12.5, ty: 0.75, fov: 42 },
     hold: { theta: 96 * D, phi: 78 * D, radius: 5.4, tx: 0.15, ty: 0.35, fov: 31 },
@@ -58,7 +58,7 @@ const SHOTS: Shot[] = [
     holdEase: 'sine.inOut',
     split: 0.5,
   },
-  // 2 · Evolve case study — crane up and over, then descend to deck level.
+  // 2 · Evolve case study - crane up and over, then descend to deck level.
   {
     approach: { theta: 148 * D, phi: 30 * D, radius: 9.4, ty: 0.55, fov: 38 },
     hold: { theta: 182 * D, phi: 84 * D, radius: 5.0, tx: -0.45, ty: 0.28, fov: 34 },
@@ -66,7 +66,7 @@ const SHOTS: Shot[] = [
     holdEase: 'power1.out',
     split: 0.55,
   },
-  // 3 · How it works — drop to a low hero angle and reframe onto the filed grid.
+  // 3 · How it works - drop to a low hero angle and reframe onto the filed grid.
   {
     approach: { theta: 214 * D, phi: 96 * D, radius: 7.6, tx: 0.4, ty: 0.5, fov: 46 },
     hold: { theta: 236 * D, phi: 81 * D, radius: 4.9, tx: 1.05, ty: 0.34, fov: 40, roll: -1.5 * D },
@@ -74,7 +74,7 @@ const SHOTS: Shot[] = [
     holdEase: 'sine.inOut',
     split: 0.45,
   },
-  // 4 · The engines — big pull back and up: the whole machine in the fog.
+  // 4 · The engines - big pull back and up: the whole machine in the fog.
   {
     approach: { theta: 262 * D, phi: 58 * D, radius: 6.2, ty: 0.4, fov: 33 },
     hold: { theta: 292 * D, phi: 34 * D, radius: 13.5, ty: 0.9, fov: 40 },
@@ -82,7 +82,7 @@ const SHOTS: Shot[] = [
     holdEase: 'power2.out',
     split: 0.35,
   },
-  // 5 · What you own — whip round the back and push in tight on the arm.
+  // 5 · What you own - whip round the back and push in tight on the arm.
   {
     approach: { theta: 320 * D, phi: 70 * D, radius: 10.5, ty: 0.7, fov: 36 },
     hold: { theta: 352 * D, phi: 86 * D, radius: 4.0, tx: -0.75, ty: 0.55, fov: 33, roll: 1.8 * D },
@@ -90,7 +90,7 @@ const SHOTS: Shot[] = [
     holdEase: 'sine.inOut',
     split: 0.4,
   },
-  // 6 · The human part — slow crane out to the widest frame in the film.
+  // 6 · The human part - slow crane out to the widest frame in the film.
   {
     approach: { theta: 384 * D, phi: 74 * D, radius: 7.0, ty: 0.4, fov: 34 },
     hold: { theta: 412 * D, phi: 46 * D, radius: 15.0, ty: 1.0, fov: 42 },
@@ -102,7 +102,7 @@ const SHOTS: Shot[] = [
 
 // Hero resting shot after the intro zoom.
 const HERO: Move = { theta: -30 * D, phi: 76 * D, radius: 8.6, ty: 0.35, fov: 35 }
-// Way up and far back — where the intro starts.
+// Way up and far back - where the intro starts.
 const INTRO: Move = { theta: -52 * D, phi: 40 * D, radius: 30, ty: 1.6, fov: 46 }
 
 function isMobileViewport() {
@@ -214,7 +214,7 @@ export default function CameraRig() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  // Cinematic zoom-in on load — listens for 'intro-complete'.
+  // Cinematic zoom-in on load - listens for 'intro-complete'.
   useEffect(() => {
     const onIntroComplete = () => {
       if (zoomStartedRef.current) return
@@ -264,7 +264,7 @@ export default function CameraRig() {
     const driftPhi = Math.sin(t * 0.051 + 1.3) * 0.032 * live
     const driftRadius = Math.sin(t * 0.089 + 0.6) * 0.22 * live
 
-    // Handheld — small, fast, irregular.
+    // Handheld - small, fast, irregular.
     const handTheta = (Math.sin(t * 0.63) + Math.sin(t * 1.17 + 2.1) * 0.5) * 0.006 * live
     const handPhi = (Math.sin(t * 0.71 + 0.9) + Math.sin(t * 1.43) * 0.5) * 0.005 * live
     const handRoll = Math.sin(t * 0.47 + 1.7) * 0.35 * D * live
@@ -280,7 +280,7 @@ export default function CameraRig() {
     )
 
     // Portrait phones: the copy owns the top of the screen, so aim ABOVE the
-    // machine — that drops the subject into the lower third, clear of the text.
+    // machine - that drops the subject into the lower third, clear of the text.
     const lift = mobile.current ? 1.0 : 0
     lookTarget.current.set(a.tx, a.ty + lift, a.tz)
     camera.lookAt(lookTarget.current)

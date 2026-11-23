@@ -2,8 +2,8 @@
 /* Cache-bust the assets Vite does NOT hash.
  *
  * Vite content-hashes anything imported from src/ (index-<hash>.js), so those
- * are safe to cache forever. Everything in public/ keeps its filename — the
- * shared sub-page stylesheet, the OG card, the favicon — so a redeploy that
+ * are safe to cache forever. Everything in public/ keeps its filename - the
+ * shared sub-page stylesheet, the OG card, the favicon - so a redeploy that
  * changes one of them would keep serving the old file to anyone (and any CDN)
  * holding a long max-age.
  *
@@ -48,7 +48,7 @@ for (const file of htmlFiles(DIST)) {
 
   for (const [rel, hash] of stamps) {
     const name = rel.split('/').pop()
-    // matches ./x, ../x, /x and bare x — but never one already stamped
+    // matches ./x, ../x, /x and bare x - but never one already stamped
     const re = new RegExp(`((?:\\.{1,2}/)*(?:[\\w./-]*/)?${name.replace('.', '\\.')})(?![?\\w])`, 'g')
     html = html.replace(re, (m) => `${m}?v=${hash}`)
   }
@@ -60,6 +60,6 @@ for (const file of htmlFiles(DIST)) {
 }
 
 console.log(
-  `stamp-assets: ${touched} html file(s) stamped — ` +
+  `stamp-assets: ${touched} html file(s) stamped - ` +
     [...stamps].map(([k, v]) => `${k}@${v}`).join(' ')
 )

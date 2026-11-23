@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import type { DeviceTier } from '../hooks/useDeviceCapability'
 
 /* ─────────────────────────────────────────────────────────────
-   Atmosphere — the fog you can actually see.
+   Atmosphere - the fog you can actually see.
 
    Two families of cheap billboards, both driven by the same 3-octave
    fbm so they read as one body of air:
@@ -14,7 +14,7 @@ import type { DeviceTier } from '../hooks/useDeviceCapability'
    - GROUND: big horizontal planes lying just above the floor, normal
      blended, so the deck sits IN something rather than floating in black.
 
-   Everything is 2 triangles and a small fbm — cheap enough to run on a
+   Everything is 2 triangles and a small fbm - cheap enough to run on a
    phone, which is the point: the low tier gets the same look with fewer
    layers, not a different scene.
    ──────────────────────────────────────────────────────────── */
@@ -71,7 +71,7 @@ float vnoise(vec3 x) {
   );
 }
 
-// Two octaves is all this reads at fog opacities, and fog is pure overdraw —
+// Two octaves is all this reads at fog opacities, and fog is pure overdraw  - 
 // the third octave cost real frames at 1440 for no visible gain.
 float fbm(vec3 p) {
   float v = vnoise(p) * 0.62;
@@ -227,7 +227,7 @@ interface AtmosphereProps {
 
 export default function Atmosphere({ tier }: AtmosphereProps) {
   // Phones render without the bloom pass, which is what makes additive haze
-  // read on desktop — so the low tier gets denser, tighter-hugging fog to
+  // read on desktop - so the low tier gets denser, tighter-hugging fog to
   // land in the same place visually.
   const profile =
     tier === 'high'
@@ -274,7 +274,7 @@ export default function Atmosphere({ tier }: AtmosphereProps) {
 
   return (
     <group>
-      {/* Standing haze — additive, catches the key light */}
+      {/* Standing haze - additive, catches the key light */}
       {banks.map((b) => (
         <FogSheet
           key={b.key}
@@ -294,7 +294,7 @@ export default function Atmosphere({ tier }: AtmosphereProps) {
         />
       ))}
 
-      {/* Ground bank — normal blended, gives the deck something to sit in */}
+      {/* Ground bank - normal blended, gives the deck something to sit in */}
       {ground.map((g) => (
         <FogSheet
           key={g.key}

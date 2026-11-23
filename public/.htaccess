@@ -1,4 +1,4 @@
-# kr8tiv.ai — cache policy
+# kr8tiv.ai cache policy
 #
 # Rule of thumb: anything with a content hash in its filename is immutable and
 # cached for a year; anything whose NAME can stay the same while its CONTENT
@@ -6,19 +6,19 @@
 # revalidate, or a deploy silently serves the old site to returning visitors.
 
 <IfModule mod_headers.c>
-  # HTML entry points — never cached, always revalidated
+  # HTML entry points: never cached, always revalidated
   <FilesMatch "\.html$">
     Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
     Header set Pragma "no-cache"
     Header set Expires "0"
   </FilesMatch>
 
-  # Crawler + metadata files — short TTL so edits show up the same day
+  # Crawler + metadata files: short TTL so edits show up the same day
   <FilesMatch "^(robots\.txt|sitemap\.xml|llms\.txt)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
 
-  # Build output is content-hashed by Vite (index-<hash>.js) → immutable
+  # Build output is content-hashed by Vite (index-<hash>.js), so immutable
   <FilesMatch "-[A-Za-z0-9_-]{8,}\.(js|css)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
@@ -38,7 +38,17 @@
   ExpiresDefault "access plus 1 day"
 </IfModule>
 
+# Retired pages: permanent redirects to the homepage. The files in
+# public/kin/ and public/jarvis/ are only a fallback (meta refresh, noindex)
+# in case mod_alias is unavailable.
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/kin/?$ /
+  RedirectMatch 301 ^/kin/index\.html$ /
+  RedirectMatch 301 ^/jarvis/?$ /
+  RedirectMatch 301 ^/jarvis/index\.html$ /
+</IfModule>
+
 # No client-side router: the app is a single page at /. Real files and
-# directories (/start/, /work/evolve/, /jarvis/, /kin/, /assets/…) are served
-# directly; anything else is a genuine 404 (was a soft-404 to index.html).
+# directories (/start/, /work/evolve/, /assets/...) are served directly;
+# anything else is a genuine 404 (was a soft-404 to index.html).
 ErrorDocument 404 /404.html

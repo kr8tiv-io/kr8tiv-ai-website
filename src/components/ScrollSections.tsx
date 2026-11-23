@@ -5,8 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   AUDIT_MAILTO,
   PAGE_EVOLVE,
-  PAGE_JARVIS,
-  PAGE_KIN,
   sections,
   type Section,
 } from '../config/sections'
@@ -70,7 +68,7 @@ export default function ScrollSections() {
       const hudLines = el.querySelectorAll('.hud-connector')
       const sectionData = sections[i - 1]
 
-      // Footer (the section after the last data section): fade in and STAY —
+      // Footer (the section after the last data section): fade in and STAY  - 
       // it's the conversion endpoint, it must never scrub back out.
       if (inner && !sectionData) {
         gsap.fromTo(
@@ -175,7 +173,7 @@ export default function ScrollSections() {
 
   return (
     <div ref={containerRef} id="main-content" className="scroll-container relative z-10">
-      {/* Hero section — empty (content in HeroOverlay) */}
+      {/* Hero section - empty (content in HeroOverlay) */}
       <section className="content-section h-screen" />
 
       {/* Content sections */}
@@ -258,7 +256,7 @@ export default function ScrollSections() {
                 {section.copy}
               </p>
 
-              {/* Proof line — first section only */}
+              {/* Proof line - first section only */}
               {i === 0 && (
                 <div className="flex items-center gap-3 mt-6 pointer-events-auto">
                   <span className="text-[11px] tracking-[0.1em] text-white/50 font-mono">
@@ -279,7 +277,7 @@ export default function ScrollSections() {
                 </a>
               )}
 
-              {/* Multiple CTAs — uniform width grid */}
+              {/* Multiple CTAs - uniform width grid */}
               {section.ctas && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-6 sm:mt-8 pointer-events-auto max-w-[min(95vw,480px)]">
                   {section.ctas.map((cta, j) => (
@@ -307,7 +305,7 @@ export default function ScrollSections() {
         </section>
       ))}
 
-      {/* Footer / CTA — min-h so the tagline and credit stay reachable when the
+      {/* Footer / CTA - min-h so the tagline and credit stay reachable when the
           content is taller than the viewport (it is, on phones). */}
       <section className="content-section min-h-screen py-20 sm:py-24 flex items-center justify-center relative">
         <div className={`section-inner opacity-0 text-center max-w-[min(94vw,52rem)] relative z-10 ${
@@ -338,7 +336,7 @@ export default function ScrollSections() {
             Every engagement starts the same way: one week inside your operation,
             mapping where the hours actually go. You get a written plan of what an
             AI back-office would take off your plate and what it costs to build.
-            Fixed scope, no lock-in &mdash; and the source code for everything we
+            Fixed scope, no lock-in, and the source code for everything we
             build for you is handed over, so the system that runs your business
             stays yours.
           </p>
@@ -353,12 +351,12 @@ export default function ScrollSections() {
               {
                 step: '01',
                 name: 'AI Ops Audit',
-                detail: 'One week. We map your operation, find the hours, and hand you the plan — keep it either way.',
+                detail: 'One week. We map your operation, find the hours, and hand you the plan. Keep it either way.',
               },
               {
                 step: '02',
                 name: 'Back-Office Build',
-                detail: 'We wire the agents into the tools you already run — receipts, quotes, dispatch, digests.',
+                detail: 'We wire the agents into the tools you already run: receipts, quotes, dispatch, digests.',
               },
               {
                 step: '03',
@@ -408,13 +406,11 @@ export default function ScrollSections() {
             </a>
           </div>
 
-          {/* Deeper reading — static pages, available at every breakpoint */}
+          {/* Deeper reading - static pages, available at every breakpoint */}
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 pointer-events-auto mb-10">
             {[
               { label: 'Evolve case study', href: PAGE_EVOLVE },
-              { label: 'JARVIS', href: PAGE_JARVIS },
-              { label: 'KIN', href: PAGE_KIN },
-              { label: 'kr8tiv.io — design studio', href: 'https://kr8tiv.io' },
+              { label: 'kr8tiv.io design studio', href: 'https://kr8tiv.io' },
             ].map((link) => (
               <a
                 key={link.href}
@@ -428,38 +424,14 @@ export default function ScrollSections() {
             ))}
           </div>
 
-          {/* Social icons — wraps instead of running off both edges at 320px */}
+          {/* Social icons - wraps instead of running off both edges at 320px */}
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-5 sm:gap-6 pointer-events-auto mb-12">
-            <a href="https://x.com/kr8tivai" target="_blank" rel="noopener noreferrer"
-               className="group flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
-                <span className="text-white/50 group-hover:text-white text-sm transition-colors">&#x1D54F;</span>
-              </div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-white/20 font-mono">Twitter</span>
-            </a>
-
             <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer"
                className="group flex flex-col items-center gap-2">
               <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
                 <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </div>
               <span className="text-[9px] tracking-[0.2em] uppercase text-white/20 font-mono">LinkedIn</span>
-            </a>
-
-            <a href="https://github.com/kr8tiv-ai" target="_blank" rel="noopener noreferrer"
-               className="group flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
-                <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-              </div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-white/20 font-mono">GitHub</span>
-            </a>
-
-            <a href="https://t.me/kr8tivaisystems" target="_blank" rel="noopener noreferrer"
-               className="group flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
-                <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              </div>
-              <span className="text-[9px] tracking-[0.2em] uppercase text-white/20 font-mono">Telegram</span>
             </a>
 
             <a href="mailto:hello@kr8tiv.ai"
@@ -477,7 +449,7 @@ export default function ScrollSections() {
           </div>
 
           <div className="text-[8px] font-mono text-white/30 tracking-[0.3em] uppercase mb-3" style={{ textShadow }}>
-            &copy; 2026 kr8tiv AI &mdash; All systems nominal
+            &copy; 2026 kr8tiv AI · All systems nominal
           </div>
 
           {/* Sister-brand credit */}
@@ -488,7 +460,7 @@ export default function ScrollSections() {
             className="pointer-events-auto text-[9px] font-mono tracking-[0.2em] uppercase text-white/25 hover:text-[#d4a853]/80 transition-colors duration-300"
             style={{ textShadow }}
           >
-            Design by kr8tiv.io &mdash; the atelier side of the house
+            Design by kr8tiv.io, the atelier side of the house
           </a>
         </div>
       </section>

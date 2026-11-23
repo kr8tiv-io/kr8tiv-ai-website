@@ -4,17 +4,17 @@ import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Smoke Stream — One Thick Volumetric Flow
+   Smoke Stream - One Thick Volumetric Flow
 
    Instead of multiple thin ribbons, this creates ONE massive
    flowing volume by stacking ~20 semi-transparent planes at
    slightly different Z depths and phases. The visual result
-   looks like the reference image — a single coherent stream
+   looks like the reference image - a single coherent stream
    with internal layered fiber texture.
 
    Each layer is a wide plane with vertex wave displacement.
    Layers are staggered in Z and phase so the internal structure
-   shifts as you look through it — creating volumetric depth.
+   shifts as you look through it - creating volumetric depth.
 
    The stream flows horizontally, has a bright core, and
    fades to nothing at the edges and near the center (so text
@@ -92,13 +92,13 @@ void main() {
   // Each layer gets slightly different phase from uLayerOffset
   float layerPhase = uPhase + uLayerOffset * 0.4;
 
-  // Primary wave — slow, deep, majestic
+  // Primary wave - slow, deep, majestic
   float wave1 = sin(pos.x * 0.35 + t + layerPhase) * uAmplitude;
 
-  // Secondary wave — creates the rolling feel
+  // Secondary wave - creates the rolling feel
   float wave2 = sin(pos.x * 0.55 - t * 0.7 + layerPhase * 1.5) * uAmplitude * 0.35;
 
-  // Noise — each layer gets different turbulence from its offset
+  // Noise - each layer gets different turbulence from its offset
   float noiseVal = snoise(vec3(
     pos.x * 0.12 + t * 0.08,
     uLayerOffset * 0.5,
@@ -107,7 +107,7 @@ void main() {
 
   pos.y += wave1 + wave2 + noiseVal;
 
-  // Z offset — layers spread in depth
+  // Z offset - layers spread in depth
   pos.z += uLayerOffset;
 
   vec4 wp = modelMatrix * vec4(pos, 1.0);
@@ -131,11 +131,11 @@ uniform float uLayerOffset;
 uniform float uCenterFloor;
 
 void main() {
-  // ── Soft vertical gaussian — wide, dreamy falloff ──
+  // ── Soft vertical gaussian - wide, dreamy falloff ──
   float distFromCenter = abs(vUv.y - 0.5) * 2.0;
   float gauss = exp(-distFromCenter * distFromCenter * 2.5);
 
-  // ── Internal fiber texture — subtle contour lines ──
+  // ── Internal fiber texture - subtle contour lines ──
   // This creates the "layered light painting" look from the reference
   float fiber = sin(vUv.y * 40.0 + uLayerOffset * 8.0 + uTime * 0.5) * 0.5 + 0.5;
   fiber = smoothstep(0.3, 0.7, fiber);
@@ -151,7 +151,7 @@ void main() {
   float edgeFade = smoothstep(0.0, 0.15, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
   intensity *= edgeFade;
 
-  // ── Center protection zone — wide fade so product + text stay clear ──
+  // ── Center protection zone - wide fade so product + text stay clear ──
   float centerDist = length(vWorldPos.xz);
   float centerFade = smoothstep(3.5, 12.0, centerDist);
   intensity *= mix(uCenterFloor, 1.0, centerFade);
@@ -196,7 +196,7 @@ extend({ StreamLayerMaterial: StreamLayerMaterialImpl })
 const LAYER_COUNT = 18         // Stacked planes to create volume
 const LAYER_SPREAD = 3.0       // Total Z-depth spread
 const STREAM_LENGTH = 28       // Horizontal span
-const STREAM_HEIGHT = 5.0      // Tall — this is one BIG stream
+const STREAM_HEIGHT = 5.0      // Tall - this is one BIG stream
 const STREAM_Y = 0.8           // Vertical center
 const SEGMENTS_X = 80          // Subdivision for smooth waves
 

@@ -1,5 +1,5 @@
-/* kr8tiv AI — static sub-page stylesheet.
-   Shared by /work/evolve/, /jarvis/, /kin/. No JS, no framework.
+/* kr8tiv AI - static sub-page stylesheet.
+   Shared by /work/evolve/, /start/ and 404. No JS, no framework.
    Brand: #050510 ground, #d4a853 amber accent, Syne / Inter / JetBrains Mono. */
 
 :root {
@@ -54,7 +54,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Ambient ground wash — pure CSS, no image cost. */
+/* Ambient ground wash - pure CSS, no image cost. */
 body::before {
   content: '';
   position: fixed;

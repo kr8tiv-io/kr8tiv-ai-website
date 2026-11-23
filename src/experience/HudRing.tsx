@@ -4,7 +4,7 @@ import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Atmospheric Particle Field — GPU-Animated Edition
+   Atmospheric Particle Field - GPU-Animated Edition
 
    PERFORMANCE:
    All 680+ particles are animated entirely in the vertex shader.
@@ -12,7 +12,7 @@ import * as THREE from 'three'
    The CPU cost is literally just updating one uniform (uTime).
 
    The original version iterated over every particle in JS every
-   frame and uploaded the buffer — this version is ~50× faster
+   frame and uploaded the buffer - this version is ~50× faster
    for the same visual result.
 
    VISUAL UPGRADES:
@@ -55,7 +55,7 @@ void main() {
   float dist = length(pos.xz);
   vAlpha = smoothstep(8.0, 5.0, dist) * smoothstep(-2.5, -1.5, pos.y) * smoothstep(2.5, 1.5, pos.y);
 
-  // Size variation — breathing
+  // Size variation - breathing
   float sizePulse = 1.0 + sin(t * 0.3 + phase * 3.0) * 0.2;
 
   vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
@@ -95,7 +95,7 @@ void main() {
 
   float t = uTime;
 
-  // Helical orbit — DNA strand feel
+  // Helical orbit - DNA strand feel
   float orbitAngle = baseAngle + t * 0.03 * speed;
   float radius = 1.5 + sin(t * 0.1 + phase) * 0.5;
   float helixY = sin(orbitAngle * 2.0 + phase) * 0.4;

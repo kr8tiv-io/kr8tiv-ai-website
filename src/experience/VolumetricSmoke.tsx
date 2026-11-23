@@ -4,7 +4,7 @@ import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────────────
-   Raymarched Volumetric Smoke — Hyper-Realistic Wave Edition
+   Raymarched Volumetric Smoke - Hyper-Realistic Wave Edition
 
    PERFORMANCE CHANGES vs original:
    - March steps: 40 → 24  (massive GPU savings, ~40%)
@@ -125,7 +125,7 @@ float snoise(vec3 v) {
   return 105.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
 }
 
-/* ── FBM — 3 octaves (was 4, saves ~25% of noise cost) ──── */
+/* ── FBM - 3 octaves (was 4, saves ~25% of noise cost) ──── */
 
 float fbm(vec3 p) {
   float value = 0.0;
@@ -173,7 +173,7 @@ float henyeyGreenstein(float cosTheta, float g) {
 /* Creates realistic ocean-like rolling formations in the smoke */
 
 vec3 gerstnerDisplace(vec3 p) {
-  // Scroll velocity adds turbulence — faster scroll = wilder smoke
+  // Scroll velocity adds turbulence - faster scroll = wilder smoke
   float scrollBoost = 1.0 + abs(uScrollVelocity) * 0.3;
 
   // Wave 1: Deep, slow, majestic swell

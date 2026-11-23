@@ -10,7 +10,7 @@ export interface DeviceCapability {
 }
 
 const LOW_RENDERER_PATTERN = /(Mali|Adreno 5|SwiftShader)/i
-// Safari (and iPadOS in desktop mode) masks the GPU as "Apple GPU" — treat it
+// Safari (and iPadOS in desktop mode) masks the GPU as "Apple GPU" - treat it
 // as medium so iPads never get the full desktop pipeline.
 const MEDIUM_RENDERER_PATTERN =
   /(Intel\(R\) UHD|Intel\(R\) Iris|Intel\(R\) HD Graphics|Apple GPU)/i
@@ -18,7 +18,7 @@ const FIREFOX_PATTERN = /firefox/i
 
 /** Viewport width alone is enough to know we are on a phone, and it is known
  *  synchronously. Starting at 'high' and downgrading in an effect meant phones
- *  rendered the desktop path — including the full-screen loading curtain — for
+ *  rendered the desktop path - including the full-screen loading curtain - for
  *  a frame or two before being corrected, which delayed the hero paint. */
 function initialTier(): DeviceTier {
   if (typeof window === 'undefined') return 'high'

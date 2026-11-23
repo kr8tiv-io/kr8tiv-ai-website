@@ -17,7 +17,7 @@ import { asset } from './lib/asset'
 gsap.registerPlugin(ScrollTrigger)
 
 // The entire WebGL stack (r3f + drei + three) lives behind this boundary so it
-// is never in the first chunk — the hero paints before any of it arrives.
+// is never in the first chunk - the hero paints before any of it arrives.
 const Scene3D = lazy(() => import('./experience/Scene3D'))
 
 function LenisWrapper({ children }: { children: ReactNode }) {
@@ -73,7 +73,7 @@ export default function App() {
     document.body.style.overflow = ''
   }, [])
 
-  // The prerendered SEO copy in index.html is for crawlers only —
+  // The prerendered SEO copy in index.html is for crawlers only  - 
   // remove it once React owns the page so nothing is announced twice.
   useEffect(() => {
     document.getElementById('static-content')?.remove()
@@ -186,7 +186,7 @@ export default function App() {
   return (
     <>
       {/* Layer 0: poster frame.
-          Shown immediately — not only when WebGL fails — for two reasons: it
+          Shown immediately - not only when WebGL fails - for two reasons: it
           replaces a black screen with the actual scene while three.js streams
           in, and it gives the browser a large element to paint early. Before
           this the canvas itself was the LCP candidate and only appeared once
@@ -215,7 +215,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Layer 1: Fixed 3D canvas — streamed in after the overlay has painted */}
+      {/* Layer 1: Fixed 3D canvas - streamed in after the overlay has painted */}
       {shouldRenderCanvas && (
         <Suspense fallback={null}>
           <Scene3D
@@ -266,12 +266,12 @@ export default function App() {
       {/* Transition effects */}
       <TransitionFlash />
 
-      {/* Intro sequence — plays after loading (skipped for reduced motion) */}
+      {/* Intro sequence - plays after loading (skipped for reduced motion) */}
       {!skipIntro && loadingDone && !introComplete && (
         <IntroSequence onComplete={handleIntroComplete} />
       )}
 
-      {/* Loading overlay — desktop only.
+      {/* Loading overlay - desktop only.
           On phones there is no curtain at all: the poster frame gives something
           to look at while the scene streams in, and an opaque overlay was the
           last thing holding the hero copy back (it kept LCP at 3.6s even after
@@ -281,7 +281,7 @@ export default function App() {
         <LoadingScreen
           progress={sceneProgress.progress}
           active={sceneProgress.active}
-          /* Lift as soon as there is a canvas to look at — waiting for every
+          /* Lift as soon as there is a canvas to look at - waiting for every
              last asset kept the hero copy hidden long after it was ready. */
           forceComplete={canvasReady || (webglChecked && (!supportsWebGL || canvasFailed))}
           onDone={() => {
