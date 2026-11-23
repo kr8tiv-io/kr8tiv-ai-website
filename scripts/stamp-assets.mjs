@@ -33,7 +33,7 @@ function htmlFiles(dir) {
 }
 
 // filename in dist -> the reference forms that can appear in HTML
-const TARGETS = ['styles/page.css', 'og-card.png', 'favicon.png']
+const TARGETS = ['styles/page.css', 'styles/blog.css', 'og-card.png', 'favicon.png']
 
 const stamps = new Map()
 for (const rel of TARGETS) {
