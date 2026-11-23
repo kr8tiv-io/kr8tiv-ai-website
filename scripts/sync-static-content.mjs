@@ -39,7 +39,7 @@ const html = [
   `      <p>${esc(CTA_P)}</p>`,
   '      <p><a href="start/">Book an AI Ops Audit</a> · <a href="tel:+17809155471">780-915-5471</a> · <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a></p>',
   '      <ul>',
-  '        <li><a href="services/">Services</a>: <a href="services/ai-training/">AI training &amp; courses</a>, <a href="services/company-brain/">Company Brain</a>, <a href="services/automations/">automations</a>, <a href="services/tool-integration/">tool integration</a>, <a href="services/evolve/">Evolve</a></li>',
+  '        <li><a href="services/">Services</a>: <a href="services/ai-consulting/">AI consulting</a>, <a href="services/ai-audit/">AI Ops Audit</a>, <a href="services/ai-training/">AI training &amp; courses</a>, <a href="services/corporate-training/">corporate training systems</a>, <a href="services/company-brain/">Company Brain</a>, <a href="services/automations/">automations</a>, <a href="services/custom-business-app/">custom business apps</a>, <a href="services/tool-integration/">tool selection &amp; integration</a>, <a href="services/fractional-cto/">fractional CTO</a>, <a href="services/business-overhaul/">full business overhaul</a></li>',
   '        <li><a href="work/evolve/">Case study: Evolve Eco Blasting</a></li>',
   '        <li><a href="https://kr8tiv.io">Design by kr8tiv.io</a></li>',
   '      </ul>',

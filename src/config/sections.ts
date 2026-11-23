@@ -56,6 +56,7 @@ export const sections: Section[] = [
     ],
     hudColor: '#ffffff',
     alignment: 'left',
+    cta: { text: 'See everything we do →', href: PAGE_SERVICES },
   },
   {
     angle: Math.PI * 0.92,
@@ -110,9 +111,9 @@ export const sections: Section[] = [
     targetY: 0.2,
     sysCode: 'EVO',
     density: 'standard',
-    label: 'The System',
+    label: 'One Thing We Built',
     title: 'Meet Evolve.\nOne sheet. Four parts.',
-    copy: "Evolve is the business system we built for Evolve Eco Blasting, an Edmonton crew with no office staff. Four parts share one Google Sheet. The field app is where the crew logs receipts, job photos and leads from their phones. The workbook holds jobs, quotes, customers and money in a sheet you already know how to use. The brain is the AI that prices quotes, files receipts, runs dispatch and writes the morning report. The dashboard is the one screen the owner checks. Anything that moves money waits for a human yes.",
+    copy: "Evolve is one of the business apps we built, this one for Evolve Eco Blasting, an Edmonton crew with no office staff. Four parts share one Google Sheet. The field app is where the crew logs receipts, job photos and leads from their phones. The workbook holds jobs, quotes, customers and money in a sheet you already know how to use. The brain is the AI that prices quotes, files receipts, runs dispatch and writes the morning report. The dashboard is the one screen the owner checks. Anything that moves money waits for a human yes.",
     hudData: [
       { label: 'FIELD APP', value: 'CREW', unit: 'PHONES' },
       { label: 'WORKBOOK', value: 'ONE', unit: 'SHEET' },

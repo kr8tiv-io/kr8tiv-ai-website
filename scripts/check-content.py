@@ -4,13 +4,17 @@ mentions retired products (KIN, JARVIS), crypto or token wording, off-rule
 social channels, star-rating schema, or contains em or en dashes.
 
 kr8tiv.ai has nothing to do with Kin, Jarvis, crypto, tokens or on-chain
-payments. Evolve (the Evolve Eco Blasting system) is the only product.
+payments. kr8tiv AI is an AI consulting company; Evolve (the Evolve Eco
+Blasting app) is one thing we built and the case study, not the only product.
+Also blocks free offers, off-brand openers and the slop words in the KR8TIV
+brand voice guide. Field Notes drafts are checked too.
 Run: python3 scripts/check-content.py"""
 import pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COPY_FILES = [ROOT / 'index.html', *ROOT.glob('public/**/*.html'), ROOT / 'public/llms.txt',
-              ROOT / 'public/sitemap.xml', ROOT / 'public/robots.txt', ROOT / 'src/config/sections.ts']
+              ROOT / 'public/sitemap.xml', ROOT / 'public/robots.txt', ROOT / 'src/config/sections.ts',
+              *ROOT.glob('drafts/**/*.md')]
 CODE_FILES = [*ROOT.glob('src/components/**/*.tsx'), ROOT / 'src/App.tsx']
 
 BANNED = [
@@ -24,6 +28,12 @@ BANNED = [
     (r'\bEvolved\b|\bEVOLVED\b', 'product is named Evolve, not Evolved'),
     (r'AggregateRating|reviewRating', 'star-rating schema'),
     (r'[\u2014\u2013]|&mdash;|&ndash;', 'em or en dash'),
+    (r'\bfor free\b|\bfree (audit|consult\w*|call|session|trial|quote|estimate|assessment|strategy|month|setup|training)\b|\bat no (cost|charge)\b|\bcomplimentary\b|\bno[- ]cost\b',
+     'free offer (we never offer free work)'),
+    (r'got a business\?', 'off-brand opener'),
+    (r'game-?changer|\belevate\b|\bunlock\b|\bseamless(ly)?\b|\bleverag\w*|synergy|cutting-edge|world-class|best-in-class|supercharge|digital transformation|next level|limited (spots|slots)|award-winning|\bAI-powered\b|\bsolutions\b',
+     'slop word from the brand voice guide'),
+    (r'Red Deer', 'no Red Deer pages'),
 ]
 COMMENT = re.compile(r'^\s*(//|/\*|\*|\{/\*)')
 

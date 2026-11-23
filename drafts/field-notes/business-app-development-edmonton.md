@@ -12,7 +12,7 @@ author: Matt Haynes
 category: Field notes
 tags:
 - Apps
-- Evolved
+- Evolve
 - Edmonton
 - Alberta
 hero_alt: "An owner dashboard on a laptop showing today's jobs and quotes, with a crew phone running the field app beside it"
@@ -32,7 +32,7 @@ faq:
 - question: Do I own the app you build?
   answer: "Yes. The code, the documents and the data stay in your accounts."
 - question: Can the app work for a crew in the field?
-  answer: "Yes. Evolved includes a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button."
+  answer: "Yes. Evolve, the app we built for Evolve Eco Blasting, has a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button. Yours can work the same way."
 ---
 
 Every few weeks an Edmonton owner tells me they need an app. When we dig in, they usually need one of three different things: a website that books jobs, a tool their crew uses on a phone, or one screen that shows them the whole business.
@@ -60,7 +60,7 @@ Those numbers are for public apps. An internal business app is a different anima
 - It does not need an App Store listing.
 - It can sit on tools you already pay for, like Google Sheets and Drive.
 
-That is how a focused internal app can cost a few thousand dollars instead of tens of thousands. Our Custom Business App starts at **$3,000 CAD**. With a Company Brain added it is **$3,750**. A field crew app module on its own is **$750**. No GST charged, and final scope is agreed in writing.
+That is how a focused internal app can cost a few thousand dollars instead of tens of thousands. Our Custom Business App starts at **$3,000 CAD**. With a Company Brain added it is **$3,750**. A field crew app module on its own is **$750**. No GST charged, and final scope is agreed in writing. If the honest answer is "rebuild the whole back office," that is a Full Business Overhaul, from $10,000 to $20,000 depending on the size of the business.
 
 ## Buy or build?
 
@@ -73,7 +73,7 @@ Off-the-shelf software is great when it fits. Buy when:
 Build when:
 
 - You keep bending your business around the software.
-- You pay for twelve seats and use three.
+- You pay for twelve seats and use three. (We have all been there. No judgment.)
 - Someone copies the same data between three apps every day.
 - Your trade has a way of pricing or scheduling that no tool understands.
 
@@ -89,16 +89,16 @@ The first version should be small enough to ship in weeks. A good first scope lo
 
 Everything else (inventory, ordering, a CRM, a pricing engine) can come later, once the first three are proven on real work.
 
-## The Evolved shortcut
+## Exhibit A: Evolve
 
-We do not start from a blank page. Evolved is the open-source business system we built for Evolve Eco Blasting, an Edmonton crew with no office staff. It has four parts that share one Google Sheet:
+Evolve is one of the business apps we built, this one for Evolve Eco Blasting, an Edmonton crew with no office staff. It has four parts that share one Google Sheet:
 
 - **A field app.** Phone-first. A crew member signs in with a name and a 4-digit PIN and taps one big button to log a receipt, job photo, lead, quote or the morning Field Level Hazard Assessment.
 - **The workbook.** One Google Sheet with tabs for jobs, quotes, customers, expenses and more. You can open it and read it yourself.
 - **The brain.** The AI that files receipts, prices quotes against your rates and writes the morning report.
 - **The dashboard.** The owner's one screen.
 
-Because the bones already exist and are proven, a custom business app for your trade is mostly fitting: your job types, your price list, your branding, your crew. That is where the time and cost savings come from.
+Your app will not be Evolve. It will be yours. But we do not start from a blank page either: the patterns are proven, so a custom business app for your trade is mostly fitting: your job types, your price list, your branding, your crew. That is where the time and cost savings come from, and we pass them down.
 
 ## How to keep an app project from going sideways
 
@@ -134,7 +134,7 @@ Yes. The code, the documents and the data stay in your accounts.
 
 ### Can the app work for a crew in the field?
 
-Yes. Evolved includes a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button.
+Yes. Evolve, the app we built for Evolve Eco Blasting, has a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button. Yours can work the same way.
 
 <!-- REVIEW NOTES (not part of the post) -->
 
@@ -144,9 +144,9 @@ Yes. Evolved includes a phone-first field app where crews log receipts, photos, 
 - Title: 55 characters (`seo_title`). Meta: 151 characters.
 - Cost ranges come from the published kr8tiv.io Field Note `app-design-cost-canada` (19 Nov 2026), which cites the studio sources. Recheck that note's sources on publish day.
 - Prices from the company-brain snapshot (Custom Business App $3,000, Brain + Business App $3,750, Field crew app module $750). Publish only after PLAN D4.
-- Evolved field app details (name and 4-digit PIN, one big button, FLHA) are from the `kr8tiv-ai/evolve-field-app` README. Alberta OHS Code Part 2 s.7(1) and s.8(1), checked 23 Nov 2026 via open.alberta.ca.
-- "Offline-friendly capture" is a general recommendation, not a claim about Evolved. Keep it that way unless the repo confirms offline support.
-- Internal links: /services/app-development-edmonton/, /evolved/, /services/company-brain/, /work/evolve/, /start/, Field Notes `ai-automation-edmonton-small-business` and `ai-tools-contractors-alberta`. Cross-site: https://kr8tiv.io/blog/app-design-cost-canada/ (sources) and https://kr8tiv.io/services/app-design-edmonton/ (design work).
+- Evolve field app details (name and 4-digit PIN, one big button, FLHA) are from the `kr8tiv-ai/evolve-field-app` README. Alberta OHS Code Part 2 s.7(1) and s.8(1), checked 23 Nov 2026 via open.alberta.ca.
+- "Offline-friendly capture" is a general recommendation, not a claim about Evolve. Keep it that way unless the repo confirms offline support.
+- Internal links: /services/custom-business-app/, /services/company-brain/, /work/evolve/, /start/, Field Notes `ai-automation-edmonton-small-business` and `ai-tools-contractors-alberta`. Cross-site: https://kr8tiv.io/blog/app-design-cost-canada/ (sources) and https://kr8tiv.io/services/app-design-edmonton/ (design work).
 
 ### JSON-LD (generated by the layout; shown for review)
 
@@ -167,7 +167,7 @@ Yes. Evolved includes a phone-first field app where crews log receipts, photos, 
       "publisher": { "@id": "https://kr8tiv.ai/#organization" },
       "image": "https://kr8tiv.ai/images/blog/business-app-development-edmonton-poster.webp",
       "mainEntityOfPage": "https://kr8tiv.ai/blog/business-app-development-edmonton/",
-      "mentions": [{ "@id": "https://kr8tiv.ai/evolved/#software" }],
+      "mentions": [{ "@type": "Organization", "name": "Evolve Eco Blasting", "url": "https://evolveecoblasting.com" }],
       "spatialCoverage": { "@type": "City", "name": "Edmonton", "containedInPlace": { "@type": "State", "name": "Alberta" } }
     },
     {
@@ -185,7 +185,7 @@ Yes. Evolved includes a phone-first field app where crews log receipts, photos, 
         { "@type": "Question", "name": "Should I buy software or build a custom app?", "acceptedAnswer": { "@type": "Answer", "text": "Buy when a common tool fits how you already work and you only need it to do the standard thing. Build when you keep bending your business around the software, paying for seats nobody uses, or copying data between three apps." } },
         { "@type": "Question", "name": "How long does it take to build a business app?", "acceptedAnswer": { "@type": "Answer", "text": "A focused first version on tools you already use can be running in a few weeks. A public app with accounts, payments and two app stores takes months." } },
         { "@type": "Question", "name": "Do I own the app you build?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The code, the documents and the data stay in your accounts." } },
-        { "@type": "Question", "name": "Can the app work for a crew in the field?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Evolved includes a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button." } }
+        { "@type": "Question", "name": "Can the app work for a crew in the field?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Evolve, the app we built for Evolve Eco Blasting, has a phone-first field app where crews log receipts, photos, leads and a daily hazard assessment with one big button. Yours can work the same way." } }
       ]
     }
   ]

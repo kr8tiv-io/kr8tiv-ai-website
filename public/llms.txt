@@ -1,6 +1,6 @@
 # kr8tiv AI
 
-> kr8tiv AI is a professional AI automation company in Edmonton, Alberta, Canada. We build AI back-office and operations systems for businesses: receipt pipelines, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and watchdog agents, wired into the tools a business already uses (spreadsheets, drive, email). Fixed-scope engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
+> kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
 
 Last updated: 23 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
 
@@ -18,22 +18,27 @@ Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruc
 
 ## Services
 
-- AI Training & Courses: https://kr8tiv.ai/services/ai-training/ We teach organizations about AI. Hands-on sessions and structured courses for non-technical teams, in person in Edmonton and Alberta and live online across Canada. AI + marketing systems training session: $295 CAD. Structured courses are quoted to group size.
-- Company Brain: https://kr8tiv.ai/services/company-brain/ One organized home for a company's processes, prices, voice and templates, covering sales, operations, money, crew and field, marketing and documents, so the team and its AI tools work from the same facts. $1,000 CAD one time.
-- AI Automations: https://kr8tiv.ai/services/automations/ Receipt pipelines, quoting with margin checks, dispatch tracking, a 6:30 AM digest and watchdog rules, on the tools a business already uses. Single automation from $250 CAD.
-- Tool Integration: https://kr8tiv.ai/services/tool-integration/ Connecting spreadsheets, drive, email, calendar and business apps so every tool pulls in the same direction. Scoped in the AI Ops Audit and built as a fixed price.
-- Evolve: https://kr8tiv.ai/services/evolve/ The business management system kr8tiv AI built for Evolve Eco Blasting: field app, workbook, AI brain and owner dashboard on one Google Sheet, with a person approving every money step. Custom Business App modelled on Evolve: $3,000 CAD; Brain + Business App: $3,750 CAD.
-- AI Ops Audit: $495 CAD, one week. AI Care: $250 CAD per month.
+- AI Consulting: https://kr8tiv.ai/services/ai-consulting/ AI consulting for Edmonton and Alberta small businesses: what to automate, what to keep human, which old apps to retire, and a plan you can act on. Consulting starts with the AI Ops Audit ($495). Ongoing advice is quoted to the scope, or rolled into Fractional CTO.
+- AI Ops Audit: https://kr8tiv.ai/services/ai-audit/ A one-week AI overview of your company: where the hours go, what AI should take over and what it costs. $495, credited toward builds of $1,000 or more. AI Ops Audit: $495 CAD. Credited toward any build of $1,000 or more. The plan is yours whoever builds it.
+- AI Training & Courses: https://kr8tiv.ai/services/ai-training/ AI training for teams and individuals in Edmonton, Alberta and across Canada. Hands-on group sessions at $1,000, built on the tools you already use. Group training session: $1,000 CAD. Individual coaching is quoted to what you want to learn. Multi-session courses are quoted to group size and schedule.
+- AI Automations: https://kr8tiv.ai/services/automations/ AI automations for Edmonton small businesses: receipts filed from a photo, same-day quotes with margin checks, dispatch, a 6:30 AM digest. From $250. Single automation: From $250 CAD. Bigger builds are scoped in the AI Ops Audit ($495) and quoted as a fixed price.
+- Company Brain: https://kr8tiv.ai/services/company-brain/ Stop running the company from memory. A Company Brain puts sales, ops, money, crew and marketing in one place your team and AI both use. $1,000. Company Brain: $1,000 CAD. One-time build. You own it.
+- Custom Business App: https://kr8tiv.ai/services/custom-business-app/ Retire the apps you rent and run the business from one screen you own. Custom business apps for Edmonton small businesses, from $3,000. Custom Business App: $3,000 CAD; Brain + Business App: $3,750 CAD. One-time build. You own the code.
+- Corporate Training Systems: https://kr8tiv.ai/services/corporate-training/ Corporate AI training systems for Alberta and Canadian organizations: a full program with role-based tracks, your own playbook, and onboarding built in. Corporate Training System: From $7,500 CAD. Scaled to headcount, departments and locations. Quoted in writing after a scoping call.
+- Tool Selection & Integration: https://kr8tiv.ai/services/tool-integration/ We help Alberta and Canadian companies choose the right tools, retire the wrong ones, and wire the rest together so they work as one system. Tool Selection & Integration: From $5,000 CAD. Scaled to the number of tools, teams and locations. A single small connection is scoped in the AI Ops Audit ($495) instead.
+- Fractional CTO: https://kr8tiv.ai/services/fractional-cto/ A fractional CTO for Alberta small and mid-sized businesses: tech decisions, builds and AI operations, without a full-time hire. $5,000 a month to start. Fractional AI Ops, build months: $5,000 CAD a month; Fractional AI Ops, after launch: $3,950 CAD a month. Two build months at $5,000, then $3,950 a month. After the minimum, 30 days' notice to stop.
+- Full Business Overhaul: https://kr8tiv.ai/services/business-overhaul/ A full AI business overhaul for Edmonton and Alberta companies: brain, apps, automations, tools and training rebuilt as one system. $10,000 to $20,000. Full Business Overhaul: $10,000 to $20,000 CAD. A fixed price between $10,000 and $20,000, set after the AI Ops Audit, depending on the scale of the business.
+- AI Support Plan: Monitoring, fixes, tool updates and small changes to what we built, plus a monthly check-in. From $750 CAD a month.
 
 ## What we build
 
 - AI Ops Audit: one week inside an operation, mapping where the hours go; deliverable is a written automation plan the client keeps either way.
 - Back-Office Build: agents wired into the client's existing stack. Automated receipt filing (photo to logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, and watchdog agents that flag unpaid invoices and unscheduled deposits.
-- Care: ongoing tuning and new automations, month to month. No lock-in: the client owns the data, the documents, and the source code we wrote for them.
+- AI Support Plan: ongoing monitoring, fixes, tool updates and small changes, month to month. No lock-in: the client owns the data, the documents, and the source code we wrote for them.
 
-## The system: Evolve
+## One thing we built: Evolve
 
-Evolve is the business system kr8tiv AI built for Evolve Eco Blasting. Four parts share one Google Sheet: a field app the crew uses on their phones, a workbook that holds jobs, quotes, customers and money, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. Anything that moves money waits for a person to approve it.
+Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof behind the Custom Business App service. Four parts share one Google Sheet: a field app the crew uses on their phones, a workbook that holds jobs, quotes, customers and money, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. Anything that moves money waits for a person to approve it.
 
 ## Proof
 
