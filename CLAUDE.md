@@ -30,7 +30,7 @@ stopping at 5 content sections with HUD info panels that pop out.
 1. "What We Automate" -- receipts, quoting, dispatch, digests
 2. "Case Study - Evolve Eco Blasting" -- the proof, links to /work/evolve/
 3. "How It Works" -- agents wired into the client's existing stack
-4. "The System" -- Evolved, the business system built for Evolve Eco Blasting (field app, workbook, AI brain, owner dashboard)
+4. "The System" -- Evolve, the business system built for Evolve Eco Blasting (field app, workbook, AI brain, owner dashboard)
 5. "What You Own" -- source handover, data in the client's accounts, no lock-in
 6. "The Human Part" -- who builds it
 Followed by the footer/CTA section (Audit -> Build -> Care ladder).
@@ -39,8 +39,9 @@ Followed by the footer/CTA section (Audit -> Build -> Care ladder).
 kr8tiv AI is a PROFESSIONAL SERVICE that businesses hire to build AI automations
 and back-office/operational systems, based in Edmonton, Alberta.
 
-- The ONLY product on this site is Evolved, the business system built for and
+- The ONLY product on this site is Evolve, the business system built for and
   proven at Evolve Eco Blasting. Do not add any other product.
+- The product name is "Evolve" (Matt, 23 Nov 2026). Never write "Evolved" on this site.
 - KIN and JARVIS are retired. Never mention them, link them, or restore
   /kin/ or /jarvis/ (both 301 to / in public/.htaccess).
 - Nothing crypto, ever: no on-chain payments, x402, OKX, X Layer, testnet,

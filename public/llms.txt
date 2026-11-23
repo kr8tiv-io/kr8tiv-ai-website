@@ -22,9 +22,9 @@ Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruc
 - Back-Office Build: agents wired into the client's existing stack. Automated receipt filing (photo to logged expense), quoting engines with break-even checks, dispatch from lead to invoice, morning digests, and watchdog agents that flag unpaid invoices and unscheduled deposits.
 - Care: ongoing tuning and new automations, month to month. No lock-in: the client owns the data, the documents, and the source code we wrote for them.
 
-## The system: Evolved
+## The system: Evolve
 
-Evolved is the business system kr8tiv AI built for Evolve Eco Blasting. Four parts share one Google Sheet: a field app the crew uses on their phones, a workbook that holds jobs, quotes, customers and money, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. Anything that moves money waits for a person to approve it.
+Evolve is the business system kr8tiv AI built for Evolve Eco Blasting. Four parts share one Google Sheet: a field app the crew uses on their phones, a workbook that holds jobs, quotes, customers and money, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. Anything that moves money waits for a person to approve it.
 
 ## Proof
 

@@ -261,8 +261,8 @@ for (const viewport of VIEWPORTS) {
         }
       }
 
-      await focusSectionByHeading(page, 'Meet Evolved.')
-      await expect(page.locator('.section-inner h2', { hasText: 'Meet Evolved.' }).first()).toBeVisible()
+      await focusSectionByHeading(page, 'Meet Evolve.')
+      await expect(page.locator('.section-inner h2', { hasText: 'Meet Evolve.' }).first()).toBeVisible()
       await expect(page.getByText('Four parts share one Google Sheet', { exact: false })).toBeVisible()
       // Retired products and channels must never come back.
       await expect(page.locator('a[href*="/kin/"], a[href*="/jarvis/"], a[href*="meetyourkin"], a[href*="x.com/"], a[href*="t.me/"]')).toHaveCount(0)
@@ -294,7 +294,7 @@ for (const viewport of VIEWPORTS) {
       await stepScroll(page, 1700, 700)
       await page.screenshot({ path: path.join(dir, 'section-mid.png'), fullPage: false })
 
-      await focusSectionByHeading(page, 'Meet Evolved.')
+      await focusSectionByHeading(page, 'Meet Evolve.')
       await page.screenshot({ path: path.join(dir, 'section-evolved.png'), fullPage: false })
 
       await stepScroll(page, 2600, 800)

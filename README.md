@@ -24,7 +24,7 @@ The source code for everything we build for a client is handed over to that clie
 
 ## Products
 
-- **Evolved**: the business system built for Evolve Eco Blasting. A field app for the crew, one Google Sheet as the workbook, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. [Case study](https://kr8tiv.ai/work/evolve/)
+- **Evolve**: the business system built for Evolve Eco Blasting. A field app for the crew, one Google Sheet as the workbook, an AI brain that prices quotes, files receipts, runs dispatch and writes the morning report, and an owner dashboard. [Case study](https://kr8tiv.ai/work/evolve/)
 
 ## Tech Stack
 

@@ -4,7 +4,7 @@ mentions retired products (KIN, JARVIS), crypto or token wording, off-rule
 social channels, star-rating schema, or contains em or en dashes.
 
 kr8tiv.ai has nothing to do with Kin, Jarvis, crypto, tokens or on-chain
-payments. Evolved (the Evolve Eco Blasting system) is the only product.
+payments. Evolve (the Evolve Eco Blasting system) is the only product.
 Run: python3 scripts/check-content.py"""
 import pathlib, re, sys
 
@@ -21,6 +21,7 @@ BANNED = [
     (r'github\.com/kr8tiv-ai/?["\'\s<]', 'GitHub org link (holds unrelated repos)'),
     (r'on-?chain|x402|x ?layer|\bokx\b|testnet|blockchain|crypto(?!graph)|\bnft\b|solana|web3|\bwallet|staking|\bdlmm\b|\$homes|\btokens?\b|stablecoin|usdc',
      'crypto or token wording'),
+    (r'\bEvolved\b|\bEVOLVED\b', 'product is named Evolve, not Evolved'),
     (r'AggregateRating|reviewRating', 'star-rating schema'),
     (r'[\u2014\u2013]|&mdash;|&ndash;', 'em or en dash'),
 ]
