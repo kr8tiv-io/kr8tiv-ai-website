@@ -15,7 +15,7 @@ tags:
 - Small business
 - Edmonton
 hero_image: /blog/images/ai-enabler-hero
-hero_alt: "A tradesperson in a dusty work jacket reviews a glowing job quote on a tablet in a truck cab at dawn, with an Edmonton industrial yard behind him and amber light across the dashboard."
+hero_alt: "A tradesperson in a truck cab at night smiles at a job quote on his tablet, an Edmonton industrial yard glowing behind him. KR8TIV AI branding reads: Quote status, drafted by AI, signed by a human. AI does the paperwork. People do the work."
 og_image: /blog/images/ai-enabler-og.jpg
 summary:
 - "AI is very good at the repeatable work around the job: filing receipts, drafting quotes and emails, summarizing, sorting and flagging what slipped through the cracks."
