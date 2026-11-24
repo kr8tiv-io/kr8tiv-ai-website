@@ -25,7 +25,7 @@
 
   # Unhashed static assets: cached, but revalidated daily so a replaced
   # og-card/favicon/audio actually propagates
-  <FilesMatch "\.(png|jpe?g|gif|webp|avif|svg|ico|mp3|hdr|woff2?|json)$">
+  <FilesMatch "\.(png|jpe?g|gif|webp|avif|svg|ico|mp3|mp4|webm|hdr|woff2?|json)$">
     Header set Cache-Control "public, max-age=86400, must-revalidate"
   </FilesMatch>
 
@@ -58,6 +58,8 @@ ErrorDocument 404 /404.html
 <IfModule mod_mime.c>
   AddType text/markdown .md
   AddType image/avif .avif
+  AddType video/webm .webm
+  AddType video/mp4 .mp4
 </IfModule>
 AddCharset UTF-8 .md
 <IfModule mod_headers.c>

@@ -15,6 +15,7 @@ tags:
 - Small business
 - Edmonton
 hero_image: /blog/images/ai-enabler-hero
+hero_video: /blog/images/ai-enabler-hero-loop
 hero_alt: "A tradesperson in a truck cab at night smiles at a job quote on his tablet, an Edmonton industrial yard glowing behind him. KR8TIV AI branding reads: Quote status, drafted by AI, signed by a human. AI does the paperwork. People do the work."
 og_image: /blog/images/ai-enabler-og.jpg
 summary:

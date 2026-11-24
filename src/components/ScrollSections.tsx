@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   AUDIT_MAILTO,
+  PAGE_BLOG,
   PAGE_EVOLVE,
   PAGE_SERVICES,
   sections,
@@ -412,6 +413,7 @@ export default function ScrollSections() {
             {[
               { label: 'Services', href: PAGE_SERVICES },
               { label: 'Evolve case study', href: PAGE_EVOLVE },
+              { label: 'Field Notes', href: PAGE_BLOG },
               { label: 'kr8tiv.io design studio', href: 'https://kr8tiv.io' },
             ].map((link) => (
               <a

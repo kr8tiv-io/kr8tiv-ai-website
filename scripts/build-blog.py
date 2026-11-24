@@ -209,6 +209,36 @@ def picture(base, alt, depth, eager):
           </picture>'''
 
 
+def hero_video(post, depth):
+    """Optional looping hero. The <picture> stays the real image (LCP, SEO, no-JS, reduced motion);
+    the video only loads and plays when motion is allowed, then fades in over the picture."""
+    base = post.get('hero_video')
+    if not base:
+        return ''
+    rel = '../' * depth + base.lstrip('/')
+    return f'''
+            <video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" width="1280" height="720" data-webm="{rel}.webm" data-mp4="{rel}.mp4"></video>
+            <script>
+              (function () {{
+                var v = document.currentScript.previousElementSibling, f = v.parentNode;
+                var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+                var c = navigator.connection;
+                if (still.matches || (c && c.saveData) || !v.canPlayType) return;
+                var src = v.canPlayType('video/webm; codecs="vp9"') ? v.dataset.webm : v.dataset.mp4;
+                v.addEventListener('playing', function () {{ f.classList.add('is-playing'); }}, {{ once: true }});
+                var go = function () {{ if (!v.src) v.src = src; var p = v.play(); if (p && p.catch) p.catch(function () {{}}); }};
+                if ('IntersectionObserver' in window) {{
+                  new IntersectionObserver(function (es) {{
+                    es.forEach(function (e) {{ if (e.isIntersecting) go(); else if (v.src) v.pause(); }});
+                  }}).observe(f);
+                }} else {{ go(); }}
+                still.addEventListener && still.addEventListener('change', function (e) {{
+                  if (e.matches) {{ v.pause(); f.classList.remove('is-playing'); }}
+                }});
+              }})();
+            </script>'''
+
+
 def article_page(post):
     url = post['url']
     body, toc = render_body(post)
@@ -247,7 +277,7 @@ def article_page(post):
             <p class="lede">{E(post["excerpt"])}</p>
             <p class="byline">By <a href="https://www.linkedin.com/in/matthaynes88/" target="_blank" rel="noopener">Matt Haynes</a>, founder of KR8TIV AI · <time datetime="{post["publish_date"]}">{nice_date(str(post["publish_date"]))}</time> · {post.get("read_minutes", max(1, round(words / 230)))} min read</p>
             <figure class="hero-figure">
-          {picture(post["hero_image"], post["hero_alt"], 2, True)}
+          {picture(post["hero_image"], post["hero_alt"], 2, True)}{hero_video(post, 2)}
             </figure>
             <section class="answer" aria-labelledby="short-answer">
               <h2 id="short-answer">The short answer</h2>
