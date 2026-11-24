@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   AUDIT_MAILTO,
   PAGE_EVOLVE,
+  PAGE_SERVICES,
   sections,
   type Section,
 } from '../config/sections'
@@ -355,13 +356,13 @@ export default function ScrollSections() {
               },
               {
                 step: '02',
-                name: 'Back-Office Build',
-                detail: 'We wire the agents into the tools you already run: receipts, quotes, dispatch, digests.',
+                name: 'Build',
+                detail: 'Training, a company brain, automations, a custom app or the whole overhaul. Fixed price, known before we start.',
               },
               {
                 step: '03',
-                name: 'Care',
-                detail: 'The system watches your business; we watch the system. Tuning, new automations, no lock-in.',
+                name: 'AI Support Plan',
+                detail: 'The system watches your business; we watch the system. Fixes, updates, small changes, no lock-in.',
               },
             ].map((tier) => (
               <div
@@ -409,6 +410,7 @@ export default function ScrollSections() {
           {/* Deeper reading - static pages, available at every breakpoint */}
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 pointer-events-auto mb-10">
             {[
+              { label: 'Services', href: PAGE_SERVICES },
               { label: 'Evolve case study', href: PAGE_EVOLVE },
               { label: 'kr8tiv.io design studio', href: 'https://kr8tiv.io' },
             ].map((link) => (
