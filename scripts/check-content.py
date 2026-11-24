@@ -14,7 +14,8 @@ import pathlib, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COPY_FILES = [ROOT / 'index.html', *ROOT.glob('public/**/*.html'), ROOT / 'public/llms.txt',
               ROOT / 'public/sitemap.xml', ROOT / 'public/robots.txt', ROOT / 'src/config/sections.ts',
-              *ROOT.glob('drafts/**/*.md')]
+              *ROOT.glob('drafts/**/*.md'), ROOT / 'public/llms-full.txt', *ROOT.glob('public/**/*.md'),
+              *ROOT.glob('content/blog/*.md')]
 CODE_FILES = [*ROOT.glob('src/components/**/*.tsx'), ROOT / 'src/App.tsx']
 
 BANNED = [

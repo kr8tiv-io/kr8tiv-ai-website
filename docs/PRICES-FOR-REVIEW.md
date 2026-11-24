@@ -14,10 +14,10 @@ branch merges. All prices CAD.
 | Company Brain | /services/company-brain/ | $1,000 | Price list |
 | Custom Business App | /services/custom-business-app/ | $3,000 | Price list |
 | Brain + Business App | /services/custom-business-app/ | $3,750 | Price list |
-| Corporate Training Systems | /services/corporate-training/ | From $7,500, scaled to headcount | PROPOSED |
-| Tool Selection & Integration | /services/tool-integration/ | From $5,000, scaled to tools and teams | PROPOSED |
+| Corporate Training Systems | /services/corporate-training/ | From $7,500, scaled to headcount | APPROVED (Matt, 23 Nov 2026) |
+| Tool Selection & Integration | /services/tool-integration/ | From $5,000, scaled to tools and teams | APPROVED (Matt, 23 Nov 2026) |
 | Fractional CTO (Fractional AI Ops) | /services/fractional-cto/ | $5,000 / mo build months (2 min, up to 80 h), then $3,950 / mo (up to 60 h) | Price list |
 | Full Business Overhaul | /services/business-overhaul/ | $10,000 to $20,000 by scale, fixed after the audit | Matt, 23 Nov |
-| AI Support Plan (replaces "AI Care $250 / mo") | /services/ hub | From $750 / mo | PROPOSED |
+| AI Support Plan (replaces "AI Care $250 / mo") | /services/ hub | From $750 / mo | APPROVED (Matt, 23 Nov 2026) |
 
 Removed: "AI Care $250 / mo" (unclear name, price too low per Matt).

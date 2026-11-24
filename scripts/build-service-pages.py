@@ -466,6 +466,7 @@ def topbar(depth, current):
           <a href="{up}">Home</a>
           <a {svc}href="{up}services/">Services</a>
           <a href="{up}work/evolve/">Case study</a>
+          <a href="{up}blog/">Field Notes</a>
           <a class="btn btn--sm" href="{up}start/">Book audit</a>
         </nav>
       </div>
@@ -497,6 +498,7 @@ def foot(depth):
           <a href="{up}">Home</a>
           <a href="{up}services/">Services</a>
           <a href="{up}work/evolve/">Case study</a>
+          <a href="{up}blog/">Field Notes</a>
           <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a>
           <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="https://kr8tiv.io" target="_blank" rel="noopener noreferrer">kr8tiv.io design studio</a>

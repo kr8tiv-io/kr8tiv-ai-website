@@ -1,5 +1,6 @@
 import {
   AUDIT_MAILTO,
+  PAGE_BLOG,
   PAGE_EVOLVE,
   PAGE_SERVICES,
   PHONE_DISPLAY,
@@ -9,6 +10,7 @@ import {
 const PAGE_LINKS = [
   { label: 'Services', href: PAGE_SERVICES },
   { label: 'Case study', href: PAGE_EVOLVE },
+  { label: 'Field Notes', href: PAGE_BLOG },
 ]
 
 export default function NavigationBar() {

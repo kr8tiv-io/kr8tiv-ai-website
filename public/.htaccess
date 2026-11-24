@@ -14,7 +14,7 @@
   </FilesMatch>
 
   # Crawler + metadata files: short TTL so edits show up the same day
-  <FilesMatch "^(robots\.txt|sitemap\.xml|llms\.txt)$">
+  <FilesMatch "^(robots\.txt|sitemap\.xml|llms\.txt|llms-full\.txt)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
 
@@ -25,7 +25,7 @@
 
   # Unhashed static assets: cached, but revalidated daily so a replaced
   # og-card/favicon/audio actually propagates
-  <FilesMatch "\.(png|jpe?g|gif|webp|svg|ico|mp3|hdr|woff2?|json)$">
+  <FilesMatch "\.(png|jpe?g|gif|webp|avif|svg|ico|mp3|mp4|webm|hdr|woff2?|json)$">
     Header set Cache-Control "public, max-age=86400, must-revalidate"
   </FilesMatch>
 
@@ -52,3 +52,18 @@
 # directories (/start/, /work/evolve/, /assets/...) are served directly;
 # anything else is a genuine 404 (was a soft-404 to index.html).
 ErrorDocument 404 /404.html
+
+# Markdown mirrors for AI crawlers and answer engines (blog/*.md, blog.md).
+# Same words as the HTML pages; the HTML page is the source of truth.
+<IfModule mod_mime.c>
+  AddType text/markdown .md
+  AddType image/avif .avif
+  AddType video/webm .webm
+  AddType video/mp4 .mp4
+</IfModule>
+AddCharset UTF-8 .md
+<IfModule mod_headers.c>
+  <FilesMatch "\.md$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+</IfModule>
