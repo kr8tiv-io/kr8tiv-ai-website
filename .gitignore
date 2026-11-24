@@ -34,3 +34,4 @@ playwright-report/
 
 # Ad-hoc verification scripts
 *.tmp.mjs
+__pycache__/
