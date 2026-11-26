@@ -27,7 +27,8 @@ ORG_ID = f'{SITE}/#organization'
 AUTHOR = {'@type': 'Person', '@id': 'https://kr8tiv.io/#matt', 'name': 'Matt Haynes',
           'url': 'https://www.linkedin.com/in/matthaynes88/', 'jobTitle': 'Founder, KR8TIV AI'}
 PUBLISHER = {'@type': 'Organization', '@id': ORG_ID, 'name': 'KR8TIV AI', 'url': f'{SITE}/',
-             'logo': {'@type': 'ImageObject', 'url': f'{SITE}/images/kr8tiv-logo.png'}}
+             'logo': {'@type': 'ImageObject', 'url': f'{SITE}/images/kr8tiv-logo.png'},
+             'sameAs': ['https://www.linkedin.com/company/kr8tivai', 'https://github.com/kr8tiv-ai']}
 BLOG_NAME = 'Field Notes'
 BLOG_TITLE = 'Field Notes: AI for Edmonton Small Businesses | KR8TIV AI'
 BLOG_DESC = ('Plain-language field notes on AI for small businesses in Edmonton and Alberta: '
@@ -178,6 +179,7 @@ def foot(depth):
           <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a>
           <!-- TODO: add KR8TIV AI Facebook once Matt provides the public Page URL. Do not use the Kr8tiv studio Page. -->
           <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/kr8tiv-ai" target="_blank" rel="me noopener">GitHub</a>
           <a href="https://kr8tiv.io" target="_blank" rel="noopener noreferrer">kr8tiv.io design studio</a>
         </nav>
         <p class="legal">

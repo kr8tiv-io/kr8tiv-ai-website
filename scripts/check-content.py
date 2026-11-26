@@ -23,7 +23,7 @@ BANNED = [
     (r'\bJARVIS\b|\bJarvis\b', 'retired product JARVIS'),
     (r'meetyourkin', 'Kin link'),
     (r'x\.com/|twitter:site|t\.me/|telegram|whatsapp', 'off-rule social channel'),
-    (r'github\.com/kr8tiv-ai/?["\'\s<]', 'GitHub org link (holds unrelated repos)'),
+    # github.com/kr8tiv-ai is the official KR8TIV AI org (Matt, t2753u, 25 Nov 2026).
     (r'on-?chain|x402|x ?layer|\bokx\b|testnet|blockchain|crypto(?!graph)|\bnft\b|solana|web3|\bwallet|staking|\bdlmm\b|\$homes|\btokens?\b|stablecoin|usdc',
      'crypto or token wording'),
     (r'\bEvolved\b|\bEVOLVED\b', 'product is named Evolve, not Evolved'),
