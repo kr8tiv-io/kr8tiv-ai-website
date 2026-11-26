@@ -54,9 +54,10 @@ scripts/build-service-pages.py (edit the data there, never the HTML).
 - Nothing crypto, ever: no on-chain payments, x402, OKX, X Layer, testnet,
   tokens, wallets, staking, DLMM, NFTs, Solana, trading bots or $HOMES, in copy,
   nav, meta, schema, llms.txt or links. Evolve has nothing to do with crypto.
-- Socials: LinkedIn and GitHub (https://github.com/kr8tiv-ai, Matt t2753u).
-  Add the KR8TIV AI Facebook Page once its URL is on file. Do not use the
-  Kr8tiv studio Page. No X, no Telegram.
+- Socials: LinkedIn (https://www.linkedin.com/company/kr8tivai), GitHub
+  (https://github.com/kr8tiv-ai, Matt t2753u), and Facebook
+  (https://www.facebook.com/people/Kr8tiv-AI/61588252989738/, Matt t2754u). Do not use the Kr8tiv studio Page
+  in place of the KR8TIV AI Page. No X, no Telegram.
 - No em or en dashes in any copy. No AggregateRating or star schema.
 - Homepage pre-render copy in index.html is generated from sections.ts by
   scripts/sync-static-content.mjs and must stay visible (never clip or

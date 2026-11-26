@@ -522,9 +522,9 @@ def foot(depth):
           <a href="{up}work/evolve/">Case study</a>
           <a href="{up}blog/">Field Notes</a>
           <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a>
-          <!-- TODO: add KR8TIV AI Facebook once Matt provides the public Page URL. Do not use the Kr8tiv studio Page. -->
           <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="https://github.com/kr8tiv-ai" target="_blank" rel="me noopener">GitHub</a>
+          <a href="https://www.facebook.com/people/Kr8tiv-AI/61588252989738/" target="_blank" rel="me noopener">Facebook</a>
           <a href="https://kr8tiv.io" target="_blank" rel="noopener noreferrer">kr8tiv.io design studio</a>
         </nav>
         <p class="legal">
