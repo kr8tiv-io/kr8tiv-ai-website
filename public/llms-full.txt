@@ -48,6 +48,7 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 ## Field Notes (blog)
 
 - Index: https://kr8tiv.ai/blog/ (plain text: https://kr8tiv.ai/blog.md)
+- [Why AI training for employees matters for Canadian businesses](https://kr8tiv.ai/blog/ai-training-for-employees-canada/): Why employee AI training matters for Canadian businesses: real stats, privacy rules under PIPEDA and Alberta PIPA, and how Edmonton teams can start. Plain text: https://kr8tiv.ai/blog/ai-training-for-employees-canada.md
 - [What AI can and can't do for your Edmonton business](https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business/): What AI can really do for a small business in Edmonton, what it can't, and why the companies replacing people with AI keep walking it back. Real examples and sources. Plain text: https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business.md
 <!-- BLOG:END -->
 
@@ -63,6 +64,26 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 ## Field Notes in detail
 
 Summaries and answers from each published article. The article pages are the source of truth.
+
+### Why AI training for employees matters for Canadian businesses
+
+URL: https://kr8tiv.ai/blog/ai-training-for-employees-canada/
+Plain text: https://kr8tiv.ai/blog/ai-training-for-employees-canada.md
+Author: Matt Haynes. Published November 25, 2026.
+
+Short answer:
+- Canadian employees are adopting AI faster than their employers are training them: 51% use generative AI at work, 83% say they need stronger skills, and only 48% say their employer trains them enough (KPMG, 2025).
+- Untrained use brings real risks: personal information leaking under PIPEDA or Alberta PIPA, confident wrong answers your business is liable for, and staff who quit the tools because they feel overwhelming.
+- Trained teams get the upside: 79% of Canadian AI users report better productivity, and BDC found small businesses using AI were 24% more productive.
+- Alberta has a head start waiting: construction sits at 9.2% AI use, less than half the national 19.2% (Statistics Canada, 2026). Good training is hands-on, role-specific and fun enough to stick.
+
+Questions answered:
+- Why is AI training for employees important? Most Canadian employees who use AI want better skills, but fewer than half feel their employer trains them enough (KPMG, 2025). Training improves productivity, reduces privacy and accuracy risks, and helps teams use AI tools consistently and safely.
+- Do Alberta businesses need to think about privacy law when using AI? Yes. Most private sector organizations in Alberta are covered by the Personal Information Protection Act (PIPA), and federally regulated businesses generally fall under PIPEDA. Employees should know what personal information can and cannot be entered into AI tools.
+- What should corporate AI training in Canada include? AI basics and limits, your company's AI use policy, hands-on practice with role-specific tasks, how to fact-check outputs, privacy rules under PIPEDA or provincial law, and a plan for ongoing refreshers.
+- How long does it take to train a team on AI tools? A focused seminar can cover the basics and company rules in a day. Building real habits usually takes hands-on follow-up sessions over several weeks, applied to each team's actual work.
+- Is AI training worth it for small businesses? BDC found Canadian small and medium-sized businesses that used AI in 2025 were 24% more productive than those that did not, and that businesses get more value from AI when they train their teams.
+- Where can Edmonton businesses find AI workshops? Edmonton businesses can book in-person AI workshops and seminars through providers like KR8TIV AI, which is based in Edmonton and trains teams on site all over Canada.
 
 ### What AI can and can't do for your Edmonton business
 
