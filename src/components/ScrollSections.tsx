@@ -428,7 +428,10 @@ export default function ScrollSections() {
             ))}
           </div>
 
-          {/* Social icons - wraps instead of running off both edges at 320px */}
+          {/* Social icons - wraps instead of running off both edges at 320px. */}
+          {/* LinkedIn is live. Short-form and messenger icons stay off. */}
+          {/* TODO: add the KR8TIV AI Facebook icon once Matt provides the public Page URL. */}
+          {/* Do not use the Kr8tiv studio Page. Do not add a GitHub icon in this row. */}
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-5 sm:gap-6 pointer-events-auto mb-12">
             <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer"
                className="group flex flex-col items-center gap-2">

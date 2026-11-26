@@ -36,7 +36,9 @@ export default function NavigationBar() {
         {PHONE_DISPLAY}
       </a>
 
-      {/* Social icons */}
+      {/* Social icons. LinkedIn is live. Short-form and messenger icons stay off. */}
+      {/* TODO: add the KR8TIV AI Facebook icon once Matt provides the public Page URL. */}
+      {/* Do not use the Kr8tiv studio Page. Do not add a GitHub icon in this row. */}
       <div className="flex items-center gap-2 sm:gap-3">
         <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer"
            className="text-white/30 hover:text-white/80 transition-colors duration-300" title="LinkedIn">

@@ -522,6 +522,7 @@ def foot(depth):
           <a href="{up}work/evolve/">Case study</a>
           <a href="{up}blog/">Field Notes</a>
           <a href="mailto:hello@kr8tiv.ai">hello@kr8tiv.ai</a>
+          <!-- TODO: add KR8TIV AI Facebook once Matt provides the public Page URL. Do not use the Kr8tiv studio Page. -->
           <a href="https://www.linkedin.com/company/kr8tivai" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="https://kr8tiv.io" target="_blank" rel="noopener noreferrer">kr8tiv.io design studio</a>
         </nav>
@@ -639,12 +640,19 @@ def crumbs(items):
         {'@type': 'ListItem', 'position': i, 'name': n, 'item': u} for i, (n, u) in enumerate(items, 1)]}
 
 
-def service_page(s):
-    url = f'{SITE}/services/{s["slug"]}/'
+def service_page(s, *, depth=2, page_url=None, canonical=None, start_href=None,
+                 related_prefix=None, all_services_href=None, evolve_href=None):
+    official = f'{SITE}/services/{s["slug"]}/'
+    url = page_url or official
+    canon = canonical or official
+    start_href = start_href or ('../start/' if depth == 1 else '../../start/')
+    related_prefix = related_prefix or '../'
+    all_services_href = all_services_href or '../'
+    evolve_href = evolve_href or ('../work/evolve/' if depth == 1 else '../../work/evolve/')
     schema = {'@context': 'https://schema.org', '@graph': [
-        service_schema(s, url), faq_schema(s['faqs'], url),
-        crumbs([('Home', f'{SITE}/'), ('Services', f'{SITE}/services/'), (s['name'], url)])]}
-    parts = [head(s['title'], s['description'], url, 2, schema), topbar(2, 'services'), '    <main id="main">']
+        service_schema(s, official), faq_schema(s['faqs'], official),
+        crumbs([('Home', f'{SITE}/'), ('Services', f'{SITE}/services/'), (s['name'], official)])]}
+    parts = [head(s['title'], s['description'], canon, depth, schema), topbar(depth, 'services'), '    <main id="main">']
     parts.append(f'''      <section class="hero">
         <div class="wrap">
           <p class="eyebrow">{E(s["eyebrow"])}</p>
@@ -652,8 +660,8 @@ def service_page(s):
           <p class="lede">{E(s["lede"])}</p>''')
     if s.get('kicker_line'):
         parts.append(f'          <p class="kicker-line">{E(s["kicker_line"])}</p>')
-    parts.append('''          <div class="hero-actions">
-            <a class="btn" href="../../start/">Book an AI Ops Audit &rarr;</a>
+    parts.append(f'''          <div class="hero-actions">
+            <a class="btn" href="{start_href}">Book an AI Ops Audit &rarr;</a>
             <a class="btn btn--ghost" href="tel:+17809155471">780-915-5471</a>
           </div>''')
     if s['offers'] or s.get('price_note'):
@@ -663,7 +671,7 @@ def service_page(s):
     for t, k, items in s['sections']:
         parts.append(section(t, k, items))
     if s.get('proof') or s.get('links'):
-        links = s.get('links') or [('Read the Evolve Eco Blasting case study', '../../work/evolve/')]
+        links = s.get('links') or [('Read the Evolve Eco Blasting case study', evolve_href)]
         li = '\n'.join(f'            <a class="btn btn--ghost" href="{u}"{"" if u.startswith("../") else " target=\"_blank\" rel=\"noopener noreferrer\""}>{E(n)} &rarr;</a>' for n, u in links)
         parts.append(f'''      <section class="band">
         <div class="wrap">
@@ -677,7 +685,7 @@ def service_page(s):
       </section>
 ''')
     parts.append(faq_html(s['faqs']))
-    rel = '\n'.join(f'            <li class="card"><h3><a href="../{r}/">{E(BY_SLUG[r]["name"])}</a></h3><p>{E(BY_SLUG[r]["description"])}</p></li>' for r in s['related'])
+    rel = '\n'.join(f'            <li class="card"><h3><a href="{related_prefix}{r}/">{E(BY_SLUG[r]["name"])}</a></h3><p>{E(BY_SLUG[r]["description"])}</p></li>' for r in s['related'])
     parts.append(f'''      <section class="band">
         <div class="wrap">
           <p class="kicker">Related</p>
@@ -685,11 +693,11 @@ def service_page(s):
           <ul class="cards">
 {rel}
           </ul>
-          <p><a href="../">All services &rarr;</a></p>
+          <p><a href="{all_services_href}">All services &rarr;</a></p>
         </div>
       </section>
     </main>''')
-    parts.append(foot(2))
+    parts.append(foot(depth))
     return '\n'.join(parts)
 
 
@@ -794,7 +802,8 @@ def llms_services():
         prices = '; '.join(offer_price_label(o) for o in s['offers'])
         extra = f' {prices}.' if prices else ''
         md = f'{SITE}/services/{s["slug"]}.md'
-        lines.append(f'- {s["name"]}: {SITE}/services/{s["slug"]}/ {s["description"]}{extra} {s["price_note"]} Plain text: {md}')
+        alias = f' Also at {SITE}/training/.' if s["slug"] == "ai-training" else ''
+        lines.append(f'- {s["name"]}: {SITE}/services/{s["slug"]}/ {s["description"]}{extra} {s["price_note"]}{alias} Plain text: {md}')
     sp = SUPPORT_PLAN
     lines.append(f'- {sp["name"]}: {sp["what"]} From {money(sp["price"])} CAD a month.')
     return '\n'.join(lines)
@@ -845,7 +854,26 @@ def update_sitemap():
 """ for s in SERVICES)
     marker = f'  <url>\n    <loc>{SITE}/services/</loc>'
     i = txt.index(marker); j = txt.index('</url>\n', i) + len('</url>\n')
-    path.write_text(txt[:j] + entries + txt[j:], encoding='utf-8')
+    txt = txt[:j] + entries + txt[j:]
+    # Alias page. Canonical on the HTML points at /services/ai-training/.
+    import re as _re
+    txt = _re.sub(r'  <url>\n    <loc>https://kr8tiv\.ai/training/</loc>.*?</url>\n', '', txt, flags=_re.S)
+    alias = f"""  <url>
+    <loc>{SITE}/training/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+"""
+    # Place it after the official training service URL if present, else after the hub.
+    needle = f'    <loc>{SITE}/services/ai-training/</loc>'
+    if needle in txt:
+        k = txt.index(needle)
+        j2 = txt.index('</url>\n', k) + len('</url>\n')
+        txt = txt[:j2] + alias + txt[j2:]
+    else:
+        txt = txt[:j] + alias + txt[j:]
+    path.write_text(txt, encoding='utf-8')
 
 
 def service_markdown(s):
@@ -936,6 +964,33 @@ def write_markdown_mirrors():
         (OUT / f"{s['slug']}.md").write_text(service_markdown(s), encoding='utf-8')
 
 
+def write_training_alias():
+    """A 200 page at /training/ with the same packages as /services/ai-training/.
+
+    Canonical points at the official services URL so the two pages do not compete.
+    Paths are depth 1 (public/training/index.html).
+    """
+    s = BY_SLUG['ai-training']
+    official = f'{SITE}/services/ai-training/'
+    html = service_page(
+        s,
+        depth=1,
+        page_url=f'{SITE}/training/',
+        canonical=official,
+        start_href='../start/',
+        related_prefix='../services/',
+        all_services_href='../services/',
+        evolve_href='../work/evolve/',
+    )
+    dest = ROOT / 'public' / 'training'
+    dest.mkdir(parents=True, exist_ok=True)
+    (dest / 'index.html').write_text(html, encoding='utf-8')
+    md = service_markdown(s)
+    md = md.replace(f'This is a plain-text version of {official}.',
+                    f'This is a plain-text version of {SITE}/training/. The official page is {official}.')
+    (ROOT / 'public' / 'training.md').write_text(md, encoding='utf-8')
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     keep = {s['slug'] for s in SERVICES}
@@ -950,9 +1005,10 @@ def main():
         d.mkdir(parents=True, exist_ok=True)
         (d / 'index.html').write_text(service_page(s), encoding='utf-8')
     write_markdown_mirrors()
+    write_training_alias()
     update_llms()
     update_sitemap()
-    print(f'wrote {1 + len(SERVICES)} pages and markdown mirrors under public/services/, updated llms.txt, llms-full.txt and sitemap.xml')
+    print(f'wrote {1 + len(SERVICES)} pages and markdown mirrors under public/services/, /training alias, updated llms.txt, llms-full.txt and sitemap.xml')
 
 
 if __name__ == '__main__':

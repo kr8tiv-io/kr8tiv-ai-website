@@ -161,10 +161,10 @@ And you do not need to be a tech person. If you can talk into a phone, we can te
 
 ### Ways to work with us
 
-- **[AI training](https://kr8tiv.ai/services/ai-training/)**: hands-on group sessions and seminars, built on the tools your team already uses.
-- **[Corporate AI training](https://kr8tiv.ai/services/corporate-training/)**: programs for whole departments and locations, with ongoing hands-on instruction that we adjust to your team size, roles and goals.
+- **[AI training](https://kr8tiv.ai/services/ai-training/)** (also at [/training](https://kr8tiv.ai/training/)): a $1,000 group session for a small team, a $2,000 seminar for a larger group (half or full day), custom hands-on instruction packages, and on-site training at $5,000 a month for three days a month. Travel is quoted separately.
+- **[Corporate AI training](https://kr8tiv.ai/services/corporate-training/)**: a full program for whole departments and locations, from $7,500, with role-based tracks, a library and onboarding.
 
-We fly anywhere in Canada to set up seminars, so whether you are in Edmonton, Calgary, Halifax or a camp up north, we can come to you. Bring the coffee. We will bring the demos.
+We fly anywhere in Canada to set up seminars, so whether you are in Edmonton, Calgary, Halifax or a camp up north, we can come to you. Travel is quoted separately. Bring the coffee. We will bring the demos.
 
 Curious what this could look like for your crew? [Tell us what your team is working on](https://kr8tiv.ai/start/). Skeptics welcome. We love this stuff.
 
