@@ -102,38 +102,59 @@ SERVICES = [
         'related': ['ai-consulting', 'automations'],
     },
     {
-        'slug': 'ai-training', 'tier': 'start', 'card_price': '$1,000 per group session',
+        'slug': 'ai-training', 'tier': 'start', 'card_price': 'From $1,000',
         'name': 'AI Training & Courses',
         'service_type': 'AI training for teams and individuals',
         'title': 'AI Training & Courses in Edmonton and Across Canada | kr8tiv AI',
-        'description': 'AI training for teams and individuals in Edmonton, Alberta and across Canada. Hands-on group sessions at $1,000, built on the tools you already use.',
+        'description': 'Hands-on AI training for teams in Edmonton and across Canada. Group sessions $1,000, seminars $2,000, custom packages, and on-site training at $5,000 a month.',
         'eyebrow': 'AI training · Edmonton, Alberta and across Canada',
         'h1': 'We teach your people AI. Nobody falls asleep.',
-        'lede': 'Hands-on AI training for teams and individuals who want to use it properly: what it is brilliant at, where it confidently makes things up, and how to put it to work on the jobs your people already do. In person around Edmonton and Alberta, live online across Canada.',
-        'offers': [{'name': 'Group training session', 'price': 1000, 'what': 'One hands-on session for your team, built around your business and your tools.'}],
-        'price_note': 'Individual coaching is quoted to what you want to learn. Multi-session courses are quoted to group size and schedule.',
+        'lede': 'Hands-on AI training for teams and individuals who want to use it properly: what it is brilliant at, where it confidently makes things up, and how to put it to work on the jobs your people already do. We keep it fun and interactive, with live demos and really good presentations, so people leave having done something instead of having watched something. If someone can talk into a phone, they can do this, and faster than they would expect. We train in person in Edmonton and Alberta, fly anywhere in Canada for seminars and team training, and run the same sessions live online.',
+        'kicker_line': 'Bring us your biggest AI skeptic. We love that person.',
+        'lastmod': '2026-11-25',
+        'offers': [
+            {'name': 'Group training session', 'price': 1000, 'what': 'One hands-on session for a small team, built around your business and your tools.'},
+            {'name': 'AI training seminar', 'price': 2000, 'what': 'A half-day or full-day seminar for a larger group, on making the best use of the newest AI tools. Travel anywhere in Canada is quoted separately.'},
+            {'name': 'Hands-on instruction packages', 'kind': 'quoted', 'what': 'Custom packages we adjust to your team size, roles and goals.'},
+            {'name': 'On-site training', 'price': 5000, 'kind': 'monthly', 'what': 'A trainer comes to your workplace three days a month to work directly with your employees.'},
+        ],
+        'price_note': 'All prices CAD. Travel anywhere in Canada is quoted separately. Individual coaching is quoted to what you want to learn. A full organizational program is Corporate Training Systems, from $7,500.',
         'sections': [
+            ('The training ladder', 'ticks', [
+                ('Group training session, $1,000', 'one hands-on session for a small team, built around your business and your tools.'),
+                ('AI training seminar, $2,000', 'a half-day or full-day session for a larger group.'),
+                ('Hands-on instruction packages', 'custom packages we adjust to your team size, roles and goals.'),
+                ('On-site training, $5,000 a month', 'a trainer comes to your workplace three days a month to work directly with your employees.'),
+                ('Corporate Training Systems, from $7,500', 'the full program, with role-based tracks, a library and onboarding, on its own page.'),
+            ]),
             ('What your people learn', 'cards', [
                 ('What AI is actually good at', 'Drafting, summarizing, sorting and checking. Where it saves hours, and where it costs you if nobody reads the output.'),
                 ('Why it makes things up', 'AI guesses when it has no facts to work from. We show your people how to give it the facts, so the answers sound like your business.'),
                 ('Your data, handled properly', 'What should and should not go into an AI tool, and how privacy rules like Alberta PIPA apply to customer information.'),
-                ('The tools you already pay for', 'We train on the AI tools you already have, not a shiny new subscription.'),
+                ('The tools you already use, and the new ones worth knowing', 'We train on the AI tools you already have, and we teach your team to make the best use of the newest ones. We will not sell you a shiny subscription you do not need.'),
                 ('One task, automated', 'Every session ends with a real, repeated task from your own week turned into a working workflow.'),
             ]),
+            ('How we teach', 'cards', [
+                ('Fun enough to stick', 'Interactive sessions, live demos and good visuals. People learn faster when they are trying things out loud and seeing a result on their own screen in the first few minutes. Not slide 47 of 60.'),
+                ('Skeptics welcome', 'You know the one: arms crossed, back row, pretty sure this is all hype. Our favourite part of the job is showing them something useful for their own work and watching them turn into a believer.'),
+                ('If you can talk into a phone', 'We can teach you to use AI to get things done you never thought possible, and faster than you would expect. No coding, no jargon.'),
+                ('We come to you', 'We fly anywhere in Canada to run seminars and teach your team. Travel is quoted separately. Live online is always an option.'),
+            ]),
             ('Who it is for', 'ticks', [
-                ('Teams', 'owners, office staff, crews and managers. No coding.'),
+                ('Teams', 'owners, office staff, crews and managers. Small groups or a larger seminar. No coding.'),
                 ('Individuals', 'one-on-one coaching for the person who wants to be the AI person in the room.'),
-                ('In person', 'at your office, shop or boardroom in Edmonton and across Alberta.'),
-                ('Live online', 'the same hands-on work for teams anywhere in Canada.'),
+                ('In person', 'at your office, shop or boardroom in Edmonton, across Alberta, or anywhere in Canada we fly to.'),
+                ('Live online', 'the same hands-on work for teams who would rather not host us this month.'),
             ]),
         ],
         'faqs': [
-            ('Do you only train in Edmonton?', 'No. We are based in Edmonton and train in person across Alberta. Sessions and courses also run live online for teams anywhere in Canada.'),
-            ('Do you train individuals as well as companies?', 'Yes. Group sessions are for teams. Individual coaching is one-on-one and quoted to what you want to learn.'),
-            ('Does my team need to be technical?', 'No. If someone can send an email, they can follow along.'),
+            ('Do you only train in Edmonton?', 'No. We are based in Edmonton and train in person across Alberta. We also fly anywhere in Canada to run seminars and teach teams, with travel quoted separately. Sessions run live online too.'),
+            ('What is the difference between a group session and a seminar?', 'A group session is $1,000 and is sized for a small team. A seminar is $2,000 and is a half-day or full-day session for a larger group.'),
+            ('Do you train individuals as well as companies?', 'Yes. Group sessions and seminars are for teams. Individual coaching is one-on-one and quoted to what you want to learn.'),
+            ('Does my team need to be technical?', 'No. If someone can talk into a phone, they can follow along. No coding.'),
             ('Can the training use our own company information?', 'Yes. Pair it with a Company Brain and your people practice on your real processes, prices and documents.'),
-            ('How is this different from Corporate Training Systems?', 'A session teaches the people in the room. Corporate Training Systems builds the whole program, so the next hundred hires learn it too.'),
-            ('What does it cost?', 'A group training session is $1,000. Individual coaching and multi-session courses are quoted.'),
+            ('How is this different from Corporate Training Systems?', 'These packages teach the people in the room, or stay with your team three days a month. Corporate Training Systems builds the whole program, so the next hundred hires learn it too, from $7,500.'),
+            ('What does it cost?', 'A group training session is $1,000. A seminar is $2,000. Hands-on instruction packages are quoted. On-site training is $5,000 a month for three days a month. Travel is quoted separately. Individual coaching is quoted. A full organizational program starts at $7,500.'),
         ],
         'related': ['corporate-training', 'company-brain'],
     },
@@ -255,6 +276,7 @@ SERVICES = [
     },
     {
         'slug': 'corporate-training', 'tier': 'premium', 'card_price': 'From $7,500',
+        'lastmod': '2026-11-25',
         'name': 'Corporate Training Systems',
         'service_type': 'Corporate AI training program design and delivery',
         'title': 'Corporate AI Training Systems, Edmonton and Canada | kr8tiv AI',
@@ -275,14 +297,14 @@ SERVICES = [
             ]),
             ('Who it is for', 'ticks', [
                 ('Organizations with several teams', 'or several locations, where one session is not enough.'),
-                ('In person', 'in Edmonton and across Alberta.'),
+                ('In person', 'in Edmonton, across Alberta, or anywhere in Canada we fly to. Travel is quoted separately.'),
                 ('Live online', 'for teams anywhere in Canada.'),
                 ('Built on your Company Brain', 'so the training and the AI tools use the same facts.'),
             ]),
         ],
         'faqs': [
-            ('How is this different from a training session?', 'A session teaches the people in the room. Corporate Training Systems builds the program, the materials and the onboarding, so new people learn it too.'),
-            ('Do you deliver across Canada?', 'Yes. In person in Edmonton and Alberta, and live online anywhere in Canada.'),
+            ('How is this different from a training session, a seminar or the monthly on-site training?', 'Group sessions, seminars, custom hands-on packages and the $5,000 a month on-site retainer are on the AI Training page. Corporate Training Systems builds the program, the materials and the onboarding, so the next hundred hires learn it too.'),
+            ('Do you deliver across Canada?', 'Yes. We fly anywhere in Canada to teach teams, with travel quoted separately. We also train in person in Edmonton and Alberta, and live online anywhere in Canada.'),
             ('Can it use our own policies and processes?', 'Yes. The exercises and the library are built on your real work, ideally from your Company Brain.'),
             ('How long does it take to build?', 'It depends on headcount and departments. You get a timeline with the written quote.'),
             ('What does a corporate training system cost?', 'From $7,500, scaled to headcount, departments and locations, and quoted in writing.'),
@@ -521,6 +543,8 @@ def money(amount):
 
 def price_text(o):
     kind = o.get('kind', 'fixed')
+    if kind == 'quoted':
+        return 'Quoted'
     if kind == 'from':
         return f'From {money(o["price"])}'
     if kind == 'range':
@@ -533,9 +557,10 @@ def price_text(o):
 def price_block(s):
     rows = []
     for o in s['offers']:
+        cad = '' if o.get('kind') == 'quoted' else ' <small>CAD</small>'
         rows.append(f'''            <div class="price">
               <p class="price-name">{E(o["name"])}</p>
-              <p class="price-amount">{price_text(o)} <small>CAD</small></p>
+              <p class="price-amount">{price_text(o)}{cad}</p>
               <p>{E(o["what"])}</p>
             </div>''')
     note = f'\n            <p class="price-note">{E(s["price_note"])}</p>' if s.get('price_note') else ''
@@ -583,8 +608,12 @@ def service_schema(s, url):
     offers = []
     for o in s['offers']:
         kind = o.get('kind', 'fixed')
+        offer = {'@type': 'Offer', 'name': o['name'], 'description': o['what'], 'url': url}
+        if kind == 'quoted':
+            offers.append(offer)
+            continue
+        offer['priceCurrency'] = 'CAD'
         spec = {'@type': 'UnitPriceSpecification' if kind == 'monthly' else 'PriceSpecification', 'priceCurrency': 'CAD'}
-        offer = {'@type': 'Offer', 'name': o['name'], 'description': o['what'], 'priceCurrency': 'CAD'}
         if kind == 'from':
             spec['minPrice'] = o['price']
         elif kind == 'range':
@@ -628,7 +657,8 @@ def service_page(s):
             <a class="btn btn--ghost" href="tel:+17809155471">780-915-5471</a>
           </div>''')
     if s['offers'] or s.get('price_note'):
-        parts.append('          <div class="prices">\n' + price_block(s) + '\n          </div>')
+        klass = 'prices prices--quad' if len(s['offers']) >= 4 else 'prices'
+        parts.append(f'          <div class="{klass}">\n' + price_block(s) + '\n          </div>')
     parts.append('        </div>\n      </section>\n')
     for t, k, items in s['sections']:
         parts.append(section(t, k, items))
@@ -749,34 +779,66 @@ def hub_page():
     return head(title, description, url, 1, schema) + topbar(1, 'services') + body + foot(1)
 
 
+def offer_price_label(o):
+    kind = o.get('kind', 'fixed')
+    if kind == 'quoted':
+        return f'{o["name"]}: Quoted'
+    if kind == 'monthly':
+        return f'{o["name"]}: {money(o["price"])} CAD a month'
+    return f'{o["name"]}: {price_text(o)} CAD'
+
+
 def llms_services():
-    lines = []
+    lines = [f'Index: {SITE}/services/ (plain text: {SITE}/services.md)', '']
     for s in SERVICES:
-        prices = '; '.join(f'{o["name"]}: {price_text(o)} CAD{" a month" if o.get("kind") == "monthly" else ""}'.replace(' / mo CAD a month', ' CAD a month')
-                           for o in s['offers'])
+        prices = '; '.join(offer_price_label(o) for o in s['offers'])
         extra = f' {prices}.' if prices else ''
-        lines.append(f'- {s["name"]}: {SITE}/services/{s["slug"]}/ {s["description"]}{extra} {s["price_note"]}')
+        md = f'{SITE}/services/{s["slug"]}.md'
+        lines.append(f'- {s["name"]}: {SITE}/services/{s["slug"]}/ {s["description"]}{extra} {s["price_note"]} Plain text: {md}')
     sp = SUPPORT_PLAN
     lines.append(f'- {sp["name"]}: {sp["what"]} From {money(sp["price"])} CAD a month.')
     return '\n'.join(lines)
 
 
-def update_llms():
-    path = ROOT / 'public' / 'llms.txt'
+def patch_llms_services(path):
     txt = path.read_text(encoding='utf-8')
+    txt = txt.replace('Last updated: 23 November 2026.', 'Last updated: 25 November 2026.')
     a = txt.index('## Services\n') + len('## Services\n')
     b = txt.index('\n## ', a)
     path.write_text(txt[:a] + '\n' + llms_services() + '\n' + txt[b:], encoding='utf-8')
+
+
+def update_llms():
+    patch_llms_services(ROOT / 'public' / 'llms.txt')
+    full = ROOT / 'public' / 'llms-full.txt'
+    if full.exists():
+        patch_llms_services(full)
+
+
+def service_lastmod(s):
+    return s.get('lastmod', LASTMOD)
 
 
 def update_sitemap():
     path = ROOT / 'public' / 'sitemap.xml'
     txt = path.read_text(encoding='utf-8')
     import re
+    txt = re.sub(
+        r'(<loc>https://kr8tiv\.ai/</loc>\n    <lastmod>)[^<]+',
+        r'\g<1>2026-11-25',
+        txt,
+        count=1,
+    )
+    txt = re.sub(
+        r'(<loc>https://kr8tiv\.ai/services/</loc>\n    <lastmod>)[^<]+',
+        r'\g<1>2026-11-25',
+        txt,
+        count=1,
+    )
     txt = re.sub(r'  <url>\n    <loc>https://kr8tiv\.ai/services/[^<]+/</loc>.*?</url>\n', '', txt, flags=re.S)
     entries = ''.join(f"""  <url>
     <loc>{SITE}/services/{s["slug"]}/</loc>
-    <lastmod>{LASTMOD}</lastmod>
+    <lastmod>{service_lastmod(s)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -784,6 +846,94 @@ def update_sitemap():
     marker = f'  <url>\n    <loc>{SITE}/services/</loc>'
     i = txt.index(marker); j = txt.index('</url>\n', i) + len('</url>\n')
     path.write_text(txt[:j] + entries + txt[j:], encoding='utf-8')
+
+
+def service_markdown(s):
+    lines = [
+        f"# {s['name']}",
+        "",
+        f"This is a plain-text version of {SITE}/services/{s['slug']}/. The HTML page is the source of truth.",
+        "",
+        s['description'],
+        "",
+        f"## {s['h1']}",
+        "",
+        s['lede'],
+        "",
+    ]
+    if s.get('kicker_line'):
+        lines += [s['kicker_line'], ""]
+    if s['offers'] or s.get('price_note'):
+        lines += ["## Prices", ""]
+        for o in s['offers']:
+            lines.append(f"- {offer_price_label(o)}. {o['what']}")
+        if s.get('price_note'):
+            lines += ["", s['price_note']]
+        lines.append("")
+    for title, kind, items in s['sections']:
+        lines += [f"## {title}", ""]
+        if kind == 'para':
+            lines += list(items) + [""]
+        else:
+            for h, body in items:
+                lines.append(f"- {h}: {body}")
+            lines.append("")
+    if s.get('faqs'):
+        lines += ["## Frequently asked", ""]
+        for q, a in s['faqs']:
+            lines += [f"### {q}", "", a, ""]
+    rel = ', '.join(f"{BY_SLUG[r]['name']} ({SITE}/services/{r}/)" for r in s['related'])
+    if rel:
+        lines += ["## Related", "", rel + ".", ""]
+    lines += [
+        "## Contact",
+        "",
+        f"- Website: {SITE}/",
+        "- Email: hello@kr8tiv.ai",
+        f"- Intake: {SITE}/start/",
+        "",
+    ]
+    return '\n'.join(lines)
+
+
+def hub_markdown():
+    lines = [
+        "# AI Services | KR8TIV AI",
+        "",
+        f"This is a plain-text version of {SITE}/services/. The HTML page is the source of truth. Each service also has a plain-text version at the same address ending in .md.",
+        "",
+        "kr8tiv AI is an AI consulting company in Edmonton. We work out what can be automated, build the software you wish you had instead of renting five apps that do not talk to each other, and teach your people to run it.",
+        "",
+    ]
+    for key, label, blurb in TIERS:
+        lines += [f"## {label}", "", blurb, ""]
+        for s in SERVICES:
+            if s['tier'] != key:
+                continue
+            lines.append(f"- [{s['name']}]({SITE}/services/{s['slug']}/) ({s['card_price']}). {s['description']} Plain text: {SITE}/services/{s['slug']}.md")
+        lines.append("")
+    sp = SUPPORT_PLAN
+    lines += [
+        "## How every engagement runs",
+        "",
+        f"- Week 1, AI Ops Audit ($495): We sit inside your operation and map where the hours go. You get a written plan of what AI would take off your plate and what it costs, and you keep it either way.",
+        "- Build, fixed price: Training, a company brain, automations, apps or the whole overhaul, built on the tools that earn their place. You know the price before we start.",
+        f"- Keep it running, {sp['name']} (from {money(sp['price'])} / mo): {sp['what']} Month to month, and you keep the source code.",
+        "",
+        "## Contact",
+        "",
+        f"- Website: {SITE}/",
+        "- Email: hello@kr8tiv.ai",
+        f"- Intake: {SITE}/start/",
+        "",
+    ]
+    return '\n'.join(lines)
+
+
+def write_markdown_mirrors():
+    (ROOT / 'public' / 'services.md').write_text(hub_markdown(), encoding='utf-8')
+    for s in SERVICES:
+        (OUT / f"{s['slug']}.md").write_text(service_markdown(s), encoding='utf-8')
 
 
 def main():
@@ -799,9 +949,10 @@ def main():
         d = OUT / s['slug']
         d.mkdir(parents=True, exist_ok=True)
         (d / 'index.html').write_text(service_page(s), encoding='utf-8')
+    write_markdown_mirrors()
     update_llms()
     update_sitemap()
-    print(f'wrote {1 + len(SERVICES)} pages under public/services/, updated llms.txt and sitemap.xml')
+    print(f'wrote {1 + len(SERVICES)} pages and markdown mirrors under public/services/, updated llms.txt, llms-full.txt and sitemap.xml')
 
 
 if __name__ == '__main__':
