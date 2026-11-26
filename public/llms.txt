@@ -1,22 +1,22 @@
 # kr8tiv AI
 
-> kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
+> kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada, founded in 2023 by Matt Haynes. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client.
 
-Last updated: 25 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
+Last updated: 26 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
 
 ## Contact
 
 - Website: https://kr8tiv.ai/
 - Phone: (780) 915-5471 (+1-780-915-5471)
 - Email: hello@kr8tiv.ai
-- Intake: https://kr8tiv.ai/start/
+- Intake: https://kr8tiv.ai/start/ (https://kr8tiv.ai/contact/ redirects here)
 - LinkedIn: https://www.linkedin.com/company/kr8tivai
 - GitHub: https://github.com/kr8tiv-ai
 - Facebook: https://www.facebook.com/people/Kr8tiv-AI/61588252989738/
 
 ## Service area
 
-Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely.
+Based in Edmonton, Alberta. Founded in 2023. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely. Meetings are by call or by appointment. Hours: Monday to Saturday, 9:00 AM to 6:00 PM Mountain Time. Sunday closed. No public street address and no walk-in office.
 
 ## Services
 
@@ -61,7 +61,7 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 - Site: https://kr8tiv.ai
 - Services: https://kr8tiv.ai/services/
 - Case study: https://kr8tiv.ai/work/evolve/
-- Intake: https://kr8tiv.ai/start/
+- Intake: https://kr8tiv.ai/start/ (https://kr8tiv.ai/contact/ redirects here)
 - LinkedIn: https://www.linkedin.com/company/kr8tivai
 - GitHub: https://github.com/kr8tiv-ai
 - Facebook: https://www.facebook.com/people/Kr8tiv-AI/61588252989738/

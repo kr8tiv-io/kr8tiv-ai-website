@@ -2,7 +2,7 @@
 
 > kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
 
-Last updated: 25 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
+Last updated: 26 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
 
 ## Contact
 

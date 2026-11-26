@@ -51,6 +51,12 @@
 # No client-side router: the app is a single page at /. Real files and
 # directories (/start/, /work/evolve/, /assets/...) are served directly;
 # anything else is a genuine 404 (was a soft-404 to index.html).
+# /contact/ is not a separate page. Send people to the intake form.
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/contact/?$ /start/
+  RedirectMatch 301 ^/contact/index\.html$ /start/
+</IfModule>
+
 ErrorDocument 404 /404.html
 
 # Markdown mirrors for AI crawlers and answer engines (blog/*.md, blog.md).

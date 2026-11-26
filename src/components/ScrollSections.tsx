@@ -464,6 +464,38 @@ export default function ScrollSections() {
             </a>
           </div>
 
+          {/* Visible FAQ, same answers as the homepage JSON-LD */}
+          <div className="text-left max-w-[min(92vw,40rem)] mx-auto mb-12 pointer-events-auto">
+            <h2
+              className="text-white text-sm sm:text-base tracking-[0.18em] uppercase mb-5 text-center"
+              style={{ fontFamily: 'var(--font-display)', textShadow }}
+            >
+              Straight answers
+            </h2>
+            <dl className="space-y-4">
+              <div>
+                <dt className="text-white/90 text-sm mb-1">What is kr8tiv AI?</dt>
+                <dd className="text-white/55 text-[12px] sm:text-[13px] leading-relaxed">kr8tiv AI is an AI consulting company in Edmonton, Alberta, founded in 2023 by Matt Haynes. We help small businesses automate back-office work, build company brains and custom apps, and train teams. Brand, web and sign design lives with the sister studio, KR8TIV, at kr8tiv.io.</dd>
+              </div>
+              <div>
+                <dt className="text-white/90 text-sm mb-1">Where are you based?</dt>
+                <dd className="text-white/55 text-[12px] sm:text-[13px] leading-relaxed">Edmonton, Alberta. We also work with businesses in Sherwood Park, St. Albert and Spruce Grove, and across Alberta and Canada by call. Meetings are by appointment. Hours are Monday to Saturday, 9:00 AM to 6:00 PM Mountain Time. Sunday closed.</dd>
+              </div>
+              <div>
+                <dt className="text-white/90 text-sm mb-1">What does an AI Ops Audit cost?</dt>
+                <dd className="text-white/55 text-[12px] sm:text-[13px] leading-relaxed">The AI Ops Audit is $495 CAD. One week inside your operation, and a written plan you keep whoever builds it. The fee is credited toward builds of $1,000 or more.</dd>
+              </div>
+              <div>
+                <dt className="text-white/90 text-sm mb-1">Do you train teams as well as build systems?</dt>
+                <dd className="text-white/55 text-[12px] sm:text-[13px] leading-relaxed">Yes. Group training sessions are $1,000 CAD, seminars are $2,000 CAD, and custom packages are quoted. On-site training is $5,000 CAD a month. Details are on the AI training page.</dd>
+              </div>
+              <div>
+                <dt className="text-white/90 text-sm mb-1">How do I start?</dt>
+                <dd className="text-white/55 text-[12px] sm:text-[13px] leading-relaxed">Start with an AI Ops Audit, or fill out the intake at kr8tiv.ai/start/. If you land on /contact/, that now sends you to the same intake page.</dd>
+              </div>
+            </dl>
+          </div>
+
           {/* Tagline */}
           <div className="text-[10px] font-mono text-white/50 tracking-[0.15em] mb-4" style={{ textShadow }}>
             Fewer forms. Fewer evenings lost. That&apos;s the whole business.

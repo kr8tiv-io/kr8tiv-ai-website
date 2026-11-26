@@ -44,6 +44,7 @@
 
     <!-- ============ Structured data ============ -->
     <script type="application/ld+json">
+    
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -55,14 +56,36 @@
           "logo": "https://kr8tiv.ai/images/kr8tiv-logo.png",
           "telephone": "+1-780-915-5471",
           "email": "hello@kr8tiv.ai",
-          "founder": { "@type": "Person", "@id": "https://kr8tiv.io/#matt", "name": "Matt Haynes" },
+          "founder": {
+            "@type": "Person",
+            "@id": "https://kr8tiv.io/#matt",
+            "name": "Matt Haynes"
+          },
           "areaServed": [
-            { "@type": "City", "name": "Edmonton" },
-            { "@type": "City", "name": "Sherwood Park" },
-            { "@type": "City", "name": "St. Albert" },
-            { "@type": "City", "name": "Spruce Grove" },
-            { "@type": "State", "name": "Alberta" },
-            { "@type": "Country", "name": "Canada" }
+            {
+              "@type": "City",
+              "name": "Edmonton"
+            },
+            {
+              "@type": "City",
+              "name": "Sherwood Park"
+            },
+            {
+              "@type": "City",
+              "name": "St. Albert"
+            },
+            {
+              "@type": "City",
+              "name": "Spruce Grove"
+            },
+            {
+              "@type": "State",
+              "name": "Alberta"
+            },
+            {
+              "@type": "Country",
+              "name": "Canada"
+            }
           ],
           "description": "kr8tiv AI is an AI consulting company in Edmonton, Alberta. We help small businesses into the AI age with AI consulting and audits, AI training and corporate training systems, company brains, automations, custom business apps, tool selection and integration, fractional CTO work and full business overhauls.",
           "sameAs": [
@@ -88,7 +111,9 @@
                   "@type": "Service",
                   "name": "AI Ops Audit",
                   "url": "https://kr8tiv.ai/services/ai-audit/"
-                }
+                },
+                "price": "495",
+                "priceCurrency": "CAD"
               },
               {
                 "@type": "Offer",
@@ -150,6 +175,11 @@
                   "@type": "Service",
                   "name": "AI Automations",
                   "url": "https://kr8tiv.ai/services/automations/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 250,
+                  "priceCurrency": "CAD"
                 }
               },
               {
@@ -158,7 +188,9 @@
                   "@type": "Service",
                   "name": "Company Brain",
                   "url": "https://kr8tiv.ai/services/company-brain/"
-                }
+                },
+                "price": "1000",
+                "priceCurrency": "CAD"
               },
               {
                 "@type": "Offer",
@@ -166,6 +198,11 @@
                   "@type": "Service",
                   "name": "Custom Business App",
                   "url": "https://kr8tiv.ai/services/custom-business-app/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 3000,
+                  "priceCurrency": "CAD"
                 }
               },
               {
@@ -190,6 +227,11 @@
                   "@type": "Service",
                   "name": "Tool Selection & Integration",
                   "url": "https://kr8tiv.ai/services/tool-integration/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 5000,
+                  "priceCurrency": "CAD"
                 }
               },
               {
@@ -198,6 +240,13 @@
                   "@type": "Service",
                   "name": "Fractional CTO",
                   "url": "https://kr8tiv.ai/services/fractional-cto/"
+                },
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": 5000,
+                  "priceCurrency": "CAD",
+                  "unitText": "MONTH",
+                  "billingDuration": "P1M"
                 }
               },
               {
@@ -206,6 +255,285 @@
                   "@type": "Service",
                   "name": "Full Business Overhaul",
                   "url": "https://kr8tiv.ai/services/business-overhaul/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 10000,
+                  "maxPrice": 20000,
+                  "priceCurrency": "CAD"
+                }
+              }
+            ]
+          },
+          "foundingDate": "2023",
+          "foundingLocation": {
+            "@type": "Place",
+            "name": "Edmonton, Alberta, Canada"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Edmonton",
+            "addressRegion": "AB",
+            "addressCountry": "CA"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+              ],
+              "opens": "09:00",
+              "closes": "18:00"
+            }
+          ]
+        },
+        {
+          "@type": [
+            "ProfessionalService",
+            "LocalBusiness"
+          ],
+          "@id": "https://kr8tiv.ai/#localbusiness",
+          "name": "kr8tiv AI",
+          "url": "https://kr8tiv.ai/",
+          "image": "https://kr8tiv.ai/images/kr8tiv-logo.png",
+          "logo": "https://kr8tiv.ai/images/kr8tiv-logo.png",
+          "telephone": "+1-780-915-5471",
+          "email": "hello@kr8tiv.ai",
+          "founder": {
+            "@type": "Person",
+            "@id": "https://kr8tiv.io/#matt",
+            "name": "Matt Haynes"
+          },
+          "foundingDate": "2023",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Edmonton",
+            "addressRegion": "AB",
+            "addressCountry": "CA"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+              ],
+              "opens": "09:00",
+              "closes": "18:00"
+            }
+          ],
+          "areaServed": [
+            {
+              "@type": "City",
+              "name": "Edmonton"
+            },
+            {
+              "@type": "City",
+              "name": "Sherwood Park"
+            },
+            {
+              "@type": "City",
+              "name": "St. Albert"
+            },
+            {
+              "@type": "City",
+              "name": "Spruce Grove"
+            },
+            {
+              "@type": "State",
+              "name": "Alberta"
+            },
+            {
+              "@type": "Country",
+              "name": "Canada"
+            }
+          ],
+          "sameAs": [
+            "https://www.linkedin.com/company/kr8tivai",
+            "https://github.com/kr8tiv-ai",
+            "https://www.facebook.com/people/Kr8tiv-AI/61588252989738/"
+          ],
+          "description": "kr8tiv AI is an AI consulting company in Edmonton, Alberta. We help small businesses into the AI age with AI consulting and audits, AI training and corporate training systems, company brains, automations, custom business apps, tool selection and integration, fractional CTO work and full business overhauls.",
+          "parentOrganization": {
+            "@id": "https://kr8tiv.ai/#organization"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "kr8tiv AI services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI Consulting",
+                  "url": "https://kr8tiv.ai/services/ai-consulting/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI Ops Audit",
+                  "url": "https://kr8tiv.ai/services/ai-audit/"
+                },
+                "price": "495",
+                "priceCurrency": "CAD"
+              },
+              {
+                "@type": "Offer",
+                "name": "Group training session",
+                "price": "1000",
+                "priceCurrency": "CAD",
+                "url": "https://kr8tiv.ai/services/ai-training/",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI Training & Courses",
+                  "url": "https://kr8tiv.ai/services/ai-training/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "name": "AI training seminar",
+                "price": "2000",
+                "priceCurrency": "CAD",
+                "url": "https://kr8tiv.ai/services/ai-training/",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI training seminar",
+                  "url": "https://kr8tiv.ai/services/ai-training/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "name": "Hands-on instruction packages",
+                "url": "https://kr8tiv.ai/services/ai-training/",
+                "description": "Custom packages we adjust to your team size, roles and goals.",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Hands-on instruction packages",
+                  "url": "https://kr8tiv.ai/services/ai-training/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "name": "On-site training",
+                "price": "5000",
+                "priceCurrency": "CAD",
+                "url": "https://kr8tiv.ai/services/ai-training/",
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": 5000,
+                  "priceCurrency": "CAD",
+                  "unitText": "MONTH",
+                  "billingDuration": "P1M"
+                },
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "On-site training",
+                  "url": "https://kr8tiv.ai/services/ai-training/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "AI Automations",
+                  "url": "https://kr8tiv.ai/services/automations/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 250,
+                  "priceCurrency": "CAD"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Company Brain",
+                  "url": "https://kr8tiv.ai/services/company-brain/"
+                },
+                "price": "1000",
+                "priceCurrency": "CAD"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Custom Business App",
+                  "url": "https://kr8tiv.ai/services/custom-business-app/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 3000,
+                  "priceCurrency": "CAD"
+                }
+              },
+              {
+                "@type": "Offer",
+                "name": "Corporate Training Systems",
+                "priceCurrency": "CAD",
+                "url": "https://kr8tiv.ai/services/corporate-training/",
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 7500,
+                  "priceCurrency": "CAD"
+                },
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Corporate Training Systems",
+                  "url": "https://kr8tiv.ai/services/corporate-training/"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Tool Selection & Integration",
+                  "url": "https://kr8tiv.ai/services/tool-integration/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 5000,
+                  "priceCurrency": "CAD"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Fractional CTO",
+                  "url": "https://kr8tiv.ai/services/fractional-cto/"
+                },
+                "priceSpecification": {
+                  "@type": "UnitPriceSpecification",
+                  "price": 5000,
+                  "priceCurrency": "CAD",
+                  "unitText": "MONTH",
+                  "billingDuration": "P1M"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Full Business Overhaul",
+                  "url": "https://kr8tiv.ai/services/business-overhaul/"
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "minPrice": 10000,
+                  "maxPrice": 20000,
+                  "priceCurrency": "CAD"
                 }
               }
             ]
@@ -215,19 +543,86 @@
           "@type": "Service",
           "serviceType": "AI Consulting and Back-Office Automation",
           "url": "https://kr8tiv.ai/services/",
-          "provider": { "@id": "https://kr8tiv.ai/#organization" },
+          "provider": {
+            "@id": "https://kr8tiv.ai/#organization"
+          },
           "description": "AI Ops Audit, back-office build, and ongoing care: automated receipt filing, same-day quoting with profitability checks, dispatch tracking, 6:30 AM operational digests, and watchdog agents that catch dropped balls, built on the customer's existing tools, with the source code handed over at the end.",
           "areaServed": [
-            { "@type": "City", "name": "Edmonton" },
-            { "@type": "City", "name": "Sherwood Park" },
-            { "@type": "City", "name": "St. Albert" },
-            { "@type": "City", "name": "Spruce Grove" },
-            { "@type": "State", "name": "Alberta" },
-            { "@type": "Country", "name": "Canada" }
+            {
+              "@type": "City",
+              "name": "Edmonton"
+            },
+            {
+              "@type": "City",
+              "name": "Sherwood Park"
+            },
+            {
+              "@type": "City",
+              "name": "St. Albert"
+            },
+            {
+              "@type": "City",
+              "name": "Spruce Grove"
+            },
+            {
+              "@type": "State",
+              "name": "Alberta"
+            },
+            {
+              "@type": "Country",
+              "name": "Canada"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://kr8tiv.ai/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is kr8tiv AI?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "kr8tiv AI is an AI consulting company in Edmonton, Alberta, founded in 2023 by Matt Haynes. We help small businesses automate back-office work, build company brains and custom apps, and train teams. Brand, web and sign design lives with the sister studio, KR8TIV, at kr8tiv.io."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where are you based?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Edmonton, Alberta. We also work with businesses in Sherwood Park, St. Albert and Spruce Grove, and across Alberta and Canada by call. Meetings are by appointment. Hours are Monday to Saturday, 9:00 AM to 6:00 PM Mountain Time. Sunday closed."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What does an AI Ops Audit cost?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The AI Ops Audit is $495 CAD. One week inside your operation, and a written plan you keep whoever builds it. The fee is credited toward builds of $1,000 or more."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you train teams as well as build systems?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Group training sessions are $1,000 CAD, seminars are $2,000 CAD, and custom packages are quoted. On-site training is $5,000 CAD a month. Details are on the AI training page."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I start?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Start with an AI Ops Audit, or fill out the intake at kr8tiv.ai/start/. If you land on /contact/, that now sends you to the same intake page."
+              }
+            }
           ]
         }
       ]
     }
+   
     </script>
 
     <!-- The poster frame is the first large paint on every visit. Fetch it
@@ -281,6 +676,17 @@
         <li><a href="blog/">Field Notes</a>: <a href="blog/what-ai-can-and-cant-do-for-your-business/">What AI can and can&#x27;t do for your Edmonton business</a></li>
         <li><a href="https://kr8tiv.io">Design by kr8tiv.io</a></li>
       </ul>
+      <h2>Straight answers</h2>
+      <h3>What is kr8tiv AI?</h3>
+      <p>kr8tiv AI is an AI consulting company in Edmonton, Alberta, founded in 2023 by Matt Haynes. We help small businesses automate back-office work, build company brains and custom apps, and train teams. Brand, web and sign design lives with the sister studio, KR8TIV, at kr8tiv.io.</p>
+      <h3>Where are you based?</h3>
+      <p>Edmonton, Alberta. We also work with businesses in Sherwood Park, St. Albert and Spruce Grove, and across Alberta and Canada by call. Meetings are by appointment. Hours are Monday to Saturday, 9:00 AM to 6:00 PM Mountain Time. Sunday closed.</p>
+      <h3>What does an AI Ops Audit cost?</h3>
+      <p>The AI Ops Audit is $495 CAD. One week inside your operation, and a written plan you keep whoever builds it. The fee is credited toward builds of $1,000 or more.</p>
+      <h3>Do you train teams as well as build systems?</h3>
+      <p>Yes. Group training sessions are $1,000 CAD, seminars are $2,000 CAD, and custom packages are quoted. On-site training is $5,000 CAD a month. Details are on the AI training page.</p>
+      <h3>How do I start?</h3>
+      <p>Start with an AI Ops Audit, or fill out the intake at <a href="start/">kr8tiv.ai/start/</a>. If you land on /contact/, that now sends you to the same intake page.</p>
     </main>
     <!-- STATIC-CONTENT:END -->
     <div id="root"></div>
