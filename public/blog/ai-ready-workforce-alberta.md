@@ -6,7 +6,7 @@ This is a plain-text version of https://kr8tiv.ai/blog/ai-ready-workforce-albert
 - Published: November 27, 2026. Updated: November 27, 2026.
 - Blog: https://kr8tiv.ai/blog/
 
-The winners will have the most AI-capable people. Same crew, more finished work per person, with a human still signing the work that leaves the building.
+Alberta trails B.C. on AI adoption, and grants will pay for most of the training. Same crew, more finished work per person, with a human still signing the work that leaves the building.
 
 ## The short answer
 
