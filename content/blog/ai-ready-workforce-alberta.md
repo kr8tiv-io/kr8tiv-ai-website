@@ -3,7 +3,7 @@ slug: ai-ready-workforce-alberta
 title: "AI adoption in Alberta: the winners will have the most AI-capable people"
 seo_title: "AI adoption in Alberta: capable people win | KR8TIV AI"
 meta_description: "AI adoption in Alberta is 18.4 percent of businesses, behind B.C. at 25.1. The Western rates, the grants that pay for training, and a plan for your crew."
-excerpt: "The winners will have the most AI-capable people. Same crew, more finished work per person, with a human still signing the work that leaves the building."
+excerpt: "Alberta trails B.C. on AI adoption, and grants will pay for most of the training. Same crew, more finished work per person, with a human still signing the work that leaves the building."
 publish_date: '2026-11-27'
 updated: '2026-11-27'
 draft: false
