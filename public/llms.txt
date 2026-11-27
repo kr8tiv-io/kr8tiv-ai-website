@@ -52,6 +52,7 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 ## Field Notes (blog)
 
 - Index: https://kr8tiv.ai/blog/ (plain text: https://kr8tiv.ai/blog.md)
+- [The businesses that win will be the ones with AI-capable people](https://kr8tiv.ai/blog/ai-ready-workforce-alberta/): AI adoption Alberta is 18.4 percent of businesses. See the Western Canada table, the training grants, and how to raise output per employee. Plain text: https://kr8tiv.ai/blog/ai-ready-workforce-alberta.md
 - [Why AI training for employees matters for Canadian businesses](https://kr8tiv.ai/blog/ai-training-for-employees-canada/): Why employee AI training matters for Canadian businesses: real stats, privacy rules under PIPEDA and Alberta PIPA, and how Edmonton teams can start. Plain text: https://kr8tiv.ai/blog/ai-training-for-employees-canada.md
 - [What AI can and can't do for your Edmonton business](https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business/): What AI can really do for a small business in Edmonton, what it can't, and why the companies replacing people with AI keep walking it back. Real examples and sources. Plain text: https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business.md
 <!-- BLOG:END -->

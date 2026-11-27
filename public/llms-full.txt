@@ -1,6 +1,6 @@
 # kr8tiv AI (full)
 
-> kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client. Founder: Matt Haynes.
+> kr8tiv AI is an AI consulting company in Edmonton, Alberta, Canada, founded in 2023 by Matt Haynes. We help small businesses into the AI age: we work out what can be automated, build custom software so companies can retire old apps, connect and select the right tools, build company brains, and train teams and individuals, with corporate training systems, fractional CTO work and full business overhauls for bigger engagements. Fixed-price engagements; the source code for everything we build for a client is handed over to that client.
 
 Last updated: 26 November 2026. This file is a plain-language guide for AI assistants and search tools. The linked pages are the source of truth.
 
@@ -9,14 +9,14 @@ Last updated: 26 November 2026. This file is a plain-language guide for AI assis
 - Website: https://kr8tiv.ai/
 - Phone: (780) 915-5471 (+1-780-915-5471)
 - Email: hello@kr8tiv.ai
-- Intake: https://kr8tiv.ai/start/
+- Intake: https://kr8tiv.ai/start/ (https://kr8tiv.ai/contact/ redirects here)
 - LinkedIn: https://www.linkedin.com/company/kr8tivai
 - GitHub: https://github.com/kr8tiv-ai
 - Facebook: https://www.facebook.com/people/Kr8tiv-AI/61588252989738/
 
 ## Service area
 
-Based in Edmonton, Alberta. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely.
+Based in Edmonton, Alberta. Founded in 2023. Serves Edmonton, Sherwood Park, St. Albert and Spruce Grove, and businesses across Alberta and Canada remotely. Meetings are by call or by appointment. Hours: Monday to Saturday, 9:00 AM to 6:00 PM Mountain Time. Sunday closed. No public street address and no walk-in office.
 
 ## Services
 
@@ -52,6 +52,7 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 ## Field Notes (blog)
 
 - Index: https://kr8tiv.ai/blog/ (plain text: https://kr8tiv.ai/blog.md)
+- [The businesses that win will be the ones with AI-capable people](https://kr8tiv.ai/blog/ai-ready-workforce-alberta/): AI adoption Alberta is 18.4 percent of businesses. See the Western Canada table, the training grants, and how to raise output per employee. Plain text: https://kr8tiv.ai/blog/ai-ready-workforce-alberta.md
 - [Why AI training for employees matters for Canadian businesses](https://kr8tiv.ai/blog/ai-training-for-employees-canada/): Why employee AI training matters for Canadian businesses: real stats, privacy rules under PIPEDA and Alberta PIPA, and how Edmonton teams can start. Plain text: https://kr8tiv.ai/blog/ai-training-for-employees-canada.md
 - [What AI can and can't do for your Edmonton business](https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business/): What AI can really do for a small business in Edmonton, what it can't, and why the companies replacing people with AI keep walking it back. Real examples and sources. Plain text: https://kr8tiv.ai/blog/what-ai-can-and-cant-do-for-your-business.md
 <!-- BLOG:END -->
@@ -61,7 +62,7 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 - Site: https://kr8tiv.ai
 - Services: https://kr8tiv.ai/services/
 - Case study: https://kr8tiv.ai/work/evolve/
-- Intake: https://kr8tiv.ai/start/
+- Intake: https://kr8tiv.ai/start/ (https://kr8tiv.ai/contact/ redirects here)
 - LinkedIn: https://www.linkedin.com/company/kr8tivai
 - GitHub: https://github.com/kr8tiv-ai
 - Facebook: https://www.facebook.com/people/Kr8tiv-AI/61588252989738/
@@ -70,6 +71,28 @@ Evolve is a business app kr8tiv AI built for Evolve Eco Blasting, and the proof 
 ## Field Notes in detail
 
 Summaries and answers from each published article. The article pages are the source of truth.
+
+### The businesses that win will be the ones with AI-capable people
+
+URL: https://kr8tiv.ai/blog/ai-ready-workforce-alberta/
+Plain text: https://kr8tiv.ai/blog/ai-ready-workforce-alberta.md
+Author: Matt Haynes. Published November 27, 2026.
+
+Short answer:
+- Output per person is the score that matters. Statistics Canada measures labour productivity as real GDP per hour worked. It rose 1.0 percent in the second quarter of 2026, the largest rise since 2020. One rebound does not staff a company. Trained people do.
+- In the second quarter of 2026 survey, 18.4 percent of Alberta businesses used AI to produce goods or deliver services, against 25.1 percent in British Columbia, 13.6 percent in Saskatchewan, 13.1 percent in Manitoba and 19.2 percent in Canada. All five are quality A.
+- The money that pays for staff training is mostly a reimbursement you apply for before the course starts. Larger federal programs are repayable contributions or loans for real projects, not a software subscription and not a seminar by itself.
+- An AI-capable team is anyone who can talk into a phone, one company brain, and a human on anything that leaves the building. Frankenstein your team. Do not fire them.
+
+Questions answered:
+- Is AI training eligible for the Canada-Alberta Productivity Grant? It can be, if it is instructor-led, job-relevant, and from a third party that has trained for at least two years. Example topics include AI for Business and Generative AI Applications. The ministry decides. KR8TIV training is not pre-approved. Checked 27 November 2026.
+- Do I have to apply before training starts? Yes for this grant. Training that starts before Application Received is ineligible. That status arrives when the trainee clicks I confirm. Apply at least 30 days ahead. A decline after you have started means the bill is yours. Checked 27 November 2026.
+- Can business owners be trainees under the Canada-Alberta Productivity Grant? Yes, since 8 October 2026, if the owner has an active role. Employed family members can be trainees. Unemployed family, contractors and volunteers cannot, unless the person is an owner. Checked 27 November 2026.
+- Will AI replace my staff? It should not. Of 1,163 senior leaders in an Orgvue survey published 29 April 2025, 39 percent made people redundant because of AI, and 55 percent of that group called the decision wrong. The research gains are output gains for people who stay, especially less experienced staff, with a human still reviewing.
+- What is a company brain? One home for processes, prices, voice and templates, so people and tools read the same facts. KR8TIV builds one for $1,000 CAD. You own it. Checked 27 November 2026.
+- What is the difference between a training grant and PrairiesCan or BDC money? A training grant pays back part of a course. PrairiesCan is a repayable project contribution starting at $250,000. BDC LIFT is a loan you repay, from $25,000, for profitable firms at $1 million in revenue. Checked 27 November 2026.
+- Does rural Alberta use AI at the same rate as the cities? No. Urban Alberta was 19.3 percent and rural Alberta 14.4 percent in the second quarter of 2026, both quality B. Canada rural was 9.9 percent, quality A.
+- How do Edmonton employers start AI training for employees? Name the tasks, write what never goes into a tool, and file the grant before the first session. KR8TIV trains in Edmonton and across Canada, online or in person. A free one-hour demo, a micro seminar for your team, is how you see the work before you buy a day.
 
 ### Why AI training for employees matters for Canadian businesses
 
