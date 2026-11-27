@@ -1,8 +1,8 @@
 ---
 slug: ai-ready-workforce-alberta
 title: "AI adoption in Alberta: the winners will have the most AI-capable people"
-seo_title: "AI adoption Alberta: capable people win | KR8TIV AI"
-meta_description: "AI adoption Alberta is 18.4 percent of businesses, behind B.C. at 25.1. See the Western rates, the grants that pay for training, and a plan for the same crew."
+seo_title: "AI adoption in Alberta: capable people win | KR8TIV AI"
+meta_description: "AI adoption in Alberta is 18.4 percent of businesses, behind B.C. at 25.1. The Western rates, the grants that pay for training, and a plan for your crew."
 excerpt: "The winners will have the most AI-capable people. Same crew, more finished work per person, with a human still signing the work that leaves the building."
 publish_date: '2026-11-27'
 updated: '2026-11-27'
@@ -51,7 +51,7 @@ faqs:
   a: "Name the tasks, write down what never goes into a tool, and file the grant before the first session. KR8TIV trains in Edmonton and across Canada, online or in person. A free one-hour demo, a micro seminar for your team, is how you see the work before you buy a day."
 ---
 
-The businesses that win the next decade are the ones whose people can direct AI. Same crew, more finished work per person. AI is an upgrade, and it still needs a human in charge of the number, the safety call, and the email a customer will read. On AI adoption Alberta, 18.4 percent of businesses used AI to produce goods or deliver services, behind British Columbia at 25.1 percent.
+The businesses that win the next decade are the ones whose people can direct AI. Same crew, more finished work per person. AI is an upgrade, and it still needs a human in charge of the number, the safety call, and the email a customer will read. On AI adoption in Alberta, 18.4 percent of businesses used AI to produce goods or deliver services, behind British Columbia at 25.1 percent.
 
 Headcount will not close that gap. Output per person will, if the people you already pay can point the tools at the work and catch the draft before it leaves the building.
 
@@ -78,7 +78,7 @@ BCG's 2025 AI at Work survey covered more than 10,600 leaders, managers and fron
 <figcaption>The years and the new habit, on the same job.</figcaption>
 </figure>
 
-## Where does AI adoption Alberta stand?
+## Where does AI adoption in Alberta stand?
 
 The figures below are Table 33-10-1167-01, second quarter of 2026, re-checked from the official download on 27 November 2026. Statistics Canada rates the provincial figures as excellent quality; the industry splits are less precise, so treat them as direction, not decimals.
 
@@ -165,7 +165,7 @@ Orgvue published a survey of 1,163 C-suite and senior leaders on 29 April 2025. 
 A training grant pays you back after you have paid. A federal contribution or a loan is project money you repay. A course name on a government list is a topic, not a vendor. Every program below was checked on 27 November 2026; the funder decides eligibility, and no course, including ours, is pre-approved.
 
 | Program | Pays | Will not clear | Status, checked 27 November 2026 |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | Canada-Alberta Productivity Grant | 75%, to $5,000 a trainee. Employer cap $100,000 a fiscal year | A start before Application Received. Wages, subscriptions, conferences, coaching | Open. First come, first served |
 | B.C. Employer Training Grant | 80%, to $10,000 a person. Cap $300,000 a fiscal year | Diplomas and degrees. Fewer priority factors can come back unassessed | Open for training from 1 April 2026 |
 | Building Up Manitoba | Up to $10,000 an employee. HR stream up to $25,000. Cap $100,000 | Travel, degrees, the next fiscal year | Open. Under 500 employees |
@@ -180,11 +180,13 @@ A training grant pays you back after you have paid. A federal contribution or a 
 
 ## How does the Canada-Alberta Productivity Grant treat AI training?
 
+**Who it is for.** An Alberta employer operational for at least one year.
+
 **What it pays.** On 8 October 2026 the province posted three changes: 75 percent of eligible training costs for every trainee, to the $5,000 cap, with employed family members and business owners eligible too. The funding box on that same page still says per employed trainee and a 25 percent employer share. Follow the 8 October notice and the October 2026 guidelines, not that box. ([alberta.ca](https://www.alberta.ca/canada-alberta-productivity-grant), [October 2026 guidelines](https://open.alberta.ca/dataset/14776419-ee5f-49d3-bfb6-9177d0214ef5/resource/cb980216-d2d1-4ea4-b4c2-df6f71c610a4/download/jeti-canada-alberta-productivity-grant-applicant-guidelines-2026.pdf))
 
 The caps run per fiscal year, 1 April to 31 March, and they still bind if you file again. You pay the whole bill, finish, file the completion form, and then the grant pays the eligible share. The ministry of Jobs, Economy, Trade and Immigration will not confirm eligibility by phone or email. It decides after an application is in the portal.
 
-That is a ministry example, not our price. On $3,000 of eligible costs the grant pays $2,250 and the employer pays $750. On $12,000 the grant stops at $5,000 and the employer pays $7,000. The ministry has to call the fee reasonable. It can ask for other quotes.
+The ministry gives its own examples, not our prices. On $3,000 of eligible costs the grant pays $2,250 and the employer pays $750. On $12,000 the grant stops at $5,000 and the employer pays $7,000. The ministry has to call the fee reasonable. It can ask for other quotes.
 
 ### A $2,000 seminar, split across a crew
 
@@ -198,9 +200,8 @@ KR8TIV's seminar is $2,000 CAD for the group, not per person, checked on the liv
 
 The $5,000 trainee cap does not wake up at $187.50. If the ministry treats the full $2,000 as one person's course, the grant is $1,500 and the employer pays $500. File the invoice you can defend. This is arithmetic, not an approval.
 
-**Who it is for.** An Alberta employer operational for at least one year.
 
-**What it will not pay.**
+**What it needs, and what it will not pay.**
 
 - Training is instructor-led, tied to the job, and finished within 52 weeks of the date the application is received. Online counts as Alberta. In-person training outside Alberta needs a written reason, including the Alberta courses you considered.
 - The provider is a third party whose main work has been training for at least two years, with a qualified instructor. Not the employer, a relative, your own staff, or a vendor whose course is only how to use that vendor's product. A private career college has to be on the registry.
