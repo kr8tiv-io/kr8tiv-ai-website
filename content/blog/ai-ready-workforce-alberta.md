@@ -188,6 +188,15 @@ The caps run per fiscal year, 1 April to 31 March, and they still bind if you fi
 
 The ministry gives its own examples, not our prices. On $3,000 of eligible costs the grant pays $2,250 and the employer pays $750. On $12,000 the grant stops at $5,000 and the employer pays $7,000. The ministry has to call the fee reasonable. It can ask for other quotes.
 
+<figure>
+<picture>
+<source type="image/avif" srcset="/blog/images/ai-ready-workforce-paperwork-768.avif 768w, /blog/images/ai-ready-workforce-paperwork-1280.avif 1280w" sizes="(min-width: 760px) 720px, 100vw">
+<source type="image/webp" srcset="/blog/images/ai-ready-workforce-paperwork-768.webp 768w, /blog/images/ai-ready-workforce-paperwork-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw">
+<img src="/blog/images/ai-ready-workforce-paperwork-1280.jpg" alt="A business owner in a plaid shirt reads a stack of papers at a wooden desk, pen in hand, beside a laptop, a calculator and a coffee mug. A white hard hat sits on a shelf behind her and a frosted window lets in winter light." width="1280" height="720" loading="lazy" decoding="async">
+</picture>
+<figcaption>The paperwork comes before the first session, not after it.</figcaption>
+</figure>
+
 ### A $2,000 seminar, split across a crew
 
 KR8TIV's seminar is $2,000 CAD for the group, not per person, checked on the live [AI training](../../services/ai-training/) page on 27 November 2026. Say eight named trainees, and say the ministry accepts an even split.
@@ -244,6 +253,15 @@ The $5,000 trainee cap does not wake up at $187.50. If the ministry treats the f
 **What it will not pay.** A general AI course an employer files. The $65,000 is provider funding. The $15.6 million is a trade response.
 
 **How to apply.** There is no employer form in the pages read for this note. ([19 March 2025](https://www.saskatchewan.ca/government/news-and-media/2025/march/19/delivering-essential-skills-training-despite-federal-government-cuts), [18 November 2026](https://www.saskatchewan.ca/government/news-and-media/2026/november/18/innovation-saskatchewan-invests-in-ai-skills-training-and-business-adoption), [27 March 2026](https://www.saskatchewan.ca/government/news-and-media/2026/march/27/media-advisory))
+
+<figure>
+<picture>
+<source type="image/avif" srcset="/blog/images/ai-ready-workforce-shopfloor-768.avif 768w, /blog/images/ai-ready-workforce-shopfloor-1280.avif 1280w" sizes="(min-width: 760px) 720px, 100vw">
+<source type="image/webp" srcset="/blog/images/ai-ready-workforce-shopfloor-768.webp 768w, /blog/images/ai-ready-workforce-shopfloor-1280.webp 1280w" sizes="(min-width: 760px) 720px, 100vw">
+<img src="/blog/images/ai-ready-workforce-shopfloor-1280.jpg" alt="Four workers in safety glasses and work jackets gather at a steel workbench in a shop. One holds up a phone and talks into it while the others lean in and smile. Steel racks and a forklift fill the background, and low sun shines through an open bay door onto snow." width="1280" height="720" loading="lazy" decoding="async">
+</picture>
+<figcaption>The same crew, one phone, and a question said out loud.</figcaption>
+</figure>
 
 ## What federal money exists, and who is it for?
 
